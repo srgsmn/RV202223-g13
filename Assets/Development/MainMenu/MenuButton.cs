@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using MenuUtilities;
 using UnityEngine.UI;
+using TMPro;
 
 public class MenuButton : MonoBehaviour
 {
+    [SerializeField] private string label;
+    [SerializeField] private TextMeshProUGUI txtArea;
     [SerializeField] private MainMenuScreen linkTo;
 
     private Button btn;
@@ -16,11 +19,13 @@ public class MenuButton : MonoBehaviour
 
         if (btn == null)
             Debug.LogWarning($"{GetType().Name}.cs > Unlinked Button");
+
+        EventSubscriber();
     }
 
     private void Start()
     {
-        EventSubscriber();
+        txtArea.text = label;
     }
 
     private void OnDestroy()

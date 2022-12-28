@@ -9,7 +9,7 @@ public class MainMenuManager : MonoBehaviour
     public static MainMenuManager Instance;
 
     [SerializeField] private MainMenuScreen activeScreen;
-    [SerializeField] private Stack<MainMenuScreen> previousScreens = new Stack<MainMenuScreen>();
+    private Stack<MainMenuScreen> previousScreens = new Stack<MainMenuScreen>();
 
     // EVENTS
     public delegate void DisplayScreeenEv(MainMenuScreen screen);
@@ -29,8 +29,9 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
-        activeScreen = MainMenuScreen.Main;
-        OnDisplayScreen?.Invoke(MainMenuScreen.Main);
+        //activeScreen = MainMenuScreen.Main;
+        //OnDisplayScreen?.Invoke(MainMenuScreen.Main);
+        DisplayScreen(MainMenuScreen.Main);
     }
 
     public void DisplayScreen(MainMenuScreen screen)

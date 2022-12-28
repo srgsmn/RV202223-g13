@@ -7,7 +7,7 @@ public class MenuContainer : MonoBehaviour
 {
     [SerializeField] private MainMenuScreen screen;
 
-    void Start()
+    void Awake()
     {
         EventSubscriber();
     }
@@ -37,9 +37,17 @@ public class MenuContainer : MonoBehaviour
 
     private void DisplaySelf(MainMenuScreen screen)
     {
-        if (this.screen == screen)
+        Debug.Log($"{GetType().Name}.cs > Component screen property is {this.screen} while selected screen is {screen}");
+
+        if (this.screen == screen) {
+            Debug.Log($"{GetType().Name}.cs > Enabling component");
             gameObject.SetActive(true);
+        }
         else
+        {
+            Debug.Log($"{GetType().Name}.cs > Disabling component");
             gameObject.SetActive(false);
+        }
+            
     }
 }
