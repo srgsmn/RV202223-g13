@@ -5,6 +5,7 @@ using MenuUtilities;
 using UnityEngine.UI;
 using TMPro;
 
+[ExecuteInEditMode]
 public class MenuButton : MonoBehaviour
 {
     [SerializeField] private string label;
@@ -26,6 +27,14 @@ public class MenuButton : MonoBehaviour
     private void Start()
     {
         txtArea.text = label;
+    }
+
+    private void Update()
+    {
+        if (!Application.IsPlaying(gameObject))
+        {
+            txtArea.text = label;
+        }
     }
 
     private void OnDestroy()
