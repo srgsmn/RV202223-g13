@@ -42,4 +42,5 @@ public class MainMenuButton : MenuButton
 
         MainMenuManager.Instance.DisplayScreen(linkTo);
     }
+
 }

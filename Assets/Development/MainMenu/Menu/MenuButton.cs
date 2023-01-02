@@ -42,4 +42,14 @@ public class MenuButton : MonoBehaviour
             txtArea.text = label;
         }
     }
+
+    private void OnMouseOver()
+    {
+        
+    }
+
+    private void OnMouseExit()
+    {
+        
+    }
 }
