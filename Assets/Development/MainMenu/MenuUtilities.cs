@@ -8,4 +8,6 @@ namespace MenuUtilities
     {
         None, Main, Start, Report, Settings, Exit, Back
     }
+
+    public enum Environments { None, Demo1, Demo2, Demo3, Browsed }
 }
