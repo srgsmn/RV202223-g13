@@ -35,12 +35,12 @@ public class StartDetailPanel : MonoBehaviour
         if (subscribing)
         {
             // Event to subscribe
-            StartButton.OnDisplayDetails += DisplaySelf;
+            SubMenuButton.OnDisplayDetails += DisplaySelf;
         }
         else
         {
             // Events to unsubscribe
-            StartButton.OnDisplayDetails -= DisplaySelf;
+            SubMenuButton.OnDisplayDetails -= DisplaySelf;
         }
     }
 

@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [ExecuteInEditMode]
-public class StartButton : MonoBehaviour
+public class SubMenuButton : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _btnTxt;
     [SerializeField] string _btnLabel;

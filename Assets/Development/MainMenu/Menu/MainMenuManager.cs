@@ -124,7 +124,7 @@ public class MainMenuManager : MonoBehaviour
     /// <summary>
     /// Quits the app. Private method accessible through events.
     /// </summary>
-    private void QuitApp()
+    public void QuitApp()
     {
 #if UNITY_EDITOR
         EditorApplication.isPlaying = false;

@@ -31,7 +31,7 @@ namespace MenuUtilities
 
     public enum StartDetail
     {
-        None, Demo1, Demo2, Demo3, Browsed, Back
+        None, Demo1, Demo2, Demo3, Browsed, Back, Report1, Report2, Report3, Project, Team, Assets
     }
 }
 

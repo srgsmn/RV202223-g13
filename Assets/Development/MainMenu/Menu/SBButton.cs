@@ -103,6 +103,13 @@ public class SBButton : MonoBehaviour
         }
     }
 
+    public void QuitApp()
+    {
+        Debug.Log($"{GetType().Name}.cs > QUITTING the app...");
+
+        MainMenuManager.Instance.QuitApp();
+    }
+
     private void DoChecks()
     {
         if (_btn == null)
