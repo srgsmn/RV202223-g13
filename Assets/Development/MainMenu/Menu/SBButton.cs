@@ -116,7 +116,7 @@ public class SBButton : MonoBehaviour
         }
     }
 
-    private void OnClick()
+    public virtual void OnClick()
     {
         if(_linkTo != MainMenuScreen.None)
         {

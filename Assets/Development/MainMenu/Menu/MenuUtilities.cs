@@ -29,9 +29,9 @@ namespace MenuUtilities
         public GameObject gameObject;
     }
 
-    public enum Environments
+    public enum StartDetail
     {
-        None, Demo1, Demo2, Demo3, Browsed
+        None, Demo1, Demo2, Demo3, Browsed, Back
     }
 }
 
