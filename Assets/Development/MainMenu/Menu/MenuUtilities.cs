@@ -29,9 +29,19 @@ namespace MenuUtilities
         public GameObject gameObject;
     }
 
-    public enum StartDetail
+    public enum SubMenuDetail
     {
-        None, Demo1, Demo2, Demo3, Browsed, Back, Report1, Report2, Report3, Project, Team, Assets
+        None, Demo1, Demo2, Demo3, Browsed, Back, Report1, Report2, Report3, Project, Team, Assets, Audio, Controllers
+    }
+
+    public enum PlayScene
+    {
+        Startup, Demo1, Demo2, Demo3, Browse
+    }
+
+    public enum SettingType
+    {
+        Volume, TextReader
     }
 }
 

@@ -101,6 +101,11 @@ public class SBButton : MonoBehaviour
                     break;
             }
         }
+
+        if (!_btn.interactable)
+        {
+            _btnTxt.color = Color.white;
+        }
     }
 
     public void QuitApp()

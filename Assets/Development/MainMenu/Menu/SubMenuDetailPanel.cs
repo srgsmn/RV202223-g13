@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using MenuUtilities;
 
-public class StartDetailPanel : MonoBehaviour
+public class SubMenuDetailPanel : MonoBehaviour
 {
-    [SerializeField] StartDetail _detailType;
+    [SerializeField] SubMenuDetail _detailType;
 
     Animator anim;
 
@@ -44,14 +44,14 @@ public class StartDetailPanel : MonoBehaviour
         }
     }
 
-    private void DisplaySelf(StartDetail target)
+    private void DisplaySelf(SubMenuDetail target)
     {
         if(_detailType != target && anim.GetBool(CONSTS.ANIM_FLAG))
         {
             anim.SetBool(CONSTS.ANIM_FLAG, false);
         }
 
-        if(_detailType == StartDetail.None)
+        if(_detailType == SubMenuDetail.None)
         {
             Debug.LogWarning($"{GetType().Name}.cs > There is no detail type set in the inspector");
         }

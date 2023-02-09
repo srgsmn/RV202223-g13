@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using MenuUtilities;
 using UnityEditor;
 using UnityEngine.Device;
@@ -41,14 +42,14 @@ public class MainMenuManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        EventSubscriber();
+        EventsSubscriber();
 
         BuildDictionary();
     }
 
     private void OnDestroy()
     {
-        EventSubscriber(false);
+        EventsSubscriber(false);
     }
 
     private void Start()
@@ -122,6 +123,41 @@ public class MainMenuManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Change scene and display demo/uploaded environment or startup menu
+    /// </summary>
+    /// <param name="newScene"></param>
+    private void DisplayScene(PlayScene newScene)
+    {
+        switch (newScene)
+        {
+            case PlayScene.Startup:
+                Debug.Log($"{GetType().Name}.cs > Loading {newScene} scene");
+
+                SceneManager.LoadScene(0);
+
+                break;
+
+            case PlayScene.Demo1:
+                Debug.LogWarning("### TODO ### HERE IT SHOULD LOAD DEMO 1 SCENE");
+                //SceneManager.LoadScene(1);
+
+                break;
+
+            case PlayScene.Demo2:
+                Debug.LogWarning("### TODO ### HERE IT SHOULD LOAD DEMO 2 SCENE");
+                //SceneManager.LoadScene(2);
+
+                break;
+
+            case PlayScene.Demo3:
+                Debug.LogWarning("### TODO ### HERE IT SHOULD LOAD DEMO 3 SCENE");
+                //SceneManager.LoadScene(3);
+
+                break;
+        }
+    }
+
+    /// <summary>
     /// Quits the app. Private method accessible through events.
     /// </summary>
     public void QuitApp()
@@ -133,15 +169,15 @@ public class MainMenuManager : MonoBehaviour
 #endif
     }
 
-    private void EventSubscriber(bool subscribing = true)
+    private void EventsSubscriber(bool subscribing = true)
     {
         if (subscribing)
         {
-            // Event to subscribe
+            PlayButton.AskNewScene += DisplayScene;
         }
         else
         {
-            // Events to unsubscribe
+            PlayButton.AskNewScene -= DisplayScene;
         }
     }
 

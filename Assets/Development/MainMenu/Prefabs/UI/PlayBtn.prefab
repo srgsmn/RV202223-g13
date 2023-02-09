@@ -12,12 +12,12 @@ GameObject:
   - component: {fileID: 8570009586364809725}
   - component: {fileID: 7733569271287108000}
   - component: {fileID: 3228274046119814697}
-  - component: {fileID: 6228093230703872885}
+  - component: {fileID: 372313629688792357}
   - component: {fileID: 49887848660623196}
   - component: {fileID: 7655827344969885539}
   - component: {fileID: 3446782809228226756}
   m_Layer: 5
-  m_Name: sbButton
+  m_Name: PlayBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &6228093230703872885
+--- !u!114 &372313629688792357
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -135,10 +135,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6719497855637460694}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d1b1f707caf34b3e9409bc9b558db21, type: 3}
+  m_Script: {fileID: 11500000, guid: df5f5372bb303458a8dad013f5302222, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _btnTxt: {fileID: 8647301342280915264}
+  _btnTxt: {fileID: 0}
   _btnLabel: 
   _linkTo: 0
 --- !u!114 &49887848660623196
@@ -362,7 +362,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: TEST
+  m_text: PLAY
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e5ad5885f8a6a4f6a8c47a6a196a884b, type: 2}
   m_sharedMaterial: {fileID: -3308788902146078239, guid: e5ad5885f8a6a4f6a8c47a6a196a884b, type: 2}

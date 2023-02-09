@@ -10,12 +10,12 @@ public class SubMenuButton : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _btnTxt;
     [SerializeField] string _btnLabel;
-    [SerializeField] StartDetail targetDetail;
+    [SerializeField] SubMenuDetail targetDetail;
 
     Button _btn;
 
     // EVENTS
-    public delegate void DisplayDetailsEv(StartDetail target);
+    public delegate void DisplayDetailsEv(SubMenuDetail target);
     public static DisplayDetailsEv OnDisplayDetails;
 
 
@@ -62,7 +62,7 @@ public class SubMenuButton : MonoBehaviour
 
     private void OnClick()
     {
-        if (targetDetail == StartDetail.Back)
+        if (targetDetail == SubMenuDetail.Back)
         {
             OnDisplayDetails?.Invoke(targetDetail);
 
@@ -96,8 +96,13 @@ public class SubMenuButton : MonoBehaviour
 
             if(_btnLabel == CONSTS.BACK_OPT)
             {
-                targetDetail = StartDetail.Back;
+                targetDetail = SubMenuDetail.Back;
             }
+        }
+
+        if (!_btn.interactable)
+        {
+            _btnTxt.color = Color.white;
         }
     }
 }
