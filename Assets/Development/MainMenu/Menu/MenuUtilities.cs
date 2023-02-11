@@ -39,6 +39,11 @@ namespace MenuUtilities
         Startup, Demo1, Demo2, Demo3, Browse
     }
 
+    public enum PopUpOpt
+    {
+        Move, Delete
+    }
+
     public enum SettingType
     {
         Volume, TextReader

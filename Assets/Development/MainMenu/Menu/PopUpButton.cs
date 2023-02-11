@@ -6,14 +6,17 @@ using UnityEngine.UI;
 using TMPro;
 using MenuUtilities;
 
-public class PlayButton : MonoBehaviour
+public class PopUpButton : MonoBehaviour
 {
-    [SerializeField] PlayScene _playScene;
+    [SerializeField] PopUpOpt _option;
 
     Button _btn;
 
-    public delegate void PlaySceneEv(PlayScene newScene);
-    public static PlaySceneEv AskNewScene;
+    public delegate void DeleteEv();
+    public static DeleteEv DeleteGO;
+
+    public delegate void MoveBtnEv();
+    public static MoveBtnEv MoveGO;
 
     private void Awake()
     {
@@ -60,6 +63,21 @@ public class PlayButton : MonoBehaviour
 
     public virtual void OnClick()
     {
-        AskNewScene?.Invoke(_playScene);
+        switch (_option)
+        {
+            case PopUpOpt.Move:
+                Debug.LogWarning("### TODO ### Here it goes the implementation of the movement");
+
+                MoveGO?.Invoke();
+
+                break;
+
+            case PopUpOpt.Delete:
+                Debug.Log($"{GetType().Name}.cs > Deleting the gameobject");
+
+                DeleteGO?.Invoke();
+
+                break;
+        }
     }
 }
