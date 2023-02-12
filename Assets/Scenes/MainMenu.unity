@@ -944,6 +944,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detailType: 4
+  _mustHideButtons: 1
+  _detailsContainer: {fileID: 455356049}
 --- !u!1 &179848599
 GameObject:
   m_ObjectHideFlags: 0
@@ -1370,6 +1372,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detailType: 2
+  _mustHideButtons: 1
+  _detailsContainer: {fileID: 402650479}
 --- !u!1001 &244521194
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2249,6 +2253,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
+--- !u!1 &402650479 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6719497855637460694, guid: c01aa68987fef4f4fb7648f63daeb6fc, type: 3}
+  m_PrefabInstance: {fileID: 1110598323}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &405443612
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2419,6 +2428,11 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
+--- !u!1 &409754164 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6719497855637460694, guid: c01aa68987fef4f4fb7648f63daeb6fc, type: 3}
+  m_PrefabInstance: {fileID: 1445649461}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &419086925
 GameObject:
   m_ObjectHideFlags: 0
@@ -2753,6 +2767,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 450870687}
   m_CullTransparentMesh: 1
+--- !u!1 &455356049 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6719497855637460694, guid: c01aa68987fef4f4fb7648f63daeb6fc, type: 3}
+  m_PrefabInstance: {fileID: 715895892}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &478162903
 GameObject:
   m_ObjectHideFlags: 0
@@ -3393,6 +3412,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detailType: 9
+  _mustHideButtons: 0
+  _detailsContainer: {fileID: 0}
 --- !u!1 &582691279
 GameObject:
   m_ObjectHideFlags: 0
@@ -3589,6 +3610,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detailType: 12
+  _mustHideButtons: 1
+  _detailsContainer: {fileID: 1597970012}
 --- !u!224 &612683862 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5816356230762518807, guid: 305bd5b360f854d75b110b9204409934, type: 3}
@@ -4116,6 +4139,10 @@ PrefabInstance:
     - target: {fileID: 6719497855637460694, guid: c01aa68987fef4f4fb7648f63daeb6fc, type: 3}
       propertyPath: m_Name
       value: PlayBtn
+      objectReference: {fileID: 0}
+    - target: {fileID: 6719497855637460694, guid: c01aa68987fef4f4fb7648f63daeb6fc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c01aa68987fef4f4fb7648f63daeb6fc, type: 3}
@@ -6110,6 +6137,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayBtn
       objectReference: {fileID: 0}
+    - target: {fileID: 6719497855637460694, guid: c01aa68987fef4f4fb7648f63daeb6fc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c01aa68987fef4f4fb7648f63daeb6fc, type: 3}
 --- !u!1001 &1112703824
@@ -7100,6 +7131,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detailType: 10
+  _mustHideButtons: 0
+  _detailsContainer: {fileID: 0}
 --- !u!1 &1348706080
 GameObject:
   m_ObjectHideFlags: 0
@@ -7852,6 +7885,10 @@ PrefabInstance:
     - target: {fileID: 6719497855637460694, guid: c01aa68987fef4f4fb7648f63daeb6fc, type: 3}
       propertyPath: m_Name
       value: PlayBtn
+      objectReference: {fileID: 0}
+    - target: {fileID: 6719497855637460694, guid: c01aa68987fef4f4fb7648f63daeb6fc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c01aa68987fef4f4fb7648f63daeb6fc, type: 3}
@@ -9254,6 +9291,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detailType: 1
+  _mustHideButtons: 1
+  _detailsContainer: {fileID: 409754164}
 --- !u!1 &1645547868
 GameObject:
   m_ObjectHideFlags: 0
@@ -10495,6 +10534,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detailType: 11
+  _mustHideButtons: 0
+  _detailsContainer: {fileID: 0}
 --- !u!1 &1963582859
 GameObject:
   m_ObjectHideFlags: 0
@@ -10840,6 +10881,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detailType: 13
+  _mustHideButtons: 1
+  _detailsContainer: {fileID: 405806635}
 --- !u!1001 &2041161514
 PrefabInstance:
   m_ObjectHideFlags: 0
