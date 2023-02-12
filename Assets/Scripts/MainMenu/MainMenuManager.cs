@@ -137,7 +137,7 @@ public class MainMenuManager : MonoBehaviour
 
         yield return new WaitForSeconds(1);
 
-        Debug.Log($"{GetType().Name}.cs > Deactivating the panel)");
+        Debug.Log($"{GetType().Name}.cs > Deactivating the panel");
         _screenList[_screenIndexes[screen]].gameObject.GetComponent<ScreenTransitionController>().Show(false);
     }
 

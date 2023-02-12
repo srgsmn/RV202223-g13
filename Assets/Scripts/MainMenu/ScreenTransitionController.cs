@@ -1,15 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using MenuUtilities;
 
 public class ScreenTransitionController : MonoBehaviour
 {
-    [SerializeField] Animator _sidebar, _caption, _details, _alert;
+    [Header("Panels animators:")]
+    [SerializeField] Animator _sidebar;
+    [SerializeField] Animator _caption, _details, _alert;
+    [Header("First Button:")]
+    [SerializeField] GameObject firstButton;
+
+    [SerializeField ]private EventSystem eventSystem;
 
     private void Awake()
     {
         DoChecks();
+        /*
+        eventSystem = GetComponent<EventSystem>();
+        if (eventSystem == null)
+        {
+            Debug.LogError($"{GetType().Name}.cs > ### EVENT SYSTEM IS NULL ###");
+        }
+        */
+    }
+
+    private void OnEnable()
+    {
+        Debug.Log($"{GetType().Name}.cs > First selected is now {eventSystem.firstSelectedGameObject}");
+        Debug.Log($"{GetType().Name}.cs > CHANGING First Selected in Event System (should be {firstButton})");
+        eventSystem.firstSelectedGameObject = firstButton;
+
+        Debug.Log($"{GetType().Name}.cs > First selected is now {eventSystem.firstSelectedGameObject}");
+
+        eventSystem.SetSelectedGameObject(eventSystem.firstSelectedGameObject);
     }
 
     public void Open()
