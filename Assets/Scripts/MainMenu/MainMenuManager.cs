@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 using MenuUtilities;
 using UnityEditor;
 
@@ -14,6 +16,8 @@ public class MainMenuManager : MonoBehaviour
     public static MainMenuManager Instance;
 
     public static string testString = "test";
+
+    private PlayerInputs inputs;
 
     //FIELDS
     [SerializeField] MainMenuScreen _activeScreen;
@@ -40,6 +44,8 @@ public class MainMenuManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        inputs = new PlayerInputs();
+
         EventsSubscriber();
 
         BuildDictionary();
@@ -65,6 +71,7 @@ public class MainMenuManager : MonoBehaviour
             Debug.Log($"{GetType().Name}.cs > Hiding {item.type} screen");
 
             item.gameObject.GetComponent<ScreenTransitionController>().Close();
+            item.gameObject.GetComponent<ScreenTransitionController>().Show(false);
         }
     }
 
@@ -106,6 +113,9 @@ public class MainMenuManager : MonoBehaviour
 
                 //_screenList[_screenIndexes[_activeScreen]].gameObject.SetActive(false); //change to trigger animations
                 _screenList[_screenIndexes[_activeScreen]].gameObject.GetComponent<ScreenTransitionController>().Close();
+
+                StartCoroutine(Unshow(_activeScreen));
+                //_screenList[_screenIndexes[_activeScreen]].gameObject.GetComponent<ScreenTransitionController>().Show(false);
             }
             else
             {
@@ -116,8 +126,19 @@ public class MainMenuManager : MonoBehaviour
             Debug.Log($"{GetType().Name}.cs > Active screen now set to {_activeScreen}: moving it in");
 
             //_screenList[_screenIndexes[_activeScreen]].gameObject.SetActive(true);
+            _screenList[_screenIndexes[_activeScreen]].gameObject.GetComponent<ScreenTransitionController>().Show();
             _screenList[_screenIndexes[_activeScreen]].gameObject.GetComponent<ScreenTransitionController>().Open();
         }
+    }
+
+    IEnumerator Unshow(MainMenuScreen screen)
+    {
+        Debug.Log($"{GetType().Name}.cs > Coroutine started (to let animation be done)");
+
+        yield return new WaitForSeconds(1);
+
+        Debug.Log($"{GetType().Name}.cs > Deactivating the panel)");
+        _screenList[_screenIndexes[screen]].gameObject.GetComponent<ScreenTransitionController>().Show(false);
     }
 
     /// <summary>
@@ -172,11 +193,33 @@ public class MainMenuManager : MonoBehaviour
         if (subscribing)
         {
             PlayButton.AskNewScene += DisplayScene;
+
+            //inputs
+            inputs.UI.Back.started += OnBackPressed;
+            inputs.UI.Back.performed += OnBackPressed;
+            inputs.UI.Back.canceled += OnBackPressed;
         }
         else
         {
             PlayButton.AskNewScene -= DisplayScene;
+
+            //inputs
+            inputs.UI.Back.started -= OnBackPressed;
+            inputs.UI.Back.performed -= OnBackPressed;
+            inputs.UI.Back.canceled -= OnBackPressed;
         }
+    }
+
+    private void OnBackPressed(InputAction.CallbackContext context)
+    {
+        Debug.Log($"{GetType().Name}.cs > Backspace pressed");
+
+        if (context.ReadValueAsButton())
+        {
+            DisplayScreen(MainMenuScreen.Prev);
+        }
+
+        DisplayScreen(MainMenuScreen.Prev);
     }
 
     private void BuildDictionary()

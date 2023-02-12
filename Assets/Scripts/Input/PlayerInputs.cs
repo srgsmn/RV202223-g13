@@ -25,21 +25,21 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     ""maps"": [
         {
             ""name"": ""UI"",
-            ""id"": ""3cf89bbb-c8b3-4cd5-94d7-baadd588e95f"",
+            ""id"": ""90702192-24e2-476a-82dc-b16d6ea06ef6"",
             ""actions"": [
                 {
-                    ""name"": ""Select"",
+                    ""name"": ""Back"",
                     ""type"": ""Button"",
-                    ""id"": ""fca042ec-00f7-44b1-8ec4-a8816ef8bb8c"",
+                    ""id"": ""8c525ee0-524a-4836-9437-49111582c36a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Move"",
+                    ""name"": ""Pause"",
                     ""type"": ""Button"",
-                    ""id"": ""7fc59d5c-dc1c-488c-b57c-117919df8237"",
+                    ""id"": ""a357fdef-1b7e-4341-8b5a-18c1486ee4a3"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -49,58 +49,25 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""0839262d-e6e0-4b38-b78c-b95eac8c7bae"",
-                    ""path"": ""<Keyboard>/enter"",
+                    ""id"": ""90fe69e9-293a-4331-8fc0-351aa1702242"",
+                    ""path"": ""<Keyboard>/backspace"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Select"",
+                    ""action"": ""Back"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""69e93db6-c42e-4817-ac02-ba0a797f45db"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""id"": ""c8e2c534-2c06-4104-9f71-85e9aca59876"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Select"",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""1D Axis"",
-                    ""id"": ""911eafd8-8e7b-40bd-ac84-1bc76410ba1c"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""863d57df-5c1d-42be-93d7-a9030d865b49"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""444c16ac-3625-4a2c-9c92-256b1a0fe40a"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -109,8 +76,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
 }");
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
-        m_UI_Select = m_UI.FindAction("Select", throwIfNotFound: true);
-        m_UI_Move = m_UI.FindAction("Move", throwIfNotFound: true);
+        m_UI_Back = m_UI.FindAction("Back", throwIfNotFound: true);
+        m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -170,14 +137,14 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     // UI
     private readonly InputActionMap m_UI;
     private IUIActions m_UIActionsCallbackInterface;
-    private readonly InputAction m_UI_Select;
-    private readonly InputAction m_UI_Move;
+    private readonly InputAction m_UI_Back;
+    private readonly InputAction m_UI_Pause;
     public struct UIActions
     {
         private @PlayerInputs m_Wrapper;
         public UIActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Select => m_Wrapper.m_UI_Select;
-        public InputAction @Move => m_Wrapper.m_UI_Move;
+        public InputAction @Back => m_Wrapper.m_UI_Back;
+        public InputAction @Pause => m_Wrapper.m_UI_Pause;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -187,29 +154,29 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_UIActionsCallbackInterface != null)
             {
-                @Select.started -= m_Wrapper.m_UIActionsCallbackInterface.OnSelect;
-                @Select.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnSelect;
-                @Select.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnSelect;
-                @Move.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMove;
-                @Move.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMove;
-                @Move.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMove;
+                @Back.started -= m_Wrapper.m_UIActionsCallbackInterface.OnBack;
+                @Back.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnBack;
+                @Back.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnBack;
+                @Pause.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Select.started += instance.OnSelect;
-                @Select.performed += instance.OnSelect;
-                @Select.canceled += instance.OnSelect;
-                @Move.started += instance.OnMove;
-                @Move.performed += instance.OnMove;
-                @Move.canceled += instance.OnMove;
+                @Back.started += instance.OnBack;
+                @Back.performed += instance.OnBack;
+                @Back.canceled += instance.OnBack;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
     public UIActions @UI => new UIActions(this);
     public interface IUIActions
     {
-        void OnSelect(InputAction.CallbackContext context);
-        void OnMove(InputAction.CallbackContext context);
+        void OnBack(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

@@ -32,6 +32,11 @@ public class ScreenTransitionController : MonoBehaviour
         if (_alert != null) _alert.SetBool(CONSTS.ANIM_FLAG, false);
     }
 
+    public void Show(bool flag = true)
+    {
+        gameObject.SetActive(flag);
+    }
+
     private void DoChecks()
     {
         bool allNull = true;
