@@ -13,7 +13,10 @@ public class PlayButton : MonoBehaviour
     Button _btn;
 
     public delegate void PlaySceneEv(PlayScene newScene);
-    public static PlaySceneEv AskNewScene;
+    public static event PlaySceneEv AskNewScene;
+
+    public delegate void QuitEv();
+    public static event QuitEv AskForQuit;
 
     private void Awake()
     {
@@ -47,7 +50,8 @@ public class PlayButton : MonoBehaviour
     {
         Debug.Log($"{GetType().Name}.cs > QUITTING the app...");
 
-        MainMenuManager.Instance.QuitApp();
+        //MainMenuManager.Instance.QuitApp();
+        AskForQuit?.Invoke();
     }
 
     private void DoChecks()

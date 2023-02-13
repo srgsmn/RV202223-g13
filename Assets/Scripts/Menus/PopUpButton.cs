@@ -13,10 +13,13 @@ public class PopUpButton : MonoBehaviour
     Button _btn;
 
     public delegate void DeleteEv();
-    public static DeleteEv DeleteGO;
+    public static event DeleteEv DeleteGO;
 
     public delegate void MoveBtnEv();
-    public static MoveBtnEv MoveGO;
+    public static event MoveBtnEv MoveGO;
+
+    public delegate void QuitEv();
+    public static event QuitEv OnQuit;
 
     private void Awake()
     {
@@ -50,7 +53,7 @@ public class PopUpButton : MonoBehaviour
     {
         Debug.Log($"{GetType().Name}.cs > QUITTING the app...");
 
-        MainMenuManager.Instance.QuitApp();
+        OnQuit?.Invoke();
     }
 
     private void DoChecks()
