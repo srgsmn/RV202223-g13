@@ -85,6 +85,10 @@ public class InputManager : MonoBehaviour
     public static event TutorialPageEv OnTutorialPageUpdate;
     public delegate void ChangeModeEv(Mode mode);
     public static event ChangeModeEv OnChangeMode;
+    public delegate void MovementEv(Vector2 move);
+    public static event MovementEv OnMovementInput;
+    public delegate void PlayerCameraEv(Vector2 mouse);
+    public static event PlayerCameraEv OnPlayerCameraInput;
 
     private void EventSubscriber(bool subscribing = true)
     {
@@ -100,6 +104,13 @@ public class InputManager : MonoBehaviour
             inputs.UI.Mode1.started += OnMode1Pressed;
             inputs.UI.Mode2.started += OnMode2Pressed;
             inputs.UI.Mode3.started += OnMode3Pressed;
+
+            inputs.CharacterInput.Move.started += OnMovementInputPressed;
+            inputs.CharacterInput.Move.canceled += OnMovementInputPressed;
+            inputs.CharacterInput.Move.performed += OnMovementInputPressed;
+            inputs.CharacterInput.PlayerCamera.started += OnPlayerCameraMoved;
+            inputs.CharacterInput.PlayerCamera.canceled += OnPlayerCameraMoved;
+            inputs.CharacterInput.PlayerCamera.performed += OnPlayerCameraMoved;
         }
         else
         {
@@ -113,6 +124,10 @@ public class InputManager : MonoBehaviour
             inputs.UI.Mode1.started -= OnMode1Pressed;
             inputs.UI.Mode2.started -= OnMode2Pressed;
             inputs.UI.Mode3.started -= OnMode3Pressed;
+
+            inputs.CharacterInput.Move.started -= OnMovementInputPressed;
+            inputs.CharacterInput.Move.canceled -= OnMovementInputPressed;
+            inputs.CharacterInput.Move.performed -= OnMovementInputPressed;
         }
     }
 
@@ -254,6 +269,34 @@ public class InputManager : MonoBehaviour
 
                 OnChangeMode?.Invoke(mode);
             }
+        }
+    }
+
+    private void OnMovementInputPressed(InputAction.CallbackContext context)
+    {
+        //Deb("OnMovementInput(): " + context.ReadValue<Vector2>());
+
+        Vector2 movementInput;
+
+        if (isPlaying)
+        {
+            movementInput = context.ReadValue<Vector2>();
+
+            OnMovementInput?.Invoke(movementInput);
+        }
+    }
+
+    private void OnPlayerCameraMoved(InputAction.CallbackContext context)
+    {
+        //Deb("OnMovementInput(): " + context.ReadValue<Vector2>());
+
+        Vector2 movementInput;
+
+        if (isPlaying)
+        {
+            movementInput = context.ReadValue<Vector2>();
+
+            OnMovementInput?.Invoke(movementInput);
         }
     }
 }

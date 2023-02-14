@@ -16,6 +16,7 @@ public class CharacterMovement : MonoBehaviour
     private Rigidbody _rigidbody;
     //private Vector2 camera_rot = new Vector2();
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,9 +35,72 @@ public class CharacterMovement : MonoBehaviour
         
     }
 
-    // FixedUpdate is called every fixed rate framerate frame
-    void FixedUpdate()
+
+    void ApplyMovement(Vector2 movement)
     {
+        if (movement.x > 0.5f)
+        {
+            if (_startSpeed <= 0) _startSpeed = 0;
+            if (_startSpeed < WalkSpeed)
+            {
+                //transform.Translate(gameObject.transform.forward * _startSpeed * Time.deltaTime);
+                _rigidbody.velocity = -_startSpeed * transform.forward;
+                _startSpeed += _startAccel * Time.deltaTime;
+            }
+            //else transform.Translate(gameObject.transform.forward * WalkSpeed * Time.deltaTime);
+            else _rigidbody.velocity = -WalkSpeed * transform.forward;
+        }
+        else if (movement.x < -0.5f)
+        {
+            if (_startSpeed >= 0) _startSpeed = 0;
+            if (_startSpeed > -WalkSpeed)
+            {
+                //transform.Translate(gameObject.transform.forward * _startSpeed * Time.deltaTime);
+                _rigidbody.velocity = _startSpeed * transform.forward;
+                _startSpeed -= _startAccel * Time.deltaTime;
+            }
+            //else transform.Translate(-gameObject.transform.forward * WalkSpeed * Time.deltaTime);
+            else _rigidbody.velocity = WalkSpeed * transform.forward;
+        }
+        else
+        {
+            //_startSpeed = 0f;
+            _rigidbody.velocity = Vector3.zero;
+        }
+
+        if (movement.y > 0.5)
+        {
+            transform.Rotate(Vector3.up, TurnSpeed * Time.deltaTime);
+            //_rigidbody.angularVelocity = TurnSpeed *  Vector3.up;
+        }
+        else if (movement.y < -0.5)
+        {
+            transform.Rotate(Vector3.up, -TurnSpeed * Time.deltaTime);
+            //_rigidbody.angularVelocity = -TurnSpeed * Vector3.up;
+        }
+        else
+        {
+            _rigidbody.angularVelocity = Vector3.zero;
+        }
+    }
+
+
+    private void Awake()
+    {
+        InputManager.OnMovementInput += ApplyMovement;
+    }
+
+    private void OnDestroy()
+    {
+        InputManager.OnMovementInput -= ApplyMovement;
+
+    }
+
+    // FixedUpdate is called every fixed rate framerate frame
+    /*void FixedUpdate()
+    {
+        
+        
         if (Input.GetKey(KeyCode.W))
         {
             if (_startSpeed <= 0) _startSpeed = 0;
@@ -77,5 +141,5 @@ public class CharacterMovement : MonoBehaviour
         {
             _rigidbody.angularVelocity = Vector3.zero;
         }
-    }
+    }*/
 }
