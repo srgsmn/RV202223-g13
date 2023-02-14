@@ -21,4 +21,9 @@ namespace Utilities
     {
         None, Loading, Tutorial, Playing, Paused
     }
+
+    public enum Mode
+    {
+        Nav, Edit, Plan
+    }
 }

@@ -15,6 +15,7 @@ public class InputManager : MonoBehaviour
     [SerializeField][ReadOnlyInspector] bool isPlaying;
     [SerializeField][ReadOnlyInspector] bool isPaused;
     [SerializeField][ReadOnlyInspector] bool isTutorial;
+    [SerializeField][ReadOnlyInspector] Mode mode;
 
     [Header("Event System:")]
     [SerializeField][ReadOnlyInspector] bool evSysDetected = false;
@@ -82,6 +83,8 @@ public class InputManager : MonoBehaviour
     public static event BackEv OnBack;
     public delegate void TutorialPageEv(bool forward = true);
     public static event TutorialPageEv OnTutorialPageUpdate;
+    public delegate void ChangeModeEv(Mode mode);
+    public static event ChangeModeEv OnChangeMode;
 
     private void EventSubscriber(bool subscribing = true)
     {
@@ -94,6 +97,9 @@ public class InputManager : MonoBehaviour
             inputs.UI.Back.started += OnBackPressed;
             inputs.UI.Pause.started += OnPausePressed;
             inputs.UI.Space.started += OnSpacePressed;
+            inputs.UI.Mode1.started += OnMode1Pressed;
+            inputs.UI.Mode2.started += OnMode2Pressed;
+            inputs.UI.Mode3.started += OnMode3Pressed;
         }
         else
         {
@@ -104,6 +110,9 @@ public class InputManager : MonoBehaviour
             inputs.UI.Back.started -= OnBackPressed;
             inputs.UI.Pause.started -= OnPausePressed;
             inputs.UI.Space.started -= OnSpacePressed;
+            inputs.UI.Mode1.started -= OnMode1Pressed;
+            inputs.UI.Mode2.started -= OnMode2Pressed;
+            inputs.UI.Mode3.started -= OnMode3Pressed;
         }
     }
 
@@ -193,6 +202,57 @@ public class InputManager : MonoBehaviour
                 Debug.Log($"{GetType().Name}.cs > State is TUTORIAL, moving forward)");
 
                 OnTutorialPageUpdate?.Invoke();
+            }
+        }
+    }
+
+    private void OnMode1Pressed(InputAction.CallbackContext context)
+    {
+        Debug.Log($"{GetType().Name}.cs > 1 Key pressed (context value as button {context.ReadValueAsButton()})");
+
+        if (context.ReadValueAsButton())
+        {
+            if (isPlaying)
+            {
+                Debug.Log($"{GetType().Name}.cs > State is PLAYING, entering navigation mode");
+
+                mode = Mode.Nav;
+
+                OnChangeMode?.Invoke(mode);
+            }
+        }
+    }
+
+    private void OnMode2Pressed(InputAction.CallbackContext context)
+    {
+        Debug.Log($"{GetType().Name}.cs > 2 Key pressed (context value as button {context.ReadValueAsButton()})");
+
+        if (context.ReadValueAsButton())
+        {
+            if (isPlaying)
+            {
+                Debug.Log($"{GetType().Name}.cs > State is PLAYING, entering edit mode");
+
+                mode = Mode.Edit;
+
+                OnChangeMode?.Invoke(mode);
+            }
+        }
+    }
+
+    private void OnMode3Pressed(InputAction.CallbackContext context)
+    {
+        Debug.Log($"{GetType().Name}.cs > 3 Key pressed (context value as button {context.ReadValueAsButton()})");
+
+        if (context.ReadValueAsButton())
+        {
+            if (isPlaying)
+            {
+                Debug.Log($"{GetType().Name}.cs > State is PLAYING, entering plan mode");
+
+                mode = Mode.Plan;
+
+                OnChangeMode?.Invoke(mode);
             }
         }
     }
