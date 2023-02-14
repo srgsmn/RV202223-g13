@@ -11,8 +11,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(EventTrigger))]
 public class TextReader : MonoBehaviour
 {
-    [SerializeField] bool readTxt = false;
-    [SerializeField] AudioSource _audio;
+    [SerializeField] public bool readTxt = false;
+    [SerializeField] public AudioSource _audio;
 
     // FUNCTIONS
     private void Awake()
@@ -31,12 +31,12 @@ public class TextReader : MonoBehaviour
         EventSubscriber(false);
     }
 
-    public void PlaySound()
+    public virtual void PlaySound()
     {
         if(readTxt) _audio.Play();
     }
 
-    public void StopSound()
+    public virtual void StopSound()
     {
         if (readTxt) _audio.Stop();
     }
