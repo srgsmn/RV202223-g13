@@ -29,6 +29,10 @@ public class GameManager : MonoBehaviour
     [SerializeField][ReadOnlyInspector] bool isPaused = false;
     private GameObject pauseMenuInstance;
 
+    [Header("Mode HUD:")]
+    [SerializeField][ReadOnlyInspector] GameObject modeHUDPrefab;
+    private GameObject modeHUDInstance;
+
     public delegate void PauseEv(bool isPaused = true);
     public static event PauseEv OnPause;
     public delegate void StateChangedEv(SceneType type, SceneState state);

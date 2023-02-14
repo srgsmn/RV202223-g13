@@ -26,4 +26,9 @@ namespace Utilities
     {
         Nav, Edit, Plan
     }
+
+    public enum AccItemType
+    {
+        Ramp, Stairlift
+    }
 }
