@@ -1,39 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class TutorialManager : MonoBehaviour
 {
+    // SINGLETON
+    public static TutorialManager Instance;
+
     [SerializeField] GameObject[] panels;
 
     [SerializeField] int activeIndex = 0;
-
-    PlayerInputs inputs;
 
     public delegate void TutorialEndsEv();
     public static event TutorialEndsEv OnTutorialEnds;
 
     private void Awake()
     {
-        inputs = new PlayerInputs();
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
 
         EventsSubscriber();
-    }
-
-    private void OnEnable()
-    {
-        inputs.Enable();
     }
 
     private void Start()
     {
         panels[activeIndex].SetActive(true);
-    }
-
-    private void OnDisable()
-    {
-        inputs.Disable();
     }
 
     private void OnDestroy()
@@ -46,17 +45,42 @@ public class TutorialManager : MonoBehaviour
         if (subscribing)
         {
             //inputs
-            inputs.UI.Back.started += OnBackPressed;
-            inputs.UI.Space.started += OnSpacePressed;
+            InputManager.OnTutorialPageUpdate += PageUpdate;
         }
         else
         {
             //inputs
-            inputs.UI.Back.started -= OnBackPressed;
-            inputs.UI.Space.started += OnSpacePressed;
+            InputManager.OnTutorialPageUpdate -= PageUpdate;
         }
     }
 
+    private void PageUpdate(bool forward = true)
+    {
+        if (forward)
+        {
+            if (activeIndex < panels.Length - 1)
+            {
+                panels[activeIndex++].SetActive(false);
+                panels[activeIndex].SetActive(true);
+            }
+            else if (activeIndex == panels.Length - 1)
+            {
+                panels[activeIndex].SetActive(false);
+
+                OnTutorialEnds?.Invoke();
+            }
+        }
+        else
+        {
+            if (activeIndex > 0)
+            {
+                panels[activeIndex--].SetActive(false);
+                panels[activeIndex].SetActive(true);
+            }
+        }
+    }
+
+    /*
     private void OnBackPressed(InputAction.CallbackContext context)
     {
         if (activeIndex > 0)
@@ -80,4 +104,5 @@ public class TutorialManager : MonoBehaviour
             OnTutorialEnds?.Invoke();
         }
     }
+    */
 }

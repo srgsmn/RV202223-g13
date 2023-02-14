@@ -8,6 +8,8 @@ namespace Utilities
     public static class PREFABS
     {
         public const string TUTORIAL = "Prefabs/TutorialCanvas";
+        public const string PAUSE = "Prefabs/PauseCanvas";
+        public const string EVSYS = "Prefabs/EventSystem";
     }
 
     public enum SceneType
@@ -17,6 +19,6 @@ namespace Utilities
 
     public enum SceneState
     {
-        loading, tutorial, play, paused
+        None, Loading, Tutorial, Playing, Paused
     }
 }

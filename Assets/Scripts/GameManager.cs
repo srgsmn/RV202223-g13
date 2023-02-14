@@ -25,10 +25,14 @@ public class GameManager : MonoBehaviour
     private GameObject tutorialInstance;
 
     [Header("Pause:")]
+    [SerializeField][ReadOnlyInspector] GameObject pauseMenuPrefab;
     [SerializeField][ReadOnlyInspector] bool isPaused = false;
+    private GameObject pauseMenuInstance;
 
     public delegate void PauseEv(bool isPaused = true);
     public static event PauseEv OnPause;
+    public delegate void StateChangedEv(SceneType type, SceneState state);
+    public static event StateChangedEv OnSceneUpdate;
 
     private void Awake()
     {
@@ -44,6 +48,7 @@ public class GameManager : MonoBehaviour
         }
 
         tutorialPrefab = Resources.Load(PREFABS.TUTORIAL) as GameObject;
+        pauseMenuPrefab = Resources.Load(PREFABS.PAUSE) as GameObject;
 
         if(tutorialPrefab == null)
             Debug.LogError($"{GetType().Name}.cs > Tutorial prefab is MISSING");
@@ -72,10 +77,14 @@ public class GameManager : MonoBehaviour
             TutorialManager.OnTutorialEnds += HideTutorial;
 
             // From pause menu
-            PauseMenuButton.OnResume += OnResume;
+            PauseMenuButton.OnResume += OnResumeInput;
             PauseMenuButton.OnStartTutorial += ShowTutorial;
             PauseMenuButton.OnMainMenu += ShowMainMenu;
             PauseMenuButton.OnQuit += QuitApp;
+
+            // From Input Manager
+            InputManager.OnPause += OnPauseInput;
+            InputManager.OnResume += OnResumeInput;
         }
         else
         {
@@ -91,10 +100,14 @@ public class GameManager : MonoBehaviour
             TutorialManager.OnTutorialEnds -= HideTutorial;
 
             // From pause menu
-            PauseMenuButton.OnResume -= OnResume;
+            PauseMenuButton.OnResume -= OnResumeInput;
             PauseMenuButton.OnStartTutorial -= ShowTutorial;
             PauseMenuButton.OnMainMenu -= ShowMainMenu;
             PauseMenuButton.OnQuit -= QuitApp;
+
+            // From Input Manager
+            InputManager.OnPause -= OnPauseInput;
+            InputManager.OnResume -= OnResumeInput;
         }
     }
 
@@ -108,6 +121,8 @@ public class GameManager : MonoBehaviour
         {
             case SceneType.MainMenu:
                 Debug.Log($"{GetType().Name}.cs > Loading {newScene} scene");
+
+                SetPause(false);
 
                 SceneManager.LoadScene(1);
 
@@ -136,6 +151,8 @@ public class GameManager : MonoBehaviour
         }
 
         activeScene = newScene;
+
+        OnSceneUpdate(activeScene, SceneState.None);
     }
 
     /// <summary>
@@ -159,6 +176,10 @@ public class GameManager : MonoBehaviour
         tutorialInstance = Instantiate(tutorialPrefab);
 
         tutorialOn = true;
+
+        state = SceneState.Tutorial;
+
+        OnSceneUpdate?.Invoke(activeScene, state);
     }
 
     private void HideTutorial()
@@ -166,14 +187,27 @@ public class GameManager : MonoBehaviour
         Destroy(tutorialInstance);
 
         tutorialOn = false;
+
+        state = SceneState.Playing;
+
+        OnSceneUpdate?.Invoke(activeScene, state);
     }
 
     private void ShowMainMenu()
     {
+        state = SceneState.None;
+
         DisplayScene(SceneType.MainMenu);
+
+        OnSceneUpdate?.Invoke(activeScene, state);
     }
 
-    private void OnResume()
+    private void OnPauseInput()
+    {
+        SetPause(true);
+    }
+
+    private void OnResumeInput()
     {
         SetPause(false);
     }
@@ -187,16 +221,26 @@ public class GameManager : MonoBehaviour
 
         if (isPaused)
         {
+            Debug.Log($"{GetType().Name}.cs > FREEZING the app and showing pause menu");
+
             Time.timeScale = 0;
 
-            state = SceneState.paused;
+            state = SceneState.Paused;
+
+            pauseMenuInstance = Instantiate(pauseMenuPrefab);
         }
         else
         {
+            Debug.Log($"{GetType().Name}.cs > UNFREEZING the app and destroying pause menu");
+
+            Destroy(pauseMenuInstance);
+
             Time.timeScale = 1;
 
-            state = SceneState.play;
+            state = SceneState.Playing;
         }
+
+        OnSceneUpdate?.Invoke(activeScene, state);
     }
 
     /// <summary>
