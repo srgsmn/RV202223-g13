@@ -127,7 +127,8 @@ public class FurnitureSelection : MonoBehaviour
     private void Highlight(GameObject gobj)
     {
         SelectMaterial_r(gobj);
-        /*Outline ol;
+        /*
+        Outline ol;
         if (gobj.GetComponent<Outline>() == null)
         {
             ol = gobj.AddComponent<Outline>();
@@ -138,7 +139,8 @@ public class FurnitureSelection : MonoBehaviour
         }
         ol.OutlineMode = Outline.Mode.OutlineAll;
         ol.OutlineColor = SelectedColor;
-        ol.OutlineWidth = 10f;*/
+        ol.OutlineWidth = 10f;
+        */
     }
 
     private void SelectMaterial_r(GameObject gobj)
