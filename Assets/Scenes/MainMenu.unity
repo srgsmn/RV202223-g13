@@ -228,6 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b141f5ee12db401b91080e530a79b0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tutorialPrefab: {fileID: 470832742217394522, guid: e647a07fa6bed4802b65739599569b40, type: 3}
 --- !u!4 &22575049
 Transform:
   m_ObjectHideFlags: 0

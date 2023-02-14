@@ -62,6 +62,33 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Mode1"",
+                    ""type"": ""Button"",
+                    ""id"": ""4378fd93-1530-44ee-be82-06aa364eee75"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Mode2"",
+                    ""type"": ""Button"",
+                    ""id"": ""793e783d-8aaf-410e-8f43-c25faf0e47e0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Mode3"",
+                    ""type"": ""Button"",
+                    ""id"": ""bb9a8c1a-8935-439a-ad03-0fc6dcddd317"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -119,6 +146,72 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""Space"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c800ab42-ce72-4517-9d06-a498823e2a3f"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mode1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e48088c4-0ac4-46d0-8580-cb4d33764394"",
+                    ""path"": ""<Keyboard>/numpad1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mode1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1880b1e4-f6a5-457f-a3e6-9fc59c5dda0e"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mode2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ba347bab-fbfe-44b7-8f28-daae6509fcc9"",
+                    ""path"": ""<Keyboard>/numpad2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mode2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""38a8cfdd-6382-4046-88f9-28d77d7dcb66"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mode3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eee05bd4-8fbf-47ea-b9af-3fefa89b64a0"",
+                    ""path"": ""<Keyboard>/numpad3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mode3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -131,6 +224,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
         m_UI_Confirm = m_UI.FindAction("Confirm", throwIfNotFound: true);
         m_UI_Space = m_UI.FindAction("Space", throwIfNotFound: true);
+        m_UI_Mode1 = m_UI.FindAction("Mode1", throwIfNotFound: true);
+        m_UI_Mode2 = m_UI.FindAction("Mode2", throwIfNotFound: true);
+        m_UI_Mode3 = m_UI.FindAction("Mode3", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -194,6 +290,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Pause;
     private readonly InputAction m_UI_Confirm;
     private readonly InputAction m_UI_Space;
+    private readonly InputAction m_UI_Mode1;
+    private readonly InputAction m_UI_Mode2;
+    private readonly InputAction m_UI_Mode3;
     public struct UIActions
     {
         private @PlayerInputs m_Wrapper;
@@ -202,6 +301,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @Pause => m_Wrapper.m_UI_Pause;
         public InputAction @Confirm => m_Wrapper.m_UI_Confirm;
         public InputAction @Space => m_Wrapper.m_UI_Space;
+        public InputAction @Mode1 => m_Wrapper.m_UI_Mode1;
+        public InputAction @Mode2 => m_Wrapper.m_UI_Mode2;
+        public InputAction @Mode3 => m_Wrapper.m_UI_Mode3;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -223,6 +325,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Space.started -= m_Wrapper.m_UIActionsCallbackInterface.OnSpace;
                 @Space.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnSpace;
                 @Space.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnSpace;
+                @Mode1.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMode1;
+                @Mode1.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMode1;
+                @Mode1.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMode1;
+                @Mode2.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMode2;
+                @Mode2.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMode2;
+                @Mode2.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMode2;
+                @Mode3.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMode3;
+                @Mode3.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMode3;
+                @Mode3.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMode3;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -239,6 +350,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Space.started += instance.OnSpace;
                 @Space.performed += instance.OnSpace;
                 @Space.canceled += instance.OnSpace;
+                @Mode1.started += instance.OnMode1;
+                @Mode1.performed += instance.OnMode1;
+                @Mode1.canceled += instance.OnMode1;
+                @Mode2.started += instance.OnMode2;
+                @Mode2.performed += instance.OnMode2;
+                @Mode2.canceled += instance.OnMode2;
+                @Mode3.started += instance.OnMode3;
+                @Mode3.performed += instance.OnMode3;
+                @Mode3.canceled += instance.OnMode3;
             }
         }
     }
@@ -249,5 +369,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnPause(InputAction.CallbackContext context);
         void OnConfirm(InputAction.CallbackContext context);
         void OnSpace(InputAction.CallbackContext context);
+        void OnMode1(InputAction.CallbackContext context);
+        void OnMode2(InputAction.CallbackContext context);
+        void OnMode3(InputAction.CallbackContext context);
     }
 }

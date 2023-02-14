@@ -30,7 +30,7 @@ public class MainMenuManager : MonoBehaviour
 
     // EVENTS
     public delegate void DisplayPanelEv(MainMenuScreen screen);
-    public static DisplayPanelEv OnDisplayScreen;
+    public static event DisplayPanelEv OnDisplayScreen;
 
     // FUNCTIONS
     private void Awake()

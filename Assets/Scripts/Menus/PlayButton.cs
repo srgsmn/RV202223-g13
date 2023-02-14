@@ -5,14 +5,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using MenuUtilities;
+using Utilities;
 
 public class PlayButton : MonoBehaviour
 {
-    [SerializeField] PlayScene _playScene;
+    [SerializeField] SceneType _playScene;
 
     Button _btn;
 
-    public delegate void PlaySceneEv(PlayScene newScene);
+    public delegate void PlaySceneEv(SceneType newScene);
     public static event PlaySceneEv AskNewScene;
 
     public delegate void QuitEv();
