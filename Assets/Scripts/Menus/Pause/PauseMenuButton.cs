@@ -121,11 +121,12 @@ public class PauseMenuButton : MonoBehaviour
                     OnMainMenu?.Invoke();
 
                     break;
-
+/*
                 case PauseMenuAction.Quit:
                     OnQuit?.Invoke();
 
                     break;
+*/
             }
         }
     }

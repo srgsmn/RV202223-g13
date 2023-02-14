@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Scene:")]
     [SerializeField][ReadOnlyInspector] SceneType activeScene;
-    [SerializeField][ReadOnlyInspector] int sceneIndex = 0;
+    [SerializeField][ReadOnlyInspector] public int sceneIndex = 0;
     [SerializeField][ReadOnlyInspector] SceneState state;
 
     [Header("Loading:")]
