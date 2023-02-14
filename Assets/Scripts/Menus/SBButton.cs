@@ -15,6 +15,9 @@ public class SBButton : MonoBehaviour
 
     Button _btn;
 
+    public delegate void QuitEv();
+    public static event QuitEv OnQuit;
+
     private void Awake()
     {
         _btn = GetComponent<Button>();
@@ -112,7 +115,7 @@ public class SBButton : MonoBehaviour
     {
         Debug.Log($"{GetType().Name}.cs > QUITTING the app...");
 
-        MainMenuManager.Instance.QuitApp();
+        OnQuit?.Invoke();
     }
 
     private void DoChecks()

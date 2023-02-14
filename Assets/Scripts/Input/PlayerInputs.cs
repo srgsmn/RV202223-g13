@@ -25,21 +25,66 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     ""maps"": [
         {
             ""name"": ""UI"",
-            ""id"": ""3cf89bbb-c8b3-4cd5-94d7-baadd588e95f"",
+            ""id"": ""90702192-24e2-476a-82dc-b16d6ea06ef6"",
             ""actions"": [
                 {
-                    ""name"": ""Select"",
+                    ""name"": ""Back"",
                     ""type"": ""Button"",
-                    ""id"": ""fca042ec-00f7-44b1-8ec4-a8816ef8bb8c"",
+                    ""id"": ""8c525ee0-524a-4836-9437-49111582c36a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Move"",
+                    ""name"": ""Pause"",
                     ""type"": ""Button"",
-                    ""id"": ""7fc59d5c-dc1c-488c-b57c-117919df8237"",
+                    ""id"": ""a357fdef-1b7e-4341-8b5a-18c1486ee4a3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Confirm"",
+                    ""type"": ""Button"",
+                    ""id"": ""d7f2e1bf-f429-4306-a30d-53d92f9885aa"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Space"",
+                    ""type"": ""Button"",
+                    ""id"": ""43699282-2b03-4eee-867b-df6aeb7de518"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Mode1"",
+                    ""type"": ""Button"",
+                    ""id"": ""4378fd93-1530-44ee-be82-06aa364eee75"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Mode2"",
+                    ""type"": ""Button"",
+                    ""id"": ""793e783d-8aaf-410e-8f43-c25faf0e47e0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Mode3"",
+                    ""type"": ""Button"",
+                    ""id"": ""bb9a8c1a-8935-439a-ad03-0fc6dcddd317"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -49,58 +94,124 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""0839262d-e6e0-4b38-b78c-b95eac8c7bae"",
-                    ""path"": ""<Keyboard>/enter"",
+                    ""id"": ""90fe69e9-293a-4331-8fc0-351aa1702242"",
+                    ""path"": ""<Keyboard>/backspace"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Select"",
+                    ""action"": ""Back"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""69e93db6-c42e-4817-ac02-ba0a797f45db"",
+                    ""id"": ""c8e2c534-2c06-4104-9f71-85e9aca59876"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e5229d61-b9aa-4094-9aaa-97243394367b"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Select"",
+                    ""action"": ""Confirm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""1D Axis"",
-                    ""id"": ""911eafd8-8e7b-40bd-ac84-1bc76410ba1c"",
-                    ""path"": ""1DAxis"",
+                    ""name"": """",
+                    ""id"": ""1ca01cbf-bbc7-4131-a2ab-3cb19e566c96"",
+                    ""path"": ""<Keyboard>/enter"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
+                    ""action"": ""Confirm"",
+                    ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""negative"",
-                    ""id"": ""863d57df-5c1d-42be-93d7-a9030d865b49"",
-                    ""path"": ""<Keyboard>/downArrow"",
+                    ""name"": """",
+                    ""id"": ""38988370-0bbc-463f-9120-a150ca4949d3"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Space"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""positive"",
-                    ""id"": ""444c16ac-3625-4a2c-9c92-256b1a0fe40a"",
-                    ""path"": ""<Keyboard>/upArrow"",
+                    ""name"": """",
+                    ""id"": ""c800ab42-ce72-4517-9d06-a498823e2a3f"",
+                    ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Mode1"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e48088c4-0ac4-46d0-8580-cb4d33764394"",
+                    ""path"": ""<Keyboard>/numpad1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mode1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1880b1e4-f6a5-457f-a3e6-9fc59c5dda0e"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mode2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ba347bab-fbfe-44b7-8f28-daae6509fcc9"",
+                    ""path"": ""<Keyboard>/numpad2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mode2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""38a8cfdd-6382-4046-88f9-28d77d7dcb66"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mode3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eee05bd4-8fbf-47ea-b9af-3fefa89b64a0"",
+                    ""path"": ""<Keyboard>/numpad3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mode3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -109,8 +220,13 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
 }");
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
-        m_UI_Select = m_UI.FindAction("Select", throwIfNotFound: true);
-        m_UI_Move = m_UI.FindAction("Move", throwIfNotFound: true);
+        m_UI_Back = m_UI.FindAction("Back", throwIfNotFound: true);
+        m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
+        m_UI_Confirm = m_UI.FindAction("Confirm", throwIfNotFound: true);
+        m_UI_Space = m_UI.FindAction("Space", throwIfNotFound: true);
+        m_UI_Mode1 = m_UI.FindAction("Mode1", throwIfNotFound: true);
+        m_UI_Mode2 = m_UI.FindAction("Mode2", throwIfNotFound: true);
+        m_UI_Mode3 = m_UI.FindAction("Mode3", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -170,14 +286,24 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     // UI
     private readonly InputActionMap m_UI;
     private IUIActions m_UIActionsCallbackInterface;
-    private readonly InputAction m_UI_Select;
-    private readonly InputAction m_UI_Move;
+    private readonly InputAction m_UI_Back;
+    private readonly InputAction m_UI_Pause;
+    private readonly InputAction m_UI_Confirm;
+    private readonly InputAction m_UI_Space;
+    private readonly InputAction m_UI_Mode1;
+    private readonly InputAction m_UI_Mode2;
+    private readonly InputAction m_UI_Mode3;
     public struct UIActions
     {
         private @PlayerInputs m_Wrapper;
         public UIActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Select => m_Wrapper.m_UI_Select;
-        public InputAction @Move => m_Wrapper.m_UI_Move;
+        public InputAction @Back => m_Wrapper.m_UI_Back;
+        public InputAction @Pause => m_Wrapper.m_UI_Pause;
+        public InputAction @Confirm => m_Wrapper.m_UI_Confirm;
+        public InputAction @Space => m_Wrapper.m_UI_Space;
+        public InputAction @Mode1 => m_Wrapper.m_UI_Mode1;
+        public InputAction @Mode2 => m_Wrapper.m_UI_Mode2;
+        public InputAction @Mode3 => m_Wrapper.m_UI_Mode3;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -187,29 +313,64 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_UIActionsCallbackInterface != null)
             {
-                @Select.started -= m_Wrapper.m_UIActionsCallbackInterface.OnSelect;
-                @Select.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnSelect;
-                @Select.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnSelect;
-                @Move.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMove;
-                @Move.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMove;
-                @Move.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMove;
+                @Back.started -= m_Wrapper.m_UIActionsCallbackInterface.OnBack;
+                @Back.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnBack;
+                @Back.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnBack;
+                @Pause.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPause;
+                @Confirm.started -= m_Wrapper.m_UIActionsCallbackInterface.OnConfirm;
+                @Confirm.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnConfirm;
+                @Confirm.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnConfirm;
+                @Space.started -= m_Wrapper.m_UIActionsCallbackInterface.OnSpace;
+                @Space.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnSpace;
+                @Space.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnSpace;
+                @Mode1.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMode1;
+                @Mode1.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMode1;
+                @Mode1.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMode1;
+                @Mode2.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMode2;
+                @Mode2.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMode2;
+                @Mode2.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMode2;
+                @Mode3.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMode3;
+                @Mode3.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMode3;
+                @Mode3.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMode3;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Select.started += instance.OnSelect;
-                @Select.performed += instance.OnSelect;
-                @Select.canceled += instance.OnSelect;
-                @Move.started += instance.OnMove;
-                @Move.performed += instance.OnMove;
-                @Move.canceled += instance.OnMove;
+                @Back.started += instance.OnBack;
+                @Back.performed += instance.OnBack;
+                @Back.canceled += instance.OnBack;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
+                @Confirm.started += instance.OnConfirm;
+                @Confirm.performed += instance.OnConfirm;
+                @Confirm.canceled += instance.OnConfirm;
+                @Space.started += instance.OnSpace;
+                @Space.performed += instance.OnSpace;
+                @Space.canceled += instance.OnSpace;
+                @Mode1.started += instance.OnMode1;
+                @Mode1.performed += instance.OnMode1;
+                @Mode1.canceled += instance.OnMode1;
+                @Mode2.started += instance.OnMode2;
+                @Mode2.performed += instance.OnMode2;
+                @Mode2.canceled += instance.OnMode2;
+                @Mode3.started += instance.OnMode3;
+                @Mode3.performed += instance.OnMode3;
+                @Mode3.canceled += instance.OnMode3;
             }
         }
     }
     public UIActions @UI => new UIActions(this);
     public interface IUIActions
     {
-        void OnSelect(InputAction.CallbackContext context);
-        void OnMove(InputAction.CallbackContext context);
+        void OnBack(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
+        void OnConfirm(InputAction.CallbackContext context);
+        void OnSpace(InputAction.CallbackContext context);
+        void OnMode1(InputAction.CallbackContext context);
+        void OnMode2(InputAction.CallbackContext context);
+        void OnMode3(InputAction.CallbackContext context);
     }
 }
