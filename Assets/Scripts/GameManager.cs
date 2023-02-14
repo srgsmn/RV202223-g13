@@ -27,6 +27,9 @@ public class GameManager : MonoBehaviour
     [Header("Pause:")]
     [SerializeField][ReadOnlyInspector] bool isPaused = false;
 
+    public delegate void PauseEv(bool isPaused = true);
+    public static event PauseEv OnPause;
+
     private void Awake()
     {
         // SINGLETON
@@ -67,6 +70,12 @@ public class GameManager : MonoBehaviour
             SceneManager.sceneLoaded += OnSceneLoaded;
 
             TutorialManager.OnTutorialEnds += HideTutorial;
+
+            // From pause menu
+            PauseMenuButton.OnResume += OnResume;
+            PauseMenuButton.OnStartTutorial += ShowTutorial;
+            PauseMenuButton.OnMainMenu += ShowMainMenu;
+            PauseMenuButton.OnQuit += QuitApp;
         }
         else
         {
@@ -80,6 +89,12 @@ public class GameManager : MonoBehaviour
             SceneManager.sceneLoaded -= OnSceneLoaded;
 
             TutorialManager.OnTutorialEnds -= HideTutorial;
+
+            // From pause menu
+            PauseMenuButton.OnResume -= OnResume;
+            PauseMenuButton.OnStartTutorial -= ShowTutorial;
+            PauseMenuButton.OnMainMenu -= ShowMainMenu;
+            PauseMenuButton.OnQuit -= QuitApp;
         }
     }
 
@@ -151,6 +166,37 @@ public class GameManager : MonoBehaviour
         Destroy(tutorialInstance);
 
         tutorialOn = false;
+    }
+
+    private void ShowMainMenu()
+    {
+        DisplayScene(SceneType.MainMenu);
+    }
+
+    private void OnResume()
+    {
+        SetPause(false);
+    }
+
+    private void SetPause(bool pausing = true)
+    {
+        // TODO disable charachter input, link to input manager
+        isPaused = pausing;
+
+        OnPause?.Invoke(isPaused);
+
+        if (isPaused)
+        {
+            Time.timeScale = 0;
+
+            state = SceneState.paused;
+        }
+        else
+        {
+            Time.timeScale = 1;
+
+            state = SceneState.play;
+        }
     }
 
     /// <summary>

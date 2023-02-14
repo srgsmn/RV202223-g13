@@ -34,6 +34,11 @@ namespace MenuUtilities
         None, Demo1, Demo2, Demo3, Browsed, Back, Report1, Report2, Report3, Project, Team, Assets, Audio, Controllers
     }
 
+    public enum PauseMenuAction
+    {
+        None, Resume, Tutorial, Main, Quit
+    }
+
     public enum PopUpOpt
     {
         Move, Delete
