@@ -34,9 +34,9 @@ namespace MenuUtilities
         None, Demo1, Demo2, Demo3, Browsed, Back, Report1, Report2, Report3, Project, Team, Assets, Audio, Controllers
     }
 
-    public enum PlayScene
+    public enum PauseMenuAction
     {
-        MainMenu, Demo1, Demo2, Demo3, Browse
+        None, Resume, Tutorial, Main, Quit
     }
 
     public enum PopUpOpt
@@ -46,7 +46,7 @@ namespace MenuUtilities
 
     public enum SettingType
     {
-        Volume, TextReader
+        SpeechVolume, TextReader, EffectsVolume, PlayEffects
     }
 }
 

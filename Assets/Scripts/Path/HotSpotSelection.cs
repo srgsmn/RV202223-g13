@@ -79,6 +79,7 @@ public class HotSpotSelection : MonoBehaviour
                         _targetPointSet=true;
                         ResetWalls(Level);
                         _avatar=Instantiate(_avatar_pf, StartSpot.transform.position+new Vector3(0.0f,-0.5f,0.0f), Quaternion.identity);
+
                         SwitchCamera();
                         this.enabled=false;
                     }
