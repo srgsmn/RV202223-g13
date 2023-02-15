@@ -758,7 +758,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 978696422}
         m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
-        m_MethodName: SetVolume
+        m_MethodName: SetEffectsVolume
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1394,7 +1394,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 978696422}
         m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
-        m_MethodName: SetTextReader
+        m_MethodName: SetUIFeedback
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9167,7 +9167,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 978696422}
         m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
-        m_MethodName: SetVolume
+        m_MethodName: SetSpeechVolume
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

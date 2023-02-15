@@ -44,15 +44,21 @@ public class SettingsMenu : MonoBehaviour
         settMng.SetValue(SettingType.TextReader, isReading);
     }
 
+    public void SetUIFeedback(bool hasFeedback)
+    {
+        Debug.Log($"{GetType().Name}.cs > CHANGING text reader from {!hasFeedback} to {hasFeedback}");
+        settMng.SetValue(SettingType.PlayEffects, hasFeedback);
+    }
+
     public void SetSpeechVolume(float volume)
     {
-        Debug.Log($"{GetType().Name}.cs > CHANGING volume value to {volume}");
+        Debug.Log($"{GetType().Name}.cs > CHANGING speech volume value to {volume}");
         settMng.SetValue(SettingType.SpeechVolume, volume);
     }
 
     public void SetEffectsVolume(float volume)
     {
-        Debug.Log($"{GetType().Name}.cs > CHANGING volume value to {volume}");
+        Debug.Log($"{GetType().Name}.cs > CHANGING effects volume value to {volume}");
         settMng.SetValue(SettingType.EffectsVolume, volume);
     }
 

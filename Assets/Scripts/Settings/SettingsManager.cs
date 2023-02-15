@@ -10,7 +10,7 @@ public class SettingsManager : MonoBehaviour
 
     [SerializeField][ReadOnlyInspector] bool _readTxt = false, _playEffects = true;
     [SerializeField][ReadOnlyInspector] float _speechVolume = 0, _effectsVolume = 0;
-    [SerializeField] AudioMixer _audioMixer, _UIFeedback;
+    [SerializeField] AudioMixer _speechMixer, _UIFbMixer;
 
     public delegate void SettingsUpdateEv(SettingType type, object value);
     public static SettingsUpdateEv OnSettingsUpdate;
@@ -60,6 +60,24 @@ public class SettingsManager : MonoBehaviour
 
                 value = _readTxt;
                 break;
+
+            case SettingType.SpeechVolume:
+
+                value = _speechVolume;
+
+                break;
+
+            case SettingType.PlayEffects:
+
+                value = _playEffects;
+
+                break;
+
+            case SettingType.EffectsVolume:
+
+                value = _effectsVolume;
+
+                break;
         }
 
         Debug.Log($"{GetType().Name}.cs > SENDING {type} value of {value}");
@@ -86,8 +104,25 @@ public class SettingsManager : MonoBehaviour
             case SettingType.SpeechVolume:
 
                 _speechVolume = (float)value;
-                _audioMixer.SetFloat("Volume", _speechVolume);
+                _speechMixer.SetFloat("Volume", _speechVolume);
                 OnSettingsUpdate?.Invoke(SettingType.SpeechVolume, _speechVolume);
+
+                break;
+
+            case SettingType.PlayEffects:
+
+                _playEffects = (bool)value;
+
+                OnSettingsUpdate?.Invoke(SettingType.PlayEffects, _playEffects);
+
+                break;
+
+            case SettingType.EffectsVolume:
+
+                _effectsVolume = (float)value;
+
+                _UIFbMixer.SetFloat("Volume", _effectsVolume);
+                OnSettingsUpdate?.Invoke(SettingType.EffectsVolume, _effectsVolume);
 
                 break;
         }
