@@ -32,6 +32,9 @@ public class HotSpotSelection : MonoBehaviour
     private Renderer[] _wpRND;
     private bool _raysStarted=false;
     private Dictionary<Mat_key, Material> _inactive_materials;
+
+    public delegate void StartNavigation();
+    public static event StartNavigation OnWayPointSet;
     
     void Start()
     {
@@ -80,6 +83,12 @@ public class HotSpotSelection : MonoBehaviour
                         ResetWalls(Level);
                         _avatar=Instantiate(_avatar_pf, StartSpot.transform.position+new Vector3(0.0f,-0.5f,0.0f), Quaternion.identity);
                         SwitchCamera();
+                        
+
+                        OnWayPointSet?.Invoke();
+
+
+
                         this.enabled=false;
                     }
                 }

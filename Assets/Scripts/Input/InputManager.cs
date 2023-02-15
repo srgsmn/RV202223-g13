@@ -129,6 +129,8 @@ public class InputManager : MonoBehaviour
             inputs.FreeLookCamera.Rotate.started += OnFLCamRotate;
             inputs.FreeLookCamera.Rotate.canceled += OnFLCamRotate;
             inputs.FreeLookCamera.Rotate.performed += OnFLCamRotate;
+
+            HotSpotSelection.OnWayPointSet+=NavModeStart;
         }
         else
         {
@@ -157,6 +159,11 @@ public class InputManager : MonoBehaviour
             inputs.FreeLookCamera.Lift.started -= OnFLCamLift;
             inputs.FreeLookCamera.Lift.canceled -= OnFLCamLift;
             inputs.FreeLookCamera.Lift.performed -= OnFLCamLift;
+
+            inputs.FreeLookCamera.Rotate.started -= OnFLCamRotate;
+            inputs.FreeLookCamera.Rotate.canceled -= OnFLCamRotate;
+            inputs.FreeLookCamera.Rotate.performed -= OnFLCamRotate;
+            HotSpotSelection.OnWayPointSet-=NavModeStart;
         }
     }
 
@@ -246,6 +253,17 @@ public class InputManager : MonoBehaviour
                 Debug.Log($"{GetType().Name}.cs > State is TUTORIAL, moving forward)");
 
                 OnTutorialPageUpdate?.Invoke();
+            }
+
+            if (isPlaying){
+                switch(mode){
+                    case Mode.Nav:break;
+                    case Mode.Edit:
+                        break;
+                    case Mode.Plan:
+                        break;
+                    default:break;
+                }
             }
         }
     }
@@ -360,6 +378,17 @@ public class InputManager : MonoBehaviour
             movementInput = context.ReadValue<Vector2>();
 
             OnFLCamRotInput?.Invoke(movementInput);
+        }
+    }
+
+    private void NavModeStart(){
+        if (isPlaying)
+        {
+            Debug.Log($"{GetType().Name}.cs > State is PLAYING, entering navigation mode");
+
+            mode = Mode.Nav;
+
+            OnChangeMode?.Invoke(mode);
         }
     }
 }

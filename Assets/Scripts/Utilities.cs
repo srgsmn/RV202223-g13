@@ -30,6 +30,6 @@ namespace Utilities
 
     public enum AccItemType
     {
-        Ramp, Stairlift
+        Ramp, Stairlift, DoorButton
     }
 }

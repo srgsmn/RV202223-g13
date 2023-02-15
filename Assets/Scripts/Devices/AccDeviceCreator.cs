@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Utilities;
 public class AccDeviceCreator : MonoBehaviour
 {   
     public enum acc_device {Button, Handle, Stairlift};
@@ -118,5 +118,16 @@ public class AccDeviceCreator : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void Inserisci(AccItemType type){
+
+    }
+    void OnAwake(){
+        InventoryBtn.OnItemSelect+=Inserisci;
+    }
+
+    void OnDestroy(){
+        InventoryBtn.OnItemSelect-=Inserisci;
     }
 }
