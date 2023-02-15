@@ -33,7 +33,8 @@ public class FurnitureSelection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(_selected != null) _selected.GetComponent<Renderer>().material.SetColor("_Color", SelectedColor);
+        bool mesh_ex;
+        //if(_selected != null) _selected.GetComponent<Renderer>().material.SetColor("_Color", SelectedColor);
         switch (_currentMode)
         {
             case e_mode.mode_navigation:
@@ -45,6 +46,7 @@ public class FurnitureSelection : MonoBehaviour
                 {
                     if(_selected != null)
                     {
+                        //Per qualche motivo non toglie il materiale
                         DeHighlight(_selected);
                         _selected = null;
                     }
@@ -54,7 +56,12 @@ public class FurnitureSelection : MonoBehaviour
                 {
                     if (_selected != null)
                     {
-                        _active_rb = _selected.GetComponent<Rigidbody>();
+                        mesh_ex=_selected.TryGetComponent(typeof(Renderer),out Component mf);
+                        if (mesh_ex){
+                            _active_rb = _selected.GetComponent<Rigidbody>();
+                        }
+                        else _active_rb = _selected.transform.parent.gameObject.GetComponent<Rigidbody>();
+                        _active_rb.isKinematic=false;
                         _currentMode = e_mode.mode_move;
                     }
                 }
@@ -74,7 +81,13 @@ public class FurnitureSelection : MonoBehaviour
                 break;
             case e_mode.mode_move:
                 if (Input.GetKeyDown(KeyCode.B))
-                {
+                {   
+                    if (_selected != null)
+                    {
+                        DeHighlight(_selected);
+                        _active_rb.isKinematic=true;
+                        _selected = null;
+                    }  
                     _currentMode = e_mode.mode_selection;
                 }
                 if (Input.GetKeyDown(KeyCode.Space))
@@ -82,6 +95,7 @@ public class FurnitureSelection : MonoBehaviour
                     if (_selected != null)
                     {
                         DeHighlight(_selected);
+                        _active_rb.isKinematic=true;
                         _selected = null;
                     }
                     _currentMode = e_mode.mode_navigation;
@@ -126,7 +140,7 @@ public class FurnitureSelection : MonoBehaviour
 
     private void Highlight(GameObject gobj)
     {
-        SelectMaterial_r(gobj);
+        SelectMaterial_r(gobj, true);
         /*Outline ol;
         if (gobj.GetComponent<Outline>() == null)
         {
@@ -141,20 +155,29 @@ public class FurnitureSelection : MonoBehaviour
         ol.OutlineWidth = 10f;*/
     }
 
-    private void SelectMaterial_r(GameObject gobj)
-    {
-        Renderer r = gobj.GetComponent<Renderer>();
-        if (r == null) return;
-        _inactive_materials.Add(gobj.transform.name, r.material);
-        r.material = SelectedMaterial;
+    private void SelectMaterial_r(GameObject gobj, bool first)
+    {   
+        Renderer r;
+        bool mesh_ex;
+        mesh_ex=gobj.TryGetComponent(typeof(Renderer),out Component mf);
+        if (mesh_ex){
+            r = gobj.GetComponent<Renderer>();
+            _inactive_materials.Add(gobj.transform.name, r.material);
+            r.material = SelectedMaterial;
+        }
+        else if (first){
+            SelectMaterial_r(gobj.transform.parent.gameObject,false);
+            return;
+        }
+        
         if (gobj.transform.childCount <= 0) return;
         for (int i = 0; i < gobj.transform.childCount;
-            SelectMaterial_r(gobj.transform.GetChild(i++).gameObject)) ;
+            SelectMaterial_r(gobj.transform.GetChild(i++).gameObject,false)) ;
     }
 
     private void DeHighlight(GameObject gobj)
     {
-        ResetMaterial_r(gobj);
+        ResetMaterial_r(gobj, true);
         _inactive_materials.Clear();
 
         //Destroy(gobj.GetComponent("Outline"));
@@ -167,15 +190,24 @@ public class FurnitureSelection : MonoBehaviour
         ol.OutlineWidth = 0f;*/
     }
 
-    private void ResetMaterial_r(GameObject gobj)
+    private void ResetMaterial_r(GameObject gobj, bool first)
     {
-        Renderer r = gobj.GetComponent<Renderer>();
-        if (r == null) return;
-        Material old_mat = _inactive_materials.GetValueOrDefault(gobj.transform.name);
-        r.material = (old_mat != default) ? old_mat : null;
+        Renderer r;
+        bool mesh_ex;
+        Material old_mat;
+        mesh_ex=gobj.TryGetComponent(typeof(Renderer),out Component mf);
+         if (mesh_ex){
+            r = gobj.GetComponent<Renderer>();
+            old_mat = _inactive_materials.GetValueOrDefault(gobj.transform.name);
+            r.material = (old_mat != default) ? old_mat : null;
+        }
+        else if (first){
+            ResetMaterial_r(gobj.transform.parent.gameObject,false);
+            return;
+        }
         if (gobj.transform.childCount <= 0) return;
         for (int i = 0; i < gobj.transform.childCount;
-            ResetMaterial_r(gobj.transform.GetChild(i++).gameObject)) ;
+            ResetMaterial_r(gobj.transform.GetChild(i++).gameObject,false));
     }
 
     public int GetCurrentMode()
