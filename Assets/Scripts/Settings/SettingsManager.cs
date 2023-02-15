@@ -8,9 +8,9 @@ public class SettingsManager : MonoBehaviour
 {
     public static SettingsManager Instance; // SINGLETON
 
-    [SerializeField] bool _readTxt = false;
-    [SerializeField] float _volume = 0;
-    [SerializeField] AudioMixer _audioMixer;
+    [SerializeField][ReadOnlyInspector] bool _readTxt = false, _playEffects = true;
+    [SerializeField][ReadOnlyInspector] float _speechVolume = 0, _effectsVolume = 0;
+    [SerializeField] AudioMixer _audioMixer, _UIFeedback;
 
     public delegate void SettingsUpdateEv(SettingType type, object value);
     public static SettingsUpdateEv OnSettingsUpdate;
@@ -40,7 +40,9 @@ public class SettingsManager : MonoBehaviour
     public void ResetValues()
     {
         OnSettingsUpdate?.Invoke(SettingType.TextReader, _readTxt);
-        OnSettingsUpdate?.Invoke(SettingType.Volume, _volume);
+        OnSettingsUpdate?.Invoke(SettingType.SpeechVolume, _speechVolume);
+        OnSettingsUpdate?.Invoke(SettingType.PlayEffects, _playEffects);
+        OnSettingsUpdate?.Invoke(SettingType.EffectsVolume, _effectsVolume);
     }
 
     /// <summary>
@@ -81,11 +83,11 @@ public class SettingsManager : MonoBehaviour
 
                 break;
 
-            case SettingType.Volume:
+            case SettingType.SpeechVolume:
 
-                _volume = (float)value;
-                _audioMixer.SetFloat("Volume", _volume);
-                OnSettingsUpdate?.Invoke(SettingType.Volume, _volume);
+                _speechVolume = (float)value;
+                _audioMixer.SetFloat("Volume", _speechVolume);
+                OnSettingsUpdate?.Invoke(SettingType.SpeechVolume, _speechVolume);
 
                 break;
         }
