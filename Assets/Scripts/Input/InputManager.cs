@@ -94,7 +94,7 @@ public class InputManager : MonoBehaviour
     public delegate void FLCamLiftEv(float lift);
     public static event FLCamLiftEv OnFLCamLifting;
     public delegate void FLCamRotationEv(Vector2 move);
-    public static event FLCamRotationEv OnFLCamRotate;
+    public static event FLCamRotationEv OnFLCamRotInput;
 
     private void EventSubscriber(bool subscribing = true)
     {
@@ -359,7 +359,7 @@ public class InputManager : MonoBehaviour
         {
             movementInput = context.ReadValue<Vector2>();
 
-            OnFLCamRotation?.Invoke(movementInput);
+            OnFLCamRotInput?.Invoke(movementInput);
         }
     }
 }
