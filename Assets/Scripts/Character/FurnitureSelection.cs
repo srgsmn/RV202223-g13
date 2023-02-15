@@ -18,10 +18,10 @@ public class FurnitureSelection : MonoBehaviour
 
     private GameObject _selected;
     private Rigidbody _active_rb;
-    private Dictionary<string, Material> _inactive_materials;
+    private Dictionary<int, Material> _inactive_materials;
     private RaycastHit _raycastHit;
     private e_mode _currentMode;
-    private GameObject _toBeSelected;
+    private bool isEmpty;
 
 
 
@@ -30,7 +30,7 @@ public class FurnitureSelection : MonoBehaviour
     {
         _selected = null;
         _currentMode = e_mode.mode_navigation;
-        _inactive_materials = new Dictionary<string, Material>();
+        _inactive_materials = new Dictionary<int, Material>();
         SelectedMaterial.SetColor("_Color", SelectedColor);
     }
 
@@ -65,33 +65,26 @@ public class FurnitureSelection : MonoBehaviour
                             _active_rb = _selected.GetComponent<Rigidbody>();
                         }
                         else _active_rb = _selected.transform.parent.gameObject.GetComponent<Rigidbody>();
+                        Debug.Log("Ma qui ci arrivo dio santo?");
                         _active_rb.isKinematic=false;
                         _currentMode = e_mode.mode_move;
                     }
                 }
                 if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward, out _raycastHit, Range))
                 {   
-                    if (!_raycastHit.collider.gameObject.TryGetComponent(typeof(MeshFilter),out Component mf)){
-                        _toBeSelected=_raycastHit.transform.parent.gameObject;
-                    }
-                    else{
-                        _toBeSelected=_raycastHit.transform.gameObject;
-                    }
-
-
-                        if (_selected == null || _selected != _toBeSelected)
+                    if (_selected == null || _selected.GetInstanceID() != _raycastHit.collider.gameObject.GetInstanceID())
+                    {
+                        if (_selected != null)
                         {
-                            if (_selected != null)
-                            {
-                                DeHighlight(_selected);
-                            }
-                            _selected = _toBeSelected;
-                            Highlight(_selected);
+                            DeHighlight(_selected);
                         }
+                        _selected = _raycastHit.transform.gameObject;
+                        Highlight(_selected);
+                    }
                 }
                 break;
             case e_mode.mode_move:
-                if (Input.GetKeyDown(KeyCode.B))
+                if (Input.GetKeyDown(KeyCode.V))
                 {   
                     if (_selected != null)
                     {
@@ -121,7 +114,7 @@ public class FurnitureSelection : MonoBehaviour
     {
         switch (_currentMode) {
             case e_mode.mode_move:
-                //Debug.Log("_selected =" + _selected.name);
+                Debug.Log("active rigidbody is  =" + _active_rb.name);
                 if (Input.GetKey(KeyCode.I))
                 {
                     //_selected.transform.Translate(0.5f, 0, 0, Space.World);
@@ -173,7 +166,7 @@ public class FurnitureSelection : MonoBehaviour
         mesh_ex=gobj.TryGetComponent(typeof(Renderer),out Component mf);
         if (mesh_ex){
             r = gobj.GetComponent<Renderer>();
-            _inactive_materials.Add(gobj.transform.name, r.material);
+            _inactive_materials.Add(gobj.transform.gameObject.GetInstanceID(), r.material);
             r.material = SelectedMaterial;
         }
         else if (first){
@@ -208,8 +201,9 @@ public class FurnitureSelection : MonoBehaviour
         Material old_mat;
         mesh_ex=gobj.TryGetComponent(typeof(Renderer),out Component mf);
          if (mesh_ex){
+            Debug.Log("Ci arrivo per il " + gobj.name); 
             r = gobj.GetComponent<Renderer>();
-            old_mat = _inactive_materials.GetValueOrDefault(gobj.transform.name);
+            old_mat = _inactive_materials.GetValueOrDefault(gobj.transform.gameObject.GetInstanceID());
             r.material = (old_mat != default) ? old_mat : null;
         }
         else if (first){

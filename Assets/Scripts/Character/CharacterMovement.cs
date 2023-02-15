@@ -5,15 +5,17 @@ using UnityEngine;
 public class CharacterMovement : MonoBehaviour
 {
     //public Camera PlayerCamera;
+    public GameObject Floor;
     public float WalkSpeed = 3f;
     public float TurnSpeed = 120f;
     public float LookSpeed = 160f;
     //public Vector3 _forward = new Vector3(0,0,1);
-    public Transform MassCenter;
+
     private float _startSpeed;
     private float _startAccel;
     private Rigidbody _rigidbody;
     //private Vector2 camera_rot = new Vector2();
+
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +23,6 @@ public class CharacterMovement : MonoBehaviour
         _startSpeed = 0f;
         _startAccel = 3f;
         _rigidbody = GetComponent<Rigidbody>();
-        _rigidbody.centerOfMass=MassCenter.position - this.transform.position;
         _rigidbody.velocity = Vector3.zero;
 
         //int curr_mode = gameObject.GetComponent<FurnitureSelection>().GetCurrentMode(); // valid
@@ -34,31 +35,94 @@ public class CharacterMovement : MonoBehaviour
         
     }
 
-    // FixedUpdate is called every fixed rate framerate frame
-    void FixedUpdate()
+
+    void ApplyMovement(Vector2 movement)
     {
+        if (movement.x > 0.5f)
+        {
+            if (_startSpeed <= 0) _startSpeed = 0;
+            if (_startSpeed < WalkSpeed)
+            {
+                //transform.Translate(gameObject.transform.forward * _startSpeed * Time.deltaTime);
+                _rigidbody.velocity = -_startSpeed * transform.forward;
+                _startSpeed += _startAccel * Time.deltaTime;
+            }
+            //else transform.Translate(gameObject.transform.forward * WalkSpeed * Time.deltaTime);
+            else _rigidbody.velocity = -WalkSpeed * transform.forward;
+        }
+        else if (movement.x < -0.5f)
+        {
+            if (_startSpeed >= 0) _startSpeed = 0;
+            if (_startSpeed > -WalkSpeed)
+            {
+                //transform.Translate(gameObject.transform.forward * _startSpeed * Time.deltaTime);
+                _rigidbody.velocity = _startSpeed * transform.forward;
+                _startSpeed -= _startAccel * Time.deltaTime;
+            }
+            //else transform.Translate(-gameObject.transform.forward * WalkSpeed * Time.deltaTime);
+            else _rigidbody.velocity = WalkSpeed * transform.forward;
+        }
+        else
+        {
+            //_startSpeed = 0f;
+            _rigidbody.velocity = Vector3.zero;
+        }
+
+        if (movement.y > 0.5)
+        {
+            transform.Rotate(Vector3.up, TurnSpeed * Time.deltaTime);
+            //_rigidbody.angularVelocity = TurnSpeed *  Vector3.up;
+        }
+        else if (movement.y < -0.5)
+        {
+            transform.Rotate(Vector3.up, -TurnSpeed * Time.deltaTime);
+            //_rigidbody.angularVelocity = -TurnSpeed * Vector3.up;
+        }
+        else
+        {
+            _rigidbody.angularVelocity = Vector3.zero;
+        }
+    }
+
+
+    private void Awake()
+    {
+        InputManager.OnMovementInput += ApplyMovement;
+    }
+
+    private void OnDestroy()
+    {
+        InputManager.OnMovementInput -= ApplyMovement;
+
+    }
+
+    // FixedUpdate is called every fixed rate framerate frame
+    /*void FixedUpdate()
+    {
+        
+        
         if (Input.GetKey(KeyCode.W))
         {
             if (_startSpeed <= 0) _startSpeed = 0;
             if (_startSpeed < WalkSpeed)
             {
                 //transform.Translate(gameObject.transform.forward * _startSpeed * Time.deltaTime);
-                _rigidbody.velocity = _startSpeed * (-transform.forward);
+                _rigidbody.velocity = _startSpeed * transform.forward;
                 _startSpeed += _startAccel * Time.deltaTime;
             }
             //else transform.Translate(gameObject.transform.forward * WalkSpeed * Time.deltaTime);
-            else _rigidbody.velocity = WalkSpeed * (-transform.forward);
+            else _rigidbody.velocity = WalkSpeed * transform.forward;
         } else if (Input.GetKey(KeyCode.S))
         {
             if (_startSpeed >= 0) _startSpeed = 0;
             if (_startSpeed > -WalkSpeed)
             {
                 //transform.Translate(gameObject.transform.forward * _startSpeed * Time.deltaTime);
-                _rigidbody.velocity = _startSpeed * (-transform.forward);
+                _rigidbody.velocity = _startSpeed * transform.forward;
                 _startSpeed -= _startAccel * Time.deltaTime;
             }
             //else transform.Translate(-gameObject.transform.forward * WalkSpeed * Time.deltaTime);
-            else _rigidbody.velocity = -WalkSpeed * (-transform.forward);
+            else _rigidbody.velocity = -WalkSpeed * transform.forward;
         } else
         {
             //_startSpeed = 0f;
@@ -77,5 +141,5 @@ public class CharacterMovement : MonoBehaviour
         {
             _rigidbody.angularVelocity = Vector3.zero;
         }
-    }
+    }*/
 }
