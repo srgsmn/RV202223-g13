@@ -10,19 +10,20 @@ public class CharacterMovement : MonoBehaviour
     public float TurnSpeed = 120f;
     public float LookSpeed = 160f;
     //public Vector3 _forward = new Vector3(0,0,1);
-
+    public Transform MassCenter;
     private float _startSpeed;
     private float _startAccel;
     private Rigidbody _rigidbody;
     //private Vector2 camera_rot = new Vector2();
-
+    private Vector2 _localMovement;
 
     // Start is called before the first frame update
     void Start()
     {
         _startSpeed = 0f;
-        _startAccel = 3f;
+        _startAccel = 10f;
         _rigidbody = GetComponent<Rigidbody>();
+        _rigidbody.centerOfMass=MassCenter.position - this.transform.position;
         _rigidbody.velocity = Vector3.zero;
 
         //int curr_mode = gameObject.GetComponent<FurnitureSelection>().GetCurrentMode(); // valid
@@ -34,15 +35,18 @@ public class CharacterMovement : MonoBehaviour
         // enum e_mode { mode_navigation, mode_selection, mode_move }; 
         
     }
+    public void ApplyMovement(Vector2 movement){
+        _localMovement=movement;
+    }
 
-
-    void ApplyMovement(Vector2 movement)
+    void FixedUpdate()
     {
-        if (movement.x > 0.5f)
+        if (_localMovement.y > 0.5f)
         {
             if (_startSpeed <= 0) _startSpeed = 0;
             if (_startSpeed < WalkSpeed)
             {
+                Debug.Log("Sto andando avanti");
                 //transform.Translate(gameObject.transform.forward * _startSpeed * Time.deltaTime);
                 _rigidbody.velocity = -_startSpeed * transform.forward;
                 _startSpeed += _startAccel * Time.deltaTime;
@@ -50,13 +54,13 @@ public class CharacterMovement : MonoBehaviour
             //else transform.Translate(gameObject.transform.forward * WalkSpeed * Time.deltaTime);
             else _rigidbody.velocity = -WalkSpeed * transform.forward;
         }
-        else if (movement.x < -0.5f)
+        else if (_localMovement.y < -0.5f)
         {
             if (_startSpeed >= 0) _startSpeed = 0;
             if (_startSpeed > -WalkSpeed)
             {
                 //transform.Translate(gameObject.transform.forward * _startSpeed * Time.deltaTime);
-                _rigidbody.velocity = _startSpeed * transform.forward;
+                _rigidbody.velocity = -_startSpeed * transform.forward;
                 _startSpeed -= _startAccel * Time.deltaTime;
             }
             //else transform.Translate(-gameObject.transform.forward * WalkSpeed * Time.deltaTime);
@@ -68,12 +72,12 @@ public class CharacterMovement : MonoBehaviour
             _rigidbody.velocity = Vector3.zero;
         }
 
-        if (movement.y > 0.5)
+        if (_localMovement.x > 0.5)
         {
             transform.Rotate(Vector3.up, TurnSpeed * Time.deltaTime);
             //_rigidbody.angularVelocity = TurnSpeed *  Vector3.up;
         }
-        else if (movement.y < -0.5)
+        else if (_localMovement.x < -0.5)
         {
             transform.Rotate(Vector3.up, -TurnSpeed * Time.deltaTime);
             //_rigidbody.angularVelocity = -TurnSpeed * Vector3.up;
