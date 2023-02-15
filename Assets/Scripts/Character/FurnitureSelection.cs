@@ -6,6 +6,7 @@ using UnityEngine;
 public class FurnitureSelection : MonoBehaviour
 {
     enum  e_mode { mode_navigation, mode_selection, mode_move };
+    private string[] _structElements={"wall","floor", "ceiling","lavandino","roof","stair","scale"};
 
     //private static Color my_transparency = new Color(0, 0, 0, 0);
     
@@ -20,6 +21,9 @@ public class FurnitureSelection : MonoBehaviour
     private Dictionary<string, Material> _inactive_materials;
     private RaycastHit _raycastHit;
     private e_mode _currentMode;
+    private GameObject _toBeSelected;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -66,17 +70,24 @@ public class FurnitureSelection : MonoBehaviour
                     }
                 }
                 if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward, out _raycastHit, Range))
-                {
-                    if (_selected == null || _selected != _raycastHit.collider.gameObject)
-                    {
-                        Debug.Log(_raycastHit.transform.name);
-                        if (_selected != null)
-                        {
-                            DeHighlight(_selected);
-                        }
-                        _selected = _raycastHit.collider.gameObject;
-                        Highlight(_selected);
+                {   
+                    if (!_raycastHit.collider.gameObject.TryGetComponent(typeof(MeshFilter),out Component mf)){
+                        _toBeSelected=_raycastHit.transform.parent.gameObject;
                     }
+                    else{
+                        _toBeSelected=_raycastHit.transform.gameObject;
+                    }
+
+
+                        if (_selected == null || _selected != _toBeSelected)
+                        {
+                            if (_selected != null)
+                            {
+                                DeHighlight(_selected);
+                            }
+                            _selected = _toBeSelected;
+                            Highlight(_selected);
+                        }
                 }
                 break;
             case e_mode.mode_move:
@@ -213,6 +224,25 @@ public class FurnitureSelection : MonoBehaviour
     public int GetCurrentMode()
     {
         return (int)_currentMode;
+    }
+
+    private bool CheckFixed(GameObject go){
+        return (IsFixed(go.name.ToLower()) || IsStructural(go.name.ToLower()));
+    }
+    private bool IsStructural(string name){
+        foreach (string x in _structElements){
+            if (name.IndexOf(x)!=-1){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private bool IsFixed(string name){
+        if (name.IndexOf("fixed")!=-1){
+                return true;
+            }
+        return false;
     }
 
 }
