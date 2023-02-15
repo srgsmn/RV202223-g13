@@ -143,7 +143,7 @@ public class GameManager : MonoBehaviour
             case SceneType.Demo2:
                 Debug.LogWarning("### TODO ### HERE IT SHOULD LOAD DEMO 2 SCENE");
 
-                //SceneManager.LoadScene(3);
+                SceneManager.LoadScene(3);
 
                 break;
 
@@ -204,7 +204,7 @@ public class GameManager : MonoBehaviour
         OnSceneUpdate?.Invoke(activeScene, state);
     }
 
-    private void ShowMainMenu()
+    public void ShowMainMenu()
     {
         state = SceneState.None;
 
