@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
 
         tutorialPrefab = Resources.Load(PREFABS.TUTORIAL) as GameObject;
         pauseMenuPrefab = Resources.Load(PREFABS.PAUSE) as GameObject;
+        modeHUDPrefab = Resources.Load(PREFABS.MODE) as GameObject;
 
         if(tutorialPrefab == null)
             Debug.LogError($"{GetType().Name}.cs > Tutorial prefab is MISSING");
@@ -169,8 +170,14 @@ public class GameManager : MonoBehaviour
         // Check index for tutorial
         if (sceneIndex > 1)
         {
+            ShowModeHUD();
             ShowTutorial();
         }
+    }
+
+    private void ShowModeHUD()
+    {
+        modeHUDInstance = Instantiate(modeHUDPrefab);
     }
 
     private void ShowTutorial()

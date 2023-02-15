@@ -12,6 +12,8 @@ public class InventoryBtn : MonoBehaviour
 
     public void SelectItem()
     {
+        Debug.Log($"{GetType().Name}.cs > PRESSED item button ({type})");
+
         OnItemSelect?.Invoke(type);
     }
 }
