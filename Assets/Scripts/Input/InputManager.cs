@@ -89,6 +89,12 @@ public class InputManager : MonoBehaviour
     public static event MovementEv OnMovementInput;
     public delegate void PlayerCameraEv(Vector2 mouse);
     public static event PlayerCameraEv OnPlayerCameraInput;
+    public delegate void FLCamMovementEv(Vector2 move);
+    public static event FLCamMovementEv OnFLCamMovement;
+    public delegate void FLCamLiftEv(float lift);
+    public static event FLCamLiftEv OnFLCamLifting;
+    public delegate void FLCamRotationEv(Vector2 move);
+    public static event FLCamRotationEv OnFLCamRotate;
 
     private void EventSubscriber(bool subscribing = true)
     {
@@ -111,6 +117,18 @@ public class InputManager : MonoBehaviour
             inputs.CharacterInput.PlayerCamera.started += OnPlayerCameraMoved;
             inputs.CharacterInput.PlayerCamera.canceled += OnPlayerCameraMoved;
             inputs.CharacterInput.PlayerCamera.performed += OnPlayerCameraMoved;
+
+            inputs.FreeLookCamera.Movement.started += OnFLCamMoved;
+            inputs.FreeLookCamera.Movement.canceled += OnFLCamMoved;
+            inputs.FreeLookCamera.Movement.performed += OnFLCamMoved;
+
+            inputs.FreeLookCamera.Lift.started += OnFLCamLift;
+            inputs.FreeLookCamera.Lift.canceled += OnFLCamLift;
+            inputs.FreeLookCamera.Lift.performed += OnFLCamLift;
+
+            inputs.FreeLookCamera.Rotate.started += OnFLCamRotate;
+            inputs.FreeLookCamera.Rotate.canceled += OnFLCamRotate;
+            inputs.FreeLookCamera.Rotate.performed += OnFLCamRotate;
         }
         else
         {
@@ -128,6 +146,17 @@ public class InputManager : MonoBehaviour
             inputs.CharacterInput.Move.started -= OnMovementInputPressed;
             inputs.CharacterInput.Move.canceled -= OnMovementInputPressed;
             inputs.CharacterInput.Move.performed -= OnMovementInputPressed;
+            inputs.CharacterInput.PlayerCamera.started -= OnPlayerCameraMoved;
+            inputs.CharacterInput.PlayerCamera.canceled -= OnPlayerCameraMoved;
+            inputs.CharacterInput.PlayerCamera.performed -= OnPlayerCameraMoved;
+
+            inputs.FreeLookCamera.Movement.started -= OnFLCamMoved;
+            inputs.FreeLookCamera.Movement.canceled -= OnFLCamMoved;
+            inputs.FreeLookCamera.Movement.performed -= OnFLCamMoved;
+
+            inputs.FreeLookCamera.Lift.started -= OnFLCamLift;
+            inputs.FreeLookCamera.Lift.canceled -= OnFLCamLift;
+            inputs.FreeLookCamera.Lift.performed -= OnFLCamLift;
         }
     }
 
@@ -274,7 +303,6 @@ public class InputManager : MonoBehaviour
 
     private void OnMovementInputPressed(InputAction.CallbackContext context)
     {
-        //Deb("OnMovementInput(): " + context.ReadValue<Vector2>());
 
         Vector2 movementInput;
 
@@ -288,7 +316,6 @@ public class InputManager : MonoBehaviour
 
     private void OnPlayerCameraMoved(InputAction.CallbackContext context)
     {
-        //Deb("OnMovementInput(): " + context.ReadValue<Vector2>());
 
         Vector2 movementInput;
 
@@ -296,7 +323,43 @@ public class InputManager : MonoBehaviour
         {
             movementInput = context.ReadValue<Vector2>();
 
-            OnMovementInput?.Invoke(movementInput);
+            OnPlayerCameraInput?.Invoke(movementInput);
+        }
+    }
+    private void OnFLCamMoved(InputAction.CallbackContext context)
+    {
+
+        Vector2 movementInput;
+
+        if (isPlaying)
+        {
+            movementInput = context.ReadValue<Vector2>();
+
+            OnFLCamMovement?.Invoke(movementInput);
+        }
+    }
+
+    private void OnFLCamLift(InputAction.CallbackContext context)
+    {
+        float liftInput;
+        
+        if (isPlaying)
+        {
+            liftInput = context.ReadValue<float>();
+
+            OnFLCamLifting?.Invoke(liftInput);
+        }
+    }
+
+    private void OnFLCamRotate(InputAction.CallbackContext context)
+    {
+        Vector2 movementInput;
+
+        if (isPlaying)
+        {
+            movementInput = context.ReadValue<Vector2>();
+
+            OnFLCamRotation?.Invoke(movementInput);
         }
     }
 }

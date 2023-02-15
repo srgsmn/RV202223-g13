@@ -306,6 +306,195 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""FreeLookCamera"",
+            ""id"": ""6aa7f921-3988-4d31-b205-2c62a79ebef7"",
+            ""actions"": [
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""256aef62-d1f6-4781-ac0c-c4cacbecfc41"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Lift"",
+                    ""type"": ""Button"",
+                    ""id"": ""0da5e585-614e-44fe-84dc-53ec31ab76b1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Rotate"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""672a6dd1-d53d-43a4-9737-2017b785c30b"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""625df0b1-0726-4d3c-a59d-c4dc8685c4cb"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""2a6684d5-a890-4d0e-8dba-7064108d3a6e"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""8114dacd-5b79-436c-9624-4bb35f7eb7fb"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""fa305e9b-306c-498c-8f80-0266723f5a15"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""b3ad9a0c-93ef-4087-8553-4a8c79cd5ca3"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Arrows"",
+                    ""id"": ""d9a273b8-b585-45a1-8ec5-fc47bbd0bfd3"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""a5e439c0-c1db-46c3-8cde-219c7d802f90"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""4142e21a-1f49-4941-9405-6dffadaaeba6"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""ab58251d-6225-4f4f-944a-89b52a0b3013"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""2e984881-6885-4bc4-8f59-e9a442a72faa"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""QE"",
+                    ""id"": ""0f83b038-90df-4c73-830a-6fd5e396bfb1"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lift"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""2d08992f-96d8-4be9-99d5-0f2a9b1f8db8"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lift"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""decb28ec-5953-4962-a4c3-7f1c32083bd2"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lift"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f03f06a1-e5b8-4c69-bcfd-910a66ecee0d"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -323,6 +512,11 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_CharacterInput = asset.FindActionMap("CharacterInput", throwIfNotFound: true);
         m_CharacterInput_Move = m_CharacterInput.FindAction("Move", throwIfNotFound: true);
         m_CharacterInput_PlayerCamera = m_CharacterInput.FindAction("PlayerCamera", throwIfNotFound: true);
+        // FreeLookCamera
+        m_FreeLookCamera = asset.FindActionMap("FreeLookCamera", throwIfNotFound: true);
+        m_FreeLookCamera_Movement = m_FreeLookCamera.FindAction("Movement", throwIfNotFound: true);
+        m_FreeLookCamera_Lift = m_FreeLookCamera.FindAction("Lift", throwIfNotFound: true);
+        m_FreeLookCamera_Rotate = m_FreeLookCamera.FindAction("Rotate", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -500,6 +694,55 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         }
     }
     public CharacterInputActions @CharacterInput => new CharacterInputActions(this);
+
+    // FreeLookCamera
+    private readonly InputActionMap m_FreeLookCamera;
+    private IFreeLookCameraActions m_FreeLookCameraActionsCallbackInterface;
+    private readonly InputAction m_FreeLookCamera_Movement;
+    private readonly InputAction m_FreeLookCamera_Lift;
+    private readonly InputAction m_FreeLookCamera_Rotate;
+    public struct FreeLookCameraActions
+    {
+        private @PlayerInputs m_Wrapper;
+        public FreeLookCameraActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Movement => m_Wrapper.m_FreeLookCamera_Movement;
+        public InputAction @Lift => m_Wrapper.m_FreeLookCamera_Lift;
+        public InputAction @Rotate => m_Wrapper.m_FreeLookCamera_Rotate;
+        public InputActionMap Get() { return m_Wrapper.m_FreeLookCamera; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(FreeLookCameraActions set) { return set.Get(); }
+        public void SetCallbacks(IFreeLookCameraActions instance)
+        {
+            if (m_Wrapper.m_FreeLookCameraActionsCallbackInterface != null)
+            {
+                @Movement.started -= m_Wrapper.m_FreeLookCameraActionsCallbackInterface.OnMovement;
+                @Movement.performed -= m_Wrapper.m_FreeLookCameraActionsCallbackInterface.OnMovement;
+                @Movement.canceled -= m_Wrapper.m_FreeLookCameraActionsCallbackInterface.OnMovement;
+                @Lift.started -= m_Wrapper.m_FreeLookCameraActionsCallbackInterface.OnLift;
+                @Lift.performed -= m_Wrapper.m_FreeLookCameraActionsCallbackInterface.OnLift;
+                @Lift.canceled -= m_Wrapper.m_FreeLookCameraActionsCallbackInterface.OnLift;
+                @Rotate.started -= m_Wrapper.m_FreeLookCameraActionsCallbackInterface.OnRotate;
+                @Rotate.performed -= m_Wrapper.m_FreeLookCameraActionsCallbackInterface.OnRotate;
+                @Rotate.canceled -= m_Wrapper.m_FreeLookCameraActionsCallbackInterface.OnRotate;
+            }
+            m_Wrapper.m_FreeLookCameraActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Movement.started += instance.OnMovement;
+                @Movement.performed += instance.OnMovement;
+                @Movement.canceled += instance.OnMovement;
+                @Lift.started += instance.OnLift;
+                @Lift.performed += instance.OnLift;
+                @Lift.canceled += instance.OnLift;
+                @Rotate.started += instance.OnRotate;
+                @Rotate.performed += instance.OnRotate;
+                @Rotate.canceled += instance.OnRotate;
+            }
+        }
+    }
+    public FreeLookCameraActions @FreeLookCamera => new FreeLookCameraActions(this);
     public interface IUIActions
     {
         void OnBack(InputAction.CallbackContext context);
@@ -514,5 +757,11 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnPlayerCamera(InputAction.CallbackContext context);
+    }
+    public interface IFreeLookCameraActions
+    {
+        void OnMovement(InputAction.CallbackContext context);
+        void OnLift(InputAction.CallbackContext context);
+        void OnRotate(InputAction.CallbackContext context);
     }
 }
