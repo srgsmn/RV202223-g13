@@ -43,14 +43,14 @@ public class NavMeshCreator : MonoBehaviour
                 _agentMoving=false;
             }
         }
-        if (Input.GetKeyDown("k")){
+        /*if (Input.GetKeyDown("k")){
             if (_navMeshExists){
                 setAreas(this.transform);
                 _nvs.UpdateNavMesh(_nvs.navMeshData);
                 //UpdateNavMesh reagisce agli oggetti solo se aggiunti come figli del container
                 Debug.Log("Updated");
             }
-        }
+        }*/
         if (Input.GetKeyDown("n")){
             if (_navMeshExists){
                 Debug.Log("NavMesh already exists");
