@@ -6,10 +6,11 @@ using UnityEngine.EventSystems;
 
 public class PauseMenuManager : MonoBehaviour
 {
-    [SerializeField] GameObject quitAlert;
+    [SerializeField] GameObject sidebar, quitAlert;
     [SerializeField] Animator _animator;
-    [Header("First Button:")]
-    [SerializeField] GameObject firstButton;
+    [Header("First Buttons:")]
+    [SerializeField] GameObject sbBtn1st;
+    [SerializeField] GameObject alBtn1st;
     [SerializeField] private EventSystem eventSystem;
 
     private void Awake()
@@ -28,19 +29,29 @@ public class PauseMenuManager : MonoBehaviour
     {
         _animator.SetBool(CONSTS.ANIM_FLAG, true);
 
-        eventSystem.firstSelectedGameObject = firstButton;
+        eventSystem.firstSelectedGameObject = sbBtn1st;
 
         eventSystem.SetSelectedGameObject(eventSystem.firstSelectedGameObject);
     }
 
     public void OpenAlert()
     {
+        sidebar.SetActive(false);
         quitAlert.SetActive(true);
+
+        eventSystem.firstSelectedGameObject = alBtn1st;
+
+        eventSystem.SetSelectedGameObject(eventSystem.firstSelectedGameObject);
     }
 
     public void CloseAlert()
     {
         quitAlert.SetActive(false);
+        sidebar.SetActive(true);
+
+        eventSystem.firstSelectedGameObject = sbBtn1st;
+
+        eventSystem.SetSelectedGameObject(eventSystem.firstSelectedGameObject);
     }
 
     public void QuitApp()
