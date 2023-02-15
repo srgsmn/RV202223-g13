@@ -77,13 +77,14 @@ public class PauseMenuButton : MonoBehaviour
             _btnTxt.color = Color.white;
         }
     }
-
+    /*
     public void QuitApp()
     {
         Debug.Log($"{GetType().Name}.cs > QUITTING the app...");
 
         OnQuit?.Invoke();
     }
+    */
 
     private void DoChecks()
     {
@@ -121,11 +122,12 @@ public class PauseMenuButton : MonoBehaviour
                     OnMainMenu?.Invoke();
 
                     break;
-
+/*
                 case PauseMenuAction.Quit:
                     OnQuit?.Invoke();
 
                     break;
+*/
             }
         }
     }

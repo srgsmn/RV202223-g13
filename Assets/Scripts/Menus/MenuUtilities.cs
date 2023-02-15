@@ -46,7 +46,7 @@ namespace MenuUtilities
 
     public enum SettingType
     {
-        Volume, TextReader
+        SpeechVolume, TextReader, EffectsVolume, PlayEffects
     }
 }
 

@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Scene:")]
     [SerializeField][ReadOnlyInspector] SceneType activeScene;
-    [SerializeField][ReadOnlyInspector] int sceneIndex = 0;
+    [SerializeField][ReadOnlyInspector] public int sceneIndex = 0;
     [SerializeField][ReadOnlyInspector] SceneState state;
 
     [Header("Loading:")]
@@ -28,6 +28,10 @@ public class GameManager : MonoBehaviour
     [SerializeField][ReadOnlyInspector] GameObject pauseMenuPrefab;
     [SerializeField][ReadOnlyInspector] bool isPaused = false;
     private GameObject pauseMenuInstance;
+
+    [Header("Mode HUD:")]
+    [SerializeField][ReadOnlyInspector] GameObject modeHUDPrefab;
+    private GameObject modeHUDInstance;
 
     public delegate void PauseEv(bool isPaused = true);
     public static event PauseEv OnPause;
@@ -49,6 +53,7 @@ public class GameManager : MonoBehaviour
 
         tutorialPrefab = Resources.Load(PREFABS.TUTORIAL) as GameObject;
         pauseMenuPrefab = Resources.Load(PREFABS.PAUSE) as GameObject;
+        modeHUDPrefab = Resources.Load(PREFABS.MODE) as GameObject;
 
         if(tutorialPrefab == null)
             Debug.LogError($"{GetType().Name}.cs > Tutorial prefab is MISSING");
@@ -165,8 +170,14 @@ public class GameManager : MonoBehaviour
         // Check index for tutorial
         if (sceneIndex > 1)
         {
+            ShowModeHUD();
             ShowTutorial();
         }
+    }
+
+    private void ShowModeHUD()
+    {
+        modeHUDInstance = Instantiate(modeHUDPrefab);
     }
 
     private void ShowTutorial()

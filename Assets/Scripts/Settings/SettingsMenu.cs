@@ -9,8 +9,9 @@ public class SettingsMenu : MonoBehaviour
 {
     [SerializeField] SettingsManager settMng;
     [Header("Settings menu elements:")]
-    [SerializeField] Toggle txtRead;
-    [SerializeField] Slider volumeSlider;
+    [SerializeField] Toggle speechTgl;
+    [SerializeField] Toggle effectsTgl;
+    [SerializeField] Slider speechSlider, effectsSlider;
 
     private void Awake()
     {
@@ -19,7 +20,7 @@ public class SettingsMenu : MonoBehaviour
             Debug.LogWarning($"{GetType().Name}.cs > Settings Manager component not set in the inspector");
         }
 
-        if (txtRead == null)
+        if (speechTgl == null)
         {
             Debug.LogWarning($"{GetType().Name}.cs > Text read toggle not set in the inspector");
         }
@@ -43,10 +44,22 @@ public class SettingsMenu : MonoBehaviour
         settMng.SetValue(SettingType.TextReader, isReading);
     }
 
-    public void SetVolume(float volume)
+    public void SetUIFeedback(bool hasFeedback)
     {
-        Debug.Log($"{GetType().Name}.cs > CHANGING volume value to {volume}");
-        settMng.SetValue(SettingType.Volume, volume);
+        Debug.Log($"{GetType().Name}.cs > CHANGING text reader from {!hasFeedback} to {hasFeedback}");
+        settMng.SetValue(SettingType.PlayEffects, hasFeedback);
+    }
+
+    public void SetSpeechVolume(float volume)
+    {
+        Debug.Log($"{GetType().Name}.cs > CHANGING speech volume value to {volume}");
+        settMng.SetValue(SettingType.SpeechVolume, volume);
+    }
+
+    public void SetEffectsVolume(float volume)
+    {
+        Debug.Log($"{GetType().Name}.cs > CHANGING effects volume value to {volume}");
+        settMng.SetValue(SettingType.EffectsVolume, volume);
     }
 
     private void EventsSubscriber(bool subscribing = true)
@@ -69,13 +82,25 @@ public class SettingsMenu : MonoBehaviour
         {
             case SettingType.TextReader:
 
-                txtRead.isOn = (bool)value;
+                speechTgl.isOn = (bool)value;
 
                 break;
 
-            case SettingType.Volume:
+            case SettingType.SpeechVolume:
 
-                volumeSlider.value = (float)value;
+                speechSlider.value = (float)value;
+
+                break;
+
+            case SettingType.EffectsVolume:
+
+                effectsSlider.value = (float)value;
+
+                break;
+
+            case SettingType.PlayEffects:
+
+                effectsTgl.isOn = (bool)value;
 
                 break;
         }

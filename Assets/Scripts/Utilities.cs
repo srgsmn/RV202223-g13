@@ -9,6 +9,7 @@ namespace Utilities
     {
         public const string TUTORIAL = "Prefabs/TutorialCanvas";
         public const string PAUSE = "Prefabs/PauseCanvas";
+        public const string MODE = "Prefabs/ModesCanvas";
         public const string EVSYS = "Prefabs/EventSystem";
     }
 
@@ -25,5 +26,10 @@ namespace Utilities
     public enum Mode
     {
         Nav, Edit, Plan
+    }
+
+    public enum AccItemType
+    {
+        Ramp, Stairlift
     }
 }

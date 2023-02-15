@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utilities;
-using static UnityEngine.CullingGroup;
 
 public class InputManager : MonoBehaviour
 {

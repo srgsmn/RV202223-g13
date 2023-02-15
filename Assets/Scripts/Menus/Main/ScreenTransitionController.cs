@@ -13,7 +13,7 @@ public class ScreenTransitionController : MonoBehaviour
     [Header("First Button:")]
     [SerializeField] GameObject firstButton;
 
-    [SerializeField ]private EventSystem eventSystem;
+    [SerializeField] private EventSystem eventSystem;
 
     private void Awake()
     {
@@ -25,11 +25,12 @@ public class ScreenTransitionController : MonoBehaviour
             Debug.LogError($"{GetType().Name}.cs > ### EVENT SYSTEM IS NULL ###");
         }
         */
+        eventSystem = EventSystem.current;
     }
 
     private void OnEnable()
     {
-        Debug.Log($"{GetType().Name}.cs > First selected is now {eventSystem.firstSelectedGameObject}");
+        Debug.Log($"{GetType().Name}.cs > First selected is now {((eventSystem.firstSelectedGameObject!=null) ? eventSystem.firstSelectedGameObject : null)}");
         Debug.Log($"{GetType().Name}.cs > CHANGING First Selected in Event System (should be {firstButton})");
         eventSystem.firstSelectedGameObject = firstButton;
 
@@ -60,6 +61,8 @@ public class ScreenTransitionController : MonoBehaviour
 
     public void Show(bool flag = true)
     {
+        Debug.Log($"{GetType().Name}.cs > CLOSING {gameObject.name} screen");
+
         gameObject.SetActive(flag);
     }
 
