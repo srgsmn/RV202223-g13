@@ -23,11 +23,11 @@ public class AccDeviceCreator : MonoBehaviour
     #region GESTIONE_REPORT
 
     public delegate void CreateAccDevice(string accDevice, Vector3 position);
-    public static event CreateAccDevice OnFurnitureTranslation;
+    public static event CreateAccDevice OnDeviceCreation;
 
     void AccDevicePlaced()
     {
-        OnFurnitureTranslation?.Invoke(device_type.ToString(), _raycastHit.point);
+        OnDeviceCreation?.Invoke(device_type.ToString(), _raycastHit.point);
     }
 
     #endregion

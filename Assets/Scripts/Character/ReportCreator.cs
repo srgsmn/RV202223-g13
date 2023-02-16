@@ -76,6 +76,7 @@ public class ReportCreator : MonoBehaviour
         CharacterMovement.OnMovement += AddDistance;
         CharacterMovement.OnTargetReached += WriteReport;
         FurnitureSelection.OnFurnitureTranslation += AddTranslation;
+        AccDeviceCreator.OnDeviceCreation += AddAccDevice;
     }
 
     private void OnDisable()
@@ -83,5 +84,6 @@ public class ReportCreator : MonoBehaviour
         CharacterMovement.OnMovement -= AddDistance;
         CharacterMovement.OnTargetReached -= WriteReport;
         FurnitureSelection.OnFurnitureTranslation -= AddTranslation;
+        AccDeviceCreator.OnDeviceCreation -= AddAccDevice;
     }
 }
