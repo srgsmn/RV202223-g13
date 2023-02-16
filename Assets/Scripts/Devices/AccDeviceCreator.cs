@@ -6,8 +6,8 @@ public class AccDeviceCreator : MonoBehaviour
 {   
     public enum acc_device {Button, Ramp, Stairlift};
     public Camera PlayerCamera;
-    public GameObject Door;
-    public GameObject Stair;
+    public List<GameObject> Doors;
+    public GameObject Level;
     public acc_device device_type = acc_device.Button;
     private float _range = 100f;
     private GameObject _selected;
@@ -19,7 +19,7 @@ public class AccDeviceCreator : MonoBehaviour
     private Renderer[] _wpRND;
     private bool _raysStarted=false;
     private bool _startInsert=false;
-
+    private GameObject _doorClosest;
     #region GESTIONE_REPORT
 
     public delegate void CreateAccDevice(string accDevice, Vector3 position);
@@ -36,6 +36,8 @@ public class AccDeviceCreator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        FindDoors(Level);
+        Debug.Log("Ho trovato x porte con x = " + Doors.Count);
         _waypoint_pf= (GameObject)Resources.Load("Prefabs/waypoint", typeof(GameObject));
         _button_pf = (GameObject)Resources.Load("Prefabs/Button", typeof(GameObject));
     }
@@ -59,15 +61,21 @@ public class AccDeviceCreator : MonoBehaviour
                             if (_waypoint!=null){
                                 _waypoint.transform.position=_raycastHit.point;
                                 _waypoint.transform.rotation=Quaternion.FromToRotation(Vector3.up, _raycastHit.normal);
-                                if (Door!=null){
-                                    if ((Door.transform.position-_raycastHit.point).magnitude<=2.5f){
+                                _doorClosest=FindClosestDoor(_waypoint.transform);
+                                if (_doorClosest!=null){
+                                    Debug.Log(_doorClosest.name);
+                                    if ((_doorClosest.transform.position-_raycastHit.point).magnitude<=2.5f){
                                         _wpRND=_waypoint.GetComponentsInChildren<Renderer>();
                                         foreach(Renderer x in _wpRND){
                                             x.material.SetColor("_Color",Color.green);
                                             x.material.SetColor("_EmissionColor",Color.green);
                                         }
-                                        if (Input.GetKeyDown(KeyCode.T)){
+                                        if (Input.GetKeyDown(KeyCode.Space)){
                                             _button=Instantiate(_button_pf,_raycastHit.point,Quaternion.FromToRotation(Vector3.up,_raycastHit.normal));
+                                            Destroy(_doorClosest);
+                                            Destroy(_waypoint);
+                                            Doors.Clear();
+                                            FindDoors(Level);
                                         }
                                     }
                                     else{
@@ -130,6 +138,30 @@ public class AccDeviceCreator : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void FindDoors(GameObject go){
+        if (go.name.ToLower().IndexOf("door")!=-1){
+            Doors.Add(go);
+        }
+        if (go.transform.childCount>0){
+            foreach (Transform child in go.transform){
+                FindDoors(child.gameObject);
+            }
+        }
+    }
+
+    private GameObject FindClosestDoor(Transform wp){
+        float max=10000.0f;
+        GameObject closest=new GameObject();//
+        foreach(GameObject x in Doors){
+            float dist=(wp.position-x.transform.position).magnitude;
+            if (dist<max){
+                closest=x;
+                max=dist;
+            }
+        }
+        return closest;
     }
 
     private void Inserisci(AccItemType type){

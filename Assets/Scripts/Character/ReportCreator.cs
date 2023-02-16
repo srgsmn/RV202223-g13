@@ -22,20 +22,31 @@ public class ReportCreator : MonoBehaviour
     {
         _allCollisions = new List<Collision>();
         _allTranslations = new Dictionary<string, Vector3>();
+        _allRecords = new List<string>();
     }
 
     void AddDistance(float distance)
     {
         _totalDistance += distance;
-        Debug.Log("Distanza percorsa: " + distance + " m");
-        _allRecords.Add(new string("Distanza percorsa: " + distance + " m"));
+        //Debug.Log("Distanza percorsa: " + distance + " m");
+        //_allRecords.Add(new string("Distanza percorsa: " + distance + " m"));
     }
 
     void OnCollisionEnter(Collision collision)
     {
         _allCollisions.Add(collision);
         Debug.Log("Collisione in " + collision.GetContact(0).point + " con " + collision.collider.gameObject.name);
-        _allRecords.Add(new string("Collisione in " + collision.GetContact(0).point + " con " + collision.collider.gameObject.name));
+        if (collision.collider.gameObject.TryGetComponent(typeof(Renderer),out Component mf)){
+            if (collision.collider.gameObject.name.ToLower().IndexOf("floor")==-1){
+                _allRecords.Add(new string("Collisione in " + collision.GetContact(0).point + " con " + collision.collider.gameObject.name));
+            }
+        }
+        else{
+            if (collision.collider.gameObject.transform.parent.name.ToLower().IndexOf("floor")==-1){
+                _allRecords.Add(new string("Collisione in " + collision.GetContact(0).point + " con " + collision.collider.gameObject.transform.parent.name));
+            }
+        }
+        
     }
 
     void AddTranslation(string pickedFurniture, Vector3 translation)
@@ -61,13 +72,14 @@ public class ReportCreator : MonoBehaviour
 
     void WriteReport()
     {
-        string path = Application.persistentDataPath + "/report" + System.DateTime.Now + ".txt";
+        string path = Application.persistentDataPath + "/report.txt";
         //Write some text to the test.txt file
         StreamWriter writer = new StreamWriter(path, true);
         foreach(string a in _allRecords)
         {
             writer.WriteLine(a + ";\n");
         }
+        writer.WriteLine("Distanza totale: " + _totalDistance + ";\n");
         writer.Close();
     }
 

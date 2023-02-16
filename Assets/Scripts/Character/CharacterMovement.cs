@@ -16,7 +16,8 @@ public class CharacterMovement : MonoBehaviour
     private Rigidbody _rigidbody;
     //private Vector2 camera_rot = new Vector2();
     private Vector2 _localMovement;
-
+    
+    private bool _reportDone=false;
 
     public GameObject Target;
 
@@ -42,9 +43,11 @@ public class CharacterMovement : MonoBehaviour
     private void Update()
     {
         // enum e_mode { mode_navigation, mode_selection, mode_move };
-        if ((this.transform.position-Target.transform.position).magnitude<=1.0f){
+        if ((this.transform.position-Target.transform.position).magnitude<=1.0f && !_reportDone){
             Debug.Log("Sono arrivato");
             OnTargetReached?.Invoke();
+            _reportDone=true;
+            GameManager.Instance.ShowMainMenu();
         }
         
     }
@@ -54,6 +57,7 @@ public class CharacterMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        _rigidbody.angularVelocity = Vector3.zero;
         if (_localMovement.y > 0.5f)
         {
             if (_startSpeed <= 0) _startSpeed = 0;

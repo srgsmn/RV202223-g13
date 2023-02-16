@@ -43,17 +43,6 @@ public class FurnitureSelection : MonoBehaviour
     }
     #endregion
 
-
-    public delegate void TranslateFurniture(string pickedFurniture, Vector3 translation);
-    public static event TranslateFurniture OnFurnitureTranslation;
-
-    // da inserire quando posi l'oggetto
-    void LeaveFurniture()
-    {
-        OnFurnitureTranslation?.Invoke(_selected.name, _selected.transform.position - _originalPosition);
-    }
-    #endregion
-
     // Start is called before the first frame update
     void Start()
     {
@@ -96,8 +85,10 @@ public class FurnitureSelection : MonoBehaviour
                             //_active_rb = _selected.transform.parent.gameObject.GetComponent<Rigidbody>();
                         }
                         //_active_rb.isKinematic=false;
-                        _originalPosition=_selected.transform.position;
-                        _currentMode = e_mode.mode_move;
+                        if (!IsStructural(_selected.name.ToLower()) && !IsFixed(_selected.name.ToLower())){
+                            _originalPosition=_selected.transform.position;
+                            _currentMode = e_mode.mode_move;
+                        }
                     }
                 }
                 if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward, out _raycastHit, Range))
@@ -148,7 +139,8 @@ public class FurnitureSelection : MonoBehaviour
     {
         switch (_currentMode) {
             case e_mode.mode_move:
-                Debug.Log("active rigidbody is  =" + _active_rb.name);
+                Debug.Log("active object is  =" + _selected.name);
+                
                 if (Input.GetKey(KeyCode.I))
                 {
                     _selected.transform.Translate(0.1f, 0, 0, Space.World);
