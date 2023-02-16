@@ -163,6 +163,7 @@ public class InputManager : MonoBehaviour
             inputs.FreeLookCamera.Rotate.started -= OnFLCamRotate;
             inputs.FreeLookCamera.Rotate.canceled -= OnFLCamRotate;
             inputs.FreeLookCamera.Rotate.performed -= OnFLCamRotate;
+
             HotSpotSelection.OnWayPointSet-=NavModeStart;
         }
     }
