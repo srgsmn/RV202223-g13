@@ -19,6 +19,20 @@ public class AccDeviceCreator : MonoBehaviour
     private Renderer[] _wpRND;
     private bool _raysStarted=false;
     private bool _startInsert=false;
+
+    #region GESTIONE_REPORT
+
+    public delegate void CreateAccDevice(string accDevice, Vector3 position);
+    public static event CreateAccDevice OnFurnitureTranslation;
+
+    void AccDevicePlaced()
+    {
+        OnFurnitureTranslation?.Invoke(device_type.ToString(), _raycastHit.point);
+    }
+
+    #endregion
+
+
     // Start is called before the first frame update
     void Start()
     {
