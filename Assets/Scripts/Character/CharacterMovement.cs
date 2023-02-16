@@ -17,7 +17,11 @@ public class CharacterMovement : MonoBehaviour
     //private Vector2 camera_rot = new Vector2();
     private Vector2 _localMovement;
 
+
     public GameObject Target;
+
+    public delegate void HasMoved(float distance);
+    public static event HasMoved OnMovement;
 
     public delegate void TargetReached();
     public static event TargetReached OnTargetReached;
@@ -94,6 +98,10 @@ public class CharacterMovement : MonoBehaviour
         else
         {
             _rigidbody.angularVelocity = Vector3.zero;
+        }
+        if(_localMovement.magnitude > 0f)
+        {
+            OnMovement?.Invoke((_rigidbody.velocity * Time.deltaTime).magnitude);
         }
     }
 

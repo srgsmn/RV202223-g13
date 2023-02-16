@@ -26,6 +26,7 @@ public class FurnitureSelection : MonoBehaviour
     private bool _selectionToNav=false;
     private bool _moveToNav=false;
 
+
     private Vector3 _originalPosition;
 
     #region GESTIONE_REPORT
@@ -42,6 +43,16 @@ public class FurnitureSelection : MonoBehaviour
     }
     #endregion
 
+
+    public delegate void TranslateFurniture(string pickedFurniture, Vector3 translation);
+    public static event TranslateFurniture OnFurnitureTranslation;
+
+    // da inserire quando posi l'oggetto
+    void LeaveFurniture()
+    {
+        OnFurnitureTranslation?.Invoke(_selected.name, _selected.transform.position - _originalPosition);
+    }
+    #endregion
 
     // Start is called before the first frame update
     void Start()
