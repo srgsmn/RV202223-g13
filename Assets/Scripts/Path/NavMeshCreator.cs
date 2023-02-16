@@ -28,6 +28,9 @@ public class NavMeshCreator : MonoBehaviour
     private bool _pathExists=false;
 
     private bool _navMeshExists=false;
+
+    private bool _needToStartPath=false;
+    private bool _needToUpdateNavMesh=false;
     void Start()
     {
         
@@ -43,24 +46,27 @@ public class NavMeshCreator : MonoBehaviour
                 _agentMoving=false;
             }
         }
-        /*if (Input.GetKeyDown("k")){
+        if (_needToUpdateNavMesh){
             if (_navMeshExists){
                 setAreas(this.transform);
                 _nvs.UpdateNavMesh(_nvs.navMeshData);
                 //UpdateNavMesh reagisce agli oggetti solo se aggiunti come figli del container
                 Debug.Log("Updated");
+                _needToStartPath=true;
             }
-        }*/
-        if (Input.GetKeyDown("n")){
+            _needToUpdateNavMesh=false;
+        }
+        /*if (Input.GetKeyDown("n")){
             if (_navMeshExists){
                 Debug.Log("NavMesh already exists");
             }
             else{
                 CreateNavMesh();
             }     
-        }
-        if (Input.GetKeyDown("p")){
+        }*/
+        if (_needToStartPath){
             CreatePathGuy(_startSpot_transform.position,_target_transform.position);
+            _needToStartPath=false;
         }
     }
 
@@ -145,5 +151,22 @@ public class NavMeshCreator : MonoBehaviour
             }
         }
         return false;
+    }
+
+    private void StartGuy(){
+        _needToStartPath=true;
+    }
+
+    private void ToUpdateNavMesh(string pickedFurniture, Vector3 translation){
+        _needToUpdateNavMesh=true;
+    }
+
+    private void Awake(){
+        HotSpotSelection.OnWayPointSet+=StartGuy;
+        FurnitureSelection.OnFurnitureTranslation+=ToUpdateNavMesh;
+    }
+    private void OnDisable(){
+        HotSpotSelection.OnWayPointSet-=StartGuy;
+        FurnitureSelection.OnFurnitureTranslation-=ToUpdateNavMesh;
     }
 }
