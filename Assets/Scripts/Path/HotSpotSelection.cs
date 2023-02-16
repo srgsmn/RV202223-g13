@@ -35,15 +35,17 @@ public class HotSpotSelection : MonoBehaviour
 
     public delegate void StartNavigation();
     public static event StartNavigation OnWayPointSet;
+
+
     
     void Start()
     {
         _waypoint_pf= (GameObject)Resources.Load("Prefabs/waypoint", typeof(GameObject));
         _avatar_pf=(GameObject)Resources.Load("Prefabs/avatar_finale",typeof(GameObject));
         _inactive_materials=new Dictionary<Mat_key,Material>();
-        if (Level!=null){
+        /*if (Level!=null){
             MakeWallsTransparent(Level);
-        }
+        }*/
 
     }
 
@@ -80,15 +82,11 @@ public class HotSpotSelection : MonoBehaviour
                         Target.transform.position+=new Vector3(0.0f,0.5f,0.0f);
                         Destroy(_waypoint);
                         _targetPointSet=true;
-                        ResetWalls(Level);
+                        //ResetWalls(Level);
                         _avatar=Instantiate(_avatar_pf, StartSpot.transform.position+new Vector3(0.0f,-0.5f,0.0f), Quaternion.identity);
+                        _avatar.GetComponent<CharacterMovement>().Target=Target;
                         SwitchCamera();
-                        
-
                         OnWayPointSet?.Invoke();
-
-
-
                         this.enabled=false;
                     }
                 }

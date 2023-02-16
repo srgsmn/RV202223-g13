@@ -17,6 +17,11 @@ public class CharacterMovement : MonoBehaviour
     //private Vector2 camera_rot = new Vector2();
     private Vector2 _localMovement;
 
+    public GameObject Target;
+
+    public delegate void TargetReached();
+    public static event TargetReached OnTargetReached;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,7 +37,11 @@ public class CharacterMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        // enum e_mode { mode_navigation, mode_selection, mode_move }; 
+        // enum e_mode { mode_navigation, mode_selection, mode_move };
+        if ((this.transform.position-Target.transform.position).magnitude<=1.0f){
+            Debug.Log("Sono arrivato");
+            OnTargetReached?.Invoke();
+        }
         
     }
     public void ApplyMovement(Vector2 movement){

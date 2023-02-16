@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utilities;
 
 public class FurnitureSelection : MonoBehaviour
 {
@@ -22,7 +23,24 @@ public class FurnitureSelection : MonoBehaviour
     private RaycastHit _raycastHit;
     private e_mode _currentMode;
     private bool isEmpty;
+    private bool _selectionToNav=false;
+    private bool _moveToNav=false;
 
+    private Vector3 _originalPosition;
+
+    #region GESTIONE_REPORT
+    // posizione in cui trovi l'oggetto da spostare:
+
+    public delegate void TranslateFurniture(string pickedFurniture, Vector3 translation);
+    public static event TranslateFurniture OnFurnitureTranslation;
+
+
+    // da inserire quando posi l'oggetto
+    void LeaveFurniture()
+    {
+        OnFurnitureTranslation?.Invoke(_selected.name, _selected.transform.position - _originalPosition);
+    }
+    #endregion
 
 
     // Start is called before the first frame update
@@ -42,11 +60,9 @@ public class FurnitureSelection : MonoBehaviour
         switch (_currentMode)
         {
             case e_mode.mode_navigation:
-                if (Input.GetKeyDown(KeyCode.Space)) 
-                    _currentMode = e_mode.mode_selection;
                 break;
             case e_mode.mode_selection:
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (_selectionToNav)
                 {
                     if(_selected != null)
                     {
@@ -54,19 +70,22 @@ public class FurnitureSelection : MonoBehaviour
                         DeHighlight(_selected);
                         _selected = null;
                     }
+                    _selectionToNav=false;
                     _currentMode = e_mode.mode_navigation;
                 }
-                if (Input.GetKeyDown(KeyCode.B))
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
                     if (_selected != null)
                     {
                         mesh_ex=_selected.TryGetComponent(typeof(Renderer),out Component mf);
                         if (mesh_ex){
-                            _active_rb = _selected.GetComponent<Rigidbody>();
+                            //_active_rb = _selected.GetComponent<Rigidbody>();
                         }
-                        else _active_rb = _selected.transform.parent.gameObject.GetComponent<Rigidbody>();
-                        Debug.Log("Ma qui ci arrivo dio santo?");
-                        _active_rb.isKinematic=false;
+                        else {
+                            //_active_rb = _selected.transform.parent.gameObject.GetComponent<Rigidbody>();
+                        }
+                        //_active_rb.isKinematic=false;
+                        _originalPosition=_selected.transform.position;
                         _currentMode = e_mode.mode_move;
                     }
                 }
@@ -84,24 +103,28 @@ public class FurnitureSelection : MonoBehaviour
                 }
                 break;
             case e_mode.mode_move:
-                if (Input.GetKeyDown(KeyCode.V))
+                if (Input.GetKeyDown(KeyCode.Space))
                 {   
+
                     if (_selected != null)
                     {
                         DeHighlight(_selected);
-                        _active_rb.isKinematic=true;
+                        LeaveFurniture();
+                        //_active_rb.isKinematic=true;
                         _selected = null;
                     }  
                     _currentMode = e_mode.mode_selection;
                 }
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (_moveToNav)
                 {
                     if (_selected != null)
                     {
                         DeHighlight(_selected);
-                        _active_rb.isKinematic=true;
+                        _selected.transform.position=_originalPosition;
+                        //_active_rb.isKinematic=true;
                         _selected = null;
                     }
+                    _moveToNav=false;
                     _currentMode = e_mode.mode_navigation;
                 }
 
@@ -117,25 +140,27 @@ public class FurnitureSelection : MonoBehaviour
                 Debug.Log("active rigidbody is  =" + _active_rb.name);
                 if (Input.GetKey(KeyCode.I))
                 {
-                    //_selected.transform.Translate(0.5f, 0, 0, Space.World);
-                    _active_rb.velocity = MoveSpeed * Vector3.forward;
+                    _selected.transform.Translate(0.1f, 0, 0, Space.World);
+                    //_active_rb.velocity = MoveSpeed * Vector3.forward;
                 }
                 else if (Input.GetKey(KeyCode.K))
                 {
-                    //_selected.transform.Translate(-0.5f, 0, 0, Space.World);
-                    _active_rb.velocity = -MoveSpeed * Vector3.forward;
+                    _selected.transform.Translate(-0.1f, 0, 0, Space.World);
+                    //_active_rb.velocity = -MoveSpeed * Vector3.forward;
                 }
                 else if (Input.GetKey(KeyCode.J))
                 {
-                    _active_rb.velocity = MoveSpeed * Vector3.left;
+                    _selected.transform.Translate(0, 0, -0.1f, Space.World);
+                    //_active_rb.velocity = MoveSpeed * Vector3.left;
                 }
                 else if (Input.GetKey(KeyCode.L))
-                {
-                    _active_rb.velocity = -MoveSpeed * Vector3.left;
+                {   
+                    _selected.transform.Translate(0, 0, 0.1f, Space.World);
+                    //_active_rb.velocity = -MoveSpeed * Vector3.left;
                 }
                 else
                 {
-                    _active_rb.velocity = Vector3.zero;
+                    //_active_rb.velocity = Vector3.zero;
                 }
                 break;
             case e_mode.mode_navigation: case e_mode.mode_selection: default: break;
@@ -215,10 +240,6 @@ public class FurnitureSelection : MonoBehaviour
             ResetMaterial_r(gobj.transform.GetChild(i++).gameObject,false));
     }
 
-    public int GetCurrentMode()
-    {
-        return (int)_currentMode;
-    }
 
     private bool CheckFixed(GameObject go){
         return (IsFixed(go.name.ToLower()) || IsStructural(go.name.ToLower()));
@@ -239,4 +260,34 @@ public class FurnitureSelection : MonoBehaviour
         return false;
     }
 
+    private void ChangeMode(Mode mode_input){
+        switch(mode_input){
+            case Mode.Nav:
+                if (_currentMode==e_mode.mode_selection){
+                    _selectionToNav=true;
+                }
+                else if (_currentMode==e_mode.mode_move){
+                    _moveToNav=true;
+                }
+                else{
+                    _currentMode=e_mode.mode_navigation;
+                }
+                break;
+            case Mode.Edit:
+                _currentMode=e_mode.mode_selection;
+                break;
+            case Mode.Plan: //aggiungi device
+                _currentMode=e_mode.mode_navigation;
+                break;
+        }
+    }
+
+    private void Awake(){
+        InputManager.OnChangeMode+=ChangeMode;
+        //InputManager.OnBack+=
+    }
+    private void OnDestroy(){
+        InputManager.OnChangeMode-=ChangeMode;
+        //InputManager.OnBack-=
+    }
 }

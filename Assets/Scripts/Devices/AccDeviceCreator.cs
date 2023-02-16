@@ -4,7 +4,7 @@ using UnityEngine;
 using Utilities;
 public class AccDeviceCreator : MonoBehaviour
 {   
-    public enum acc_device {Button, Handle, Stairlift};
+    public enum acc_device {Button, Ramp, Stairlift};
     public Camera PlayerCamera;
     public GameObject Door;
     public GameObject Stair;
@@ -29,9 +29,7 @@ public class AccDeviceCreator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("3")){
-            _startInsert=true;
-        }
+       
         if (_startInsert){
             if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward, out _raycastHit,_range))
             {   
@@ -76,7 +74,7 @@ public class AccDeviceCreator : MonoBehaviour
                         }
                         break;
                     case acc_device.Stairlift:
-                    //STAIRLIFT MODE
+                    /*STAIRLIFT MODE
                         if (_raycastHit.transform.name.ToLower().IndexOf("floor")!=-1){
                             if(!_raysStarted){
                                 _waypoint=Instantiate(_waypoint_pf, _raycastHit.point, Quaternion.identity);
@@ -112,7 +110,7 @@ public class AccDeviceCreator : MonoBehaviour
                                     _raysStarted=false;
                                 }
                             }
-                        }
+                        }*/
                         break;
                     default: break;
                 }
@@ -121,13 +119,41 @@ public class AccDeviceCreator : MonoBehaviour
     }
 
     private void Inserisci(AccItemType type){
-
+        switch(type){
+            case AccItemType.Ramp:
+                device_type=acc_device.Button;
+                break;
+            case AccItemType.Stairlift:
+                device_type=acc_device.Button;
+                break;
+            case AccItemType.DoorButton: 
+                device_type=acc_device.Button;
+                break;
+            default:break;
+        }
     }
-    void OnAwake(){
+
+    private void InsertMode(Mode mode_input){
+        Debug.Log("Sto cercando di entrare in questa modalità");
+        switch(mode_input){
+            case Mode.Nav:
+                _startInsert=false;
+                break;
+            case Mode.Edit:
+                _startInsert=false;
+                break;
+            case Mode.Plan: //aggiungi device
+                _startInsert=true;
+                break;
+        }
+    }
+    private void Awake(){
         InventoryBtn.OnItemSelect+=Inserisci;
+        InputManager.OnChangeMode+=InsertMode;
     }
 
-    void OnDestroy(){
+    private void OnDestroy(){
         InventoryBtn.OnItemSelect-=Inserisci;
+        InputManager.OnChangeMode-=InsertMode;
     }
 }
