@@ -1230,7 +1230,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1084750939011375545, guid: 66af715b2cb4b45f9915964f3962e511, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66af715b2cb4b45f9915964f3962e511, type: 3}
@@ -2310,7 +2310,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1084750939011375545, guid: 66af715b2cb4b45f9915964f3962e511, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66af715b2cb4b45f9915964f3962e511, type: 3}
@@ -14068,7 +14068,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 109006984}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.61
+  m_Size: 0.60999995
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -14194,8 +14194,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 33075478}
   m_HandleRect: {fileID: 33075477}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 0.33103448
+  m_Value: -0.0000002516914
+  m_Size: 0.3310345
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -17307,8 +17307,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1824049030}
   m_HandleRect: {fileID: 1824049029}
   m_Direction: 0
-  m_Value: -0.00000025169138
-  m_Size: 0.33103448
+  m_Value: -0.00000012584567
+  m_Size: 0.33103445
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
