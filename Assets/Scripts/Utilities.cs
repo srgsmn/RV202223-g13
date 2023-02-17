@@ -35,4 +35,24 @@ namespace Utilities
     {
         Ramp, Stairlift, DoorButton
     }
+
+    /// <summary>
+    /// Rotation direction
+    /// </summary>
+    public enum RotDir
+    {
+        Cw, //Clockwise
+        CCw //CounterClockwise
+    }
+
+    /// <summary>
+    /// Translation direction
+    /// </summary>
+    public enum TranDir
+    {
+        Fwd,    //Forward
+        Bwd,    //Backward
+        Lt,     //Left
+        Rt      //Right
+    }
 }

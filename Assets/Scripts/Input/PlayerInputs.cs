@@ -64,6 +64,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Mode0"",
+                    ""type"": ""Button"",
+                    ""id"": ""820ee45a-2d9e-4d59-b7ea-99393a77c746"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Mode1"",
                     ""type"": ""Button"",
                     ""id"": ""4378fd93-1530-44ee-be82-06aa364eee75"",
@@ -89,6 +98,42 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Eliminate"",
+                    ""type"": ""Button"",
+                    ""id"": ""abb76662-9c65-4d8a-8a82-7f1261d3efcc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Rotate"",
+                    ""type"": ""Button"",
+                    ""id"": ""13ac3302-2464-4562-ad2d-74a9c26a1059"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Translate"",
+                    ""type"": ""Button"",
+                    ""id"": ""d78061ea-74fb-4ff3-9815-7b648b98647b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Directions"",
+                    ""type"": ""Value"",
+                    ""id"": ""a3ae7cf1-7a01-4073-9d9f-ed6503fa56cd"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -212,6 +257,116 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""Mode3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""11fbff16-e79d-4cf1-a9cf-910d2631adfe"",
+                    ""path"": ""<Keyboard>/0"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mode0"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b28a0c21-4741-459b-a08e-c2a3bae3e26c"",
+                    ""path"": ""<Keyboard>/numpad0"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mode0"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2232db2c-2710-4914-9237-2636a2c578b2"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Eliminate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""703c59cc-029f-49e0-95f0-aa19f165b2d1"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d9e16226-68b4-44c6-b90b-a7999a3bbf3b"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Translate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Arrows"",
+                    ""id"": ""123c61be-3ff1-4087-8a9d-cd3cf7498425"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Directions"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""b8c61a13-4a1d-4bfd-b865-4d01c0d80da1"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Directions"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""36f4d3b0-4f30-432a-9367-e5ddd00328eb"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Directions"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""f07b02cf-c3be-4e15-8f3e-303c175a2de8"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Directions"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""96c2065b-f4ff-4ed4-93e6-c62bad5a4e47"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Directions"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -224,9 +379,14 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
         m_UI_Confirm = m_UI.FindAction("Confirm", throwIfNotFound: true);
         m_UI_Space = m_UI.FindAction("Space", throwIfNotFound: true);
+        m_UI_Mode0 = m_UI.FindAction("Mode0", throwIfNotFound: true);
         m_UI_Mode1 = m_UI.FindAction("Mode1", throwIfNotFound: true);
         m_UI_Mode2 = m_UI.FindAction("Mode2", throwIfNotFound: true);
         m_UI_Mode3 = m_UI.FindAction("Mode3", throwIfNotFound: true);
+        m_UI_Eliminate = m_UI.FindAction("Eliminate", throwIfNotFound: true);
+        m_UI_Rotate = m_UI.FindAction("Rotate", throwIfNotFound: true);
+        m_UI_Translate = m_UI.FindAction("Translate", throwIfNotFound: true);
+        m_UI_Directions = m_UI.FindAction("Directions", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -290,9 +450,14 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Pause;
     private readonly InputAction m_UI_Confirm;
     private readonly InputAction m_UI_Space;
+    private readonly InputAction m_UI_Mode0;
     private readonly InputAction m_UI_Mode1;
     private readonly InputAction m_UI_Mode2;
     private readonly InputAction m_UI_Mode3;
+    private readonly InputAction m_UI_Eliminate;
+    private readonly InputAction m_UI_Rotate;
+    private readonly InputAction m_UI_Translate;
+    private readonly InputAction m_UI_Directions;
     public struct UIActions
     {
         private @PlayerInputs m_Wrapper;
@@ -301,9 +466,14 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @Pause => m_Wrapper.m_UI_Pause;
         public InputAction @Confirm => m_Wrapper.m_UI_Confirm;
         public InputAction @Space => m_Wrapper.m_UI_Space;
+        public InputAction @Mode0 => m_Wrapper.m_UI_Mode0;
         public InputAction @Mode1 => m_Wrapper.m_UI_Mode1;
         public InputAction @Mode2 => m_Wrapper.m_UI_Mode2;
         public InputAction @Mode3 => m_Wrapper.m_UI_Mode3;
+        public InputAction @Eliminate => m_Wrapper.m_UI_Eliminate;
+        public InputAction @Rotate => m_Wrapper.m_UI_Rotate;
+        public InputAction @Translate => m_Wrapper.m_UI_Translate;
+        public InputAction @Directions => m_Wrapper.m_UI_Directions;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -325,6 +495,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Space.started -= m_Wrapper.m_UIActionsCallbackInterface.OnSpace;
                 @Space.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnSpace;
                 @Space.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnSpace;
+                @Mode0.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMode0;
+                @Mode0.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMode0;
+                @Mode0.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMode0;
                 @Mode1.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMode1;
                 @Mode1.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMode1;
                 @Mode1.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMode1;
@@ -334,6 +507,18 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Mode3.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMode3;
                 @Mode3.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMode3;
                 @Mode3.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMode3;
+                @Eliminate.started -= m_Wrapper.m_UIActionsCallbackInterface.OnEliminate;
+                @Eliminate.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnEliminate;
+                @Eliminate.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnEliminate;
+                @Rotate.started -= m_Wrapper.m_UIActionsCallbackInterface.OnRotate;
+                @Rotate.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnRotate;
+                @Rotate.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnRotate;
+                @Translate.started -= m_Wrapper.m_UIActionsCallbackInterface.OnTranslate;
+                @Translate.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnTranslate;
+                @Translate.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnTranslate;
+                @Directions.started -= m_Wrapper.m_UIActionsCallbackInterface.OnDirections;
+                @Directions.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnDirections;
+                @Directions.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnDirections;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -350,6 +535,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Space.started += instance.OnSpace;
                 @Space.performed += instance.OnSpace;
                 @Space.canceled += instance.OnSpace;
+                @Mode0.started += instance.OnMode0;
+                @Mode0.performed += instance.OnMode0;
+                @Mode0.canceled += instance.OnMode0;
                 @Mode1.started += instance.OnMode1;
                 @Mode1.performed += instance.OnMode1;
                 @Mode1.canceled += instance.OnMode1;
@@ -359,6 +547,18 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Mode3.started += instance.OnMode3;
                 @Mode3.performed += instance.OnMode3;
                 @Mode3.canceled += instance.OnMode3;
+                @Eliminate.started += instance.OnEliminate;
+                @Eliminate.performed += instance.OnEliminate;
+                @Eliminate.canceled += instance.OnEliminate;
+                @Rotate.started += instance.OnRotate;
+                @Rotate.performed += instance.OnRotate;
+                @Rotate.canceled += instance.OnRotate;
+                @Translate.started += instance.OnTranslate;
+                @Translate.performed += instance.OnTranslate;
+                @Translate.canceled += instance.OnTranslate;
+                @Directions.started += instance.OnDirections;
+                @Directions.performed += instance.OnDirections;
+                @Directions.canceled += instance.OnDirections;
             }
         }
     }
@@ -369,8 +569,13 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnPause(InputAction.CallbackContext context);
         void OnConfirm(InputAction.CallbackContext context);
         void OnSpace(InputAction.CallbackContext context);
+        void OnMode0(InputAction.CallbackContext context);
         void OnMode1(InputAction.CallbackContext context);
         void OnMode2(InputAction.CallbackContext context);
         void OnMode3(InputAction.CallbackContext context);
+        void OnEliminate(InputAction.CallbackContext context);
+        void OnRotate(InputAction.CallbackContext context);
+        void OnTranslate(InputAction.CallbackContext context);
+        void OnDirections(InputAction.CallbackContext context);
     }
 }
