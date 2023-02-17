@@ -132,6 +132,8 @@ public class InputManager : MonoBehaviour
     public static event RotateEv OnRotate;
     public delegate void TranslateEv(TranDir dir);
     public static event TranslateEv OnTranslate;
+    public delegate void ArrowPressedEv();
+    public static event ArrowPressedEv OnArrowPressed;
 
     private void EventSubscriber(bool subscribing = true)
     {
@@ -465,6 +467,10 @@ public class InputManager : MonoBehaviour
                         OnTranslate?.Invoke(TranDir.Bwd);
                 }
             }
-        }        
+            else
+            {
+                OnArrowPressed?.Invoke();
+            }
+        }
     }
 }
