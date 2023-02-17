@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Confirm",
+                    "name": "Enter",
                     "type": "Button",
                     "id": "d7f2e1bf-f429-4306-a30d-53d92f9885aa",
                     "expectedControlType": "Button",
@@ -139,23 +139,12 @@
                 },
                 {
                     "name": "",
-                    "id": "e5229d61-b9aa-4094-9aaa-97243394367b",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Confirm",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "1ca01cbf-bbc7-4131-a2ab-3cb19e566c96",
                     "path": "<Keyboard>/enter",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Confirm",
+                    "action": "Enter",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

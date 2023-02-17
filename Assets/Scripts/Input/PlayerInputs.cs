@@ -46,7 +46,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Confirm"",
+                    ""name"": ""Enter"",
                     ""type"": ""Button"",
                     ""id"": ""d7f2e1bf-f429-4306-a30d-53d92f9885aa"",
                     ""expectedControlType"": ""Button"",
@@ -161,23 +161,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""e5229d61-b9aa-4094-9aaa-97243394367b"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Confirm"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""1ca01cbf-bbc7-4131-a2ab-3cb19e566c96"",
                     ""path"": ""<Keyboard>/enter"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Confirm"",
+                    ""action"": ""Enter"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -377,7 +366,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Back = m_UI.FindAction("Back", throwIfNotFound: true);
         m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
-        m_UI_Confirm = m_UI.FindAction("Confirm", throwIfNotFound: true);
+        m_UI_Enter = m_UI.FindAction("Enter", throwIfNotFound: true);
         m_UI_Space = m_UI.FindAction("Space", throwIfNotFound: true);
         m_UI_Mode0 = m_UI.FindAction("Mode0", throwIfNotFound: true);
         m_UI_Mode1 = m_UI.FindAction("Mode1", throwIfNotFound: true);
@@ -448,7 +437,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private IUIActions m_UIActionsCallbackInterface;
     private readonly InputAction m_UI_Back;
     private readonly InputAction m_UI_Pause;
-    private readonly InputAction m_UI_Confirm;
+    private readonly InputAction m_UI_Enter;
     private readonly InputAction m_UI_Space;
     private readonly InputAction m_UI_Mode0;
     private readonly InputAction m_UI_Mode1;
@@ -464,7 +453,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public UIActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Back => m_Wrapper.m_UI_Back;
         public InputAction @Pause => m_Wrapper.m_UI_Pause;
-        public InputAction @Confirm => m_Wrapper.m_UI_Confirm;
+        public InputAction @Enter => m_Wrapper.m_UI_Enter;
         public InputAction @Space => m_Wrapper.m_UI_Space;
         public InputAction @Mode0 => m_Wrapper.m_UI_Mode0;
         public InputAction @Mode1 => m_Wrapper.m_UI_Mode1;
@@ -489,9 +478,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Pause.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPause;
                 @Pause.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPause;
                 @Pause.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPause;
-                @Confirm.started -= m_Wrapper.m_UIActionsCallbackInterface.OnConfirm;
-                @Confirm.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnConfirm;
-                @Confirm.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnConfirm;
+                @Enter.started -= m_Wrapper.m_UIActionsCallbackInterface.OnEnter;
+                @Enter.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnEnter;
+                @Enter.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnEnter;
                 @Space.started -= m_Wrapper.m_UIActionsCallbackInterface.OnSpace;
                 @Space.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnSpace;
                 @Space.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnSpace;
@@ -529,9 +518,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
-                @Confirm.started += instance.OnConfirm;
-                @Confirm.performed += instance.OnConfirm;
-                @Confirm.canceled += instance.OnConfirm;
+                @Enter.started += instance.OnEnter;
+                @Enter.performed += instance.OnEnter;
+                @Enter.canceled += instance.OnEnter;
                 @Space.started += instance.OnSpace;
                 @Space.performed += instance.OnSpace;
                 @Space.canceled += instance.OnSpace;
@@ -567,7 +556,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     {
         void OnBack(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
-        void OnConfirm(InputAction.CallbackContext context);
+        void OnEnter(InputAction.CallbackContext context);
         void OnSpace(InputAction.CallbackContext context);
         void OnMode0(InputAction.CallbackContext context);
         void OnMode1(InputAction.CallbackContext context);

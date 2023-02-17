@@ -118,6 +118,8 @@ public class InputManager : MonoBehaviour
     public static event ResumeEv OnResume;
     public delegate void BackEv();
     public static event BackEv OnBack;
+    public delegate void ConfirmEv();
+    public static event ConfirmEv OnConfirm;
     public delegate void TutorialPageEv(bool forward = true);
     public static event TutorialPageEv OnTutorialPageUpdate;
     public delegate void ChangeModeEv(Mode mode);
@@ -142,6 +144,7 @@ public class InputManager : MonoBehaviour
             inputs.UI.Back.started += OnBackPressed;
             inputs.UI.Pause.started += OnPausePressed;
             inputs.UI.Space.started += OnSpacePressed;
+            inputs.UI.Enter.started += OnEnterPressed;
             inputs.UI.Mode1.started += OnMode1Pressed;
             inputs.UI.Mode2.started += OnMode2Pressed;
             inputs.UI.Mode3.started += OnMode3Pressed;
@@ -162,6 +165,7 @@ public class InputManager : MonoBehaviour
             inputs.UI.Back.started -= OnBackPressed;
             inputs.UI.Pause.started -= OnPausePressed;
             inputs.UI.Space.started -= OnSpacePressed;
+            inputs.UI.Enter.started += OnEnterPressed;
             inputs.UI.Mode1.started -= OnMode1Pressed;
             inputs.UI.Mode2.started -= OnMode2Pressed;
             inputs.UI.Mode3.started -= OnMode3Pressed;
@@ -274,12 +278,29 @@ public class InputManager : MonoBehaviour
                 OnTutorialPageUpdate?.Invoke();
             }
             // Se sto giocando, seleziono cose
-            else if (isPlaying && mode == Mode.Edit && hoverObject)
+            else if (isPlaying)
             {
-                OnSelection?.Invoke();
+                if(mode == Mode.Edit && hoverObject)
+                {
+                    OnSelection?.Invoke();
 
-                objectSelected = true;
+                    objectSelected = true;
+                }
+                else
+                {
+                    OnConfirm?.Invoke();
+                }
             }
+        }
+    }
+
+    private void OnEnterPressed(InputAction.CallbackContext context)
+    {
+        Debug.Log($"{GetType().Name}.cs > ENTER or SPACEBAR Key pressed (context value as button {context.ReadValueAsButton()})");
+
+        if (isPlaying)
+        {
+            OnConfirm?.Invoke();
         }
     }
 
