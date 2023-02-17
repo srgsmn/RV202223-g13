@@ -7495,6 +7495,10 @@ MonoBehaviour:
   isPaused: 0
   isTutorial: 0
   mode: 0
+  objectSelected: 0
+  rotationSelected: 0
+  translationSelected: 0
+  hoverObject: 0
   evSysDetected: 0
   evSysPrefab: {fileID: 0}
 --- !u!4 &872441875
@@ -14194,8 +14198,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 33075478}
   m_HandleRect: {fileID: 33075477}
   m_Direction: 0
-  m_Value: -0.00000012584569
-  m_Size: 0.33103448
+  m_Value: -0.00000012584572
+  m_Size: 0.33103454
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -17307,8 +17311,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1824049030}
   m_HandleRect: {fileID: 1824049029}
   m_Direction: 0
-  m_Value: -0.00000012584567
-  m_Size: 0.33103445
+  m_Value: 0
+  m_Size: 0.33103448
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

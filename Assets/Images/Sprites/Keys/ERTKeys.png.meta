@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7911b0c9e5a1b405ab73ad4ec5b448be
+guid: ad0deb4b1a2134333917ffef3e4ac1ce
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -117,13 +117,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SpacebarKey_0
+      name: EKeys_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 640.5
-        height: 151
+        y: 300.6667
+        width: 128.5
+        height: 150.33333
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,20 +131,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e700b509376b147a7aa0c671bf01161c
-      internalID: -1694850491
+      spriteID: f942625e7b3b6446cb1f0aceaa1f594a
+      internalID: -867132446
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SpacebarKey_1
+      name: EKey_1
       rect:
         serializedVersion: 2
-        x: 640
-        y: 0
-        width: 640.5
-        height: 151
+        x: 128
+        y: 300.6667
+        width: 128.5
+        height: 150.33333
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,8 +152,92 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: af4e464bc08bc492b83f1289854c5ba9
-      internalID: 958837649
+      spriteID: 34effd5fd579243f88a1ac757851f00d
+      internalID: -235626955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RKey_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 150.66667
+        width: 128.5
+        height: 150.33333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f8bfaa12af514d1682cd8f999273ee4
+      internalID: -1759297947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RKey_1
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 150.66667
+        width: 128.5
+        height: 150.33333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c204bd9cf44db47c2bd41da0d28350c7
+      internalID: 1656364556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TKey_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0.66667175
+        width: 128.5
+        height: 150.33333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43f934a9e65274aa4b9c587c422726cb
+      internalID: -1687764646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TKey_1
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0.66667175
+        width: 128.5
+        height: 150.33333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70df274ebc52b4751b3674546efd9ca5
+      internalID: 1610205323
       vertices: []
       indices: 
       edges: []
@@ -161,7 +245,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: e3705e33ef9bc438ba5eb3dd938e7cd9
+    spriteID: dc2f8fe32b0cf49dab84e18eefa85388
     internalID: 0
     vertices: []
     indices: 
@@ -169,8 +253,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      SpacebarKey_0: -1694850491
-      SpacebarKey_1: 958837649
+      RKey_0: -1759297947
+      TKey_1: 1610205323
+      RKey_1: 1656364556
+      TKey_0: -1687764646
+      EKey_1: -235626955
+      EKeys_0: -867132446
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -280,7 +280,10 @@ public class InputManager : MonoBehaviour
             // Se sto giocando, seleziono cose
             else if (isPlaying)
             {
-                if(mode == Mode.Edit && hoverObject)
+                if (mode == Mode.EPSelector) {
+                    OnSelection?.Invoke();
+                }
+                else if(mode == Mode.Edit && hoverObject)
                 {
                     OnSelection?.Invoke();
 
@@ -296,7 +299,7 @@ public class InputManager : MonoBehaviour
 
     private void OnEnterPressed(InputAction.CallbackContext context)
     {
-        Debug.Log($"{GetType().Name}.cs > ENTER or SPACEBAR Key pressed (context value as button {context.ReadValueAsButton()})");
+        Debug.Log($"{GetType().Name}.cs > ENTER Key pressed (context value as button {context.ReadValueAsButton()})");
 
         if (isPlaying)
         {
