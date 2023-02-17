@@ -4,6 +4,31 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Utilities;
 
+/// <summary>
+/// Command list:
+/// [0] Endpoint selection mode     -> OnChangeMode(Utilities.Mode.EPSelector)
+///     [SPACE] Endpoint insertion  -> OnEPConfirm();   TODO
+///     
+/// [1] Navigation mode             -> OnChangeMode(Utilities.Mode.Nav)
+///     [W] Move forward            ->
+///     [S] Move backward
+///     [A] Steer left
+///     [D] Steer right
+///
+/// [2] Edit mode                   -> OnChangeMode(Utilities.Mode.Edit)
+///     [SPACE] Object selection
+///         [E] Eimination
+///         [R] Rotation
+///             [<-] Counterclockwise wrt z axis
+///             [->] Clockwise wrt z axis
+///         [T] Traslate
+///             [arrows] translation direction
+///
+/// [3] Plan mode                   -> OnChangeMode(Utilities.Mode.Plan)
+///     [arrows] Moving inside the inventory
+///     [SPACE] Devide Selection
+///     
+/// </summary>
 public class InputManager : MonoBehaviour
 {
     public static InputManager Instance;

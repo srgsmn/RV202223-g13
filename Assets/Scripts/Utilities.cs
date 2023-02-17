@@ -25,7 +25,10 @@ namespace Utilities
 
     public enum Mode
     {
-        Nav, Edit, Plan
+        EPSelector, // Endpoint selector
+        Nav,        // Navigation mode
+        Edit,       // Edit mode
+        Plan        // Plan mode
     }
 
     public enum AccItemType
