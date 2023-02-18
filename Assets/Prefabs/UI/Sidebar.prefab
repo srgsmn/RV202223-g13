@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8776548888811489186}
   - component: {fileID: 8101419437204049044}
+  - component: {fileID: 8534434411299737673}
   m_Layer: 5
   m_Name: sbButtons
   m_TagString: Untagged
@@ -63,6 +64,21 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
+--- !u!114 &8534434411299737673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3008914335465602657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b90fbd438c6c466e855ac968568482f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventSystem: {fileID: 0}
+  firstButton: {fileID: 0}
+  lastHovered: {fileID: 0}
 --- !u!1 &5816356230762518804
 GameObject:
   m_ObjectHideFlags: 0

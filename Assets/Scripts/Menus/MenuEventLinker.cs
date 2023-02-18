@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class MenuEventLinker : MonoBehaviour
 {
     [SerializeField][ReadOnlyInspector] EventSystem eventSystem;
-    [SerializeField][ReadOnlyInspector] Button firstButton;
+    [SerializeField][ReadOnlyInspector] Button firstButton, lastHovered;
 
     private void Awake()
     {
@@ -24,6 +24,20 @@ public class MenuEventLinker : MonoBehaviour
     private void OnEnable()
     {
         SetAsFirstButton(firstButton.gameObject);
+        lastHovered = firstButton;
+    }
+
+    private void Update()
+    {
+        if (eventSystem.currentSelectedGameObject == null)
+        {
+            SetAsFirstButton(lastHovered.gameObject);
+        }
+        else
+        {
+            if(lastHovered != eventSystem.currentSelectedGameObject.GetComponent<Button>())
+                lastHovered = eventSystem.currentSelectedGameObject.GetComponent<Button>();
+        }
     }
 
     private void OnDisable()
@@ -51,11 +65,11 @@ public class MenuEventLinker : MonoBehaviour
     {
         if (subscribing)
         {
-            InputManager.OnArrowPressed += OnButtonPressed;
+            //InputManager.OnArrowPressed += OnButtonPressed;
         }
         else
         {
-            InputManager.OnArrowPressed -= OnButtonPressed;
+            //InputManager.OnArrowPressed -= OnButtonPressed;
         }
     }
 

@@ -5,7 +5,7 @@ using Utilities;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Windows;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -33,6 +33,12 @@ public class GameManager : MonoBehaviour
     [SerializeField][ReadOnlyInspector] GameObject modeHUDPrefab;
     private GameObject modeHUDInstance;
 
+    /*
+    [Header("Event System:")]
+    [SerializeField][ReadOnlyInspector] EventSystem eventSystem;
+    [SerializeField][ReadOnlyInspector] GameObject selectedGO;
+    */
+
     public delegate void PauseEv(bool isPaused = true);
     public static event PauseEv OnPause;
     public delegate void StateChangedEv(SceneType type, SceneState state);
@@ -58,8 +64,17 @@ public class GameManager : MonoBehaviour
         if(tutorialPrefab == null)
             Debug.LogError($"{GetType().Name}.cs > Tutorial prefab is MISSING");
 
+        //eventSystem = EventSystem.current;
+
         EventsSubscriber();
     }
+
+    /*
+    private void Update()
+    {
+        //selectedGO = eventSystem.currentSelectedGameObject;
+    }
+    */
 
     private void OnDestroy()
     {
