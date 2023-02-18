@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utilities;
+using static UnityEngine.CullingGroup;
 
 /// <summary>
 /// Command list:
@@ -135,6 +136,17 @@ public class InputManager : MonoBehaviour
     public delegate void ArrowPressedEv();
     public static event ArrowPressedEv OnArrowPressed;
 
+    public delegate void MovementEv(Vector2 move);
+    public static event MovementEv OnMovementInput;
+    public delegate void PlayerCameraEv(Vector2 mouse);
+    public static event PlayerCameraEv OnPlayerCameraInput;
+    public delegate void FLCamMovementEv(Vector2 move);
+    public static event FLCamMovementEv OnFLCamMovement;
+    public delegate void FLCamLiftEv(float lift);
+    public static event FLCamLiftEv OnFLCamLifting;
+    public delegate void FLCamRotationEv(Vector2 move);
+    public static event FLCamRotationEv OnFLCamRotInput;
+
     private void EventSubscriber(bool subscribing = true)
     {
         if (subscribing)
@@ -151,12 +163,35 @@ public class InputManager : MonoBehaviour
             inputs.UI.Mode2.started += OnMode2Pressed;
             inputs.UI.Mode3.started += OnMode3Pressed;
 
+
             inputs.UI.Eliminate.started += OnEliminatePressed;
             inputs.UI.Rotate.started += OnRotatePressed;
             inputs.UI.Translate.started += OnTranslatePressed;
             inputs.UI.Directions.started += OnDirectionPressed;
             inputs.UI.Directions.performed += OnDirectionPressed;
             inputs.UI.Directions.canceled += OnDirectionPressed;
+
+            inputs.CharacterInput.Move.started += OnMovementInputPressed;
+            inputs.CharacterInput.Move.canceled += OnMovementInputPressed;
+            inputs.CharacterInput.Move.performed += OnMovementInputPressed;
+            inputs.CharacterInput.PlayerCamera.started += OnPlayerCameraMoved;
+            inputs.CharacterInput.PlayerCamera.canceled += OnPlayerCameraMoved;
+            inputs.CharacterInput.PlayerCamera.performed += OnPlayerCameraMoved;
+
+            inputs.FreeLookCamera.Movement.started += OnFLCamMoved;
+            inputs.FreeLookCamera.Movement.canceled += OnFLCamMoved;
+            inputs.FreeLookCamera.Movement.performed += OnFLCamMoved;
+
+            inputs.FreeLookCamera.Lift.started += OnFLCamLift;
+            inputs.FreeLookCamera.Lift.canceled += OnFLCamLift;
+            inputs.FreeLookCamera.Lift.performed += OnFLCamLift;
+
+            inputs.FreeLookCamera.Rotate.started += OnFLCamRotate;
+            inputs.FreeLookCamera.Rotate.canceled += OnFLCamRotate;
+            inputs.FreeLookCamera.Rotate.performed += OnFLCamRotate;
+
+            HotSpotSelection.OnWayPointSet+=NavModeStart;
+
         }
         else
         {
@@ -172,12 +207,35 @@ public class InputManager : MonoBehaviour
             inputs.UI.Mode2.started -= OnMode2Pressed;
             inputs.UI.Mode3.started -= OnMode3Pressed;
 
+
             inputs.UI.Eliminate.started -= OnEliminatePressed;
             inputs.UI.Rotate.started -= OnRotatePressed;
             inputs.UI.Translate.started -= OnTranslatePressed;
             inputs.UI.Directions.started -= OnDirectionPressed;
             inputs.UI.Directions.performed -= OnDirectionPressed;
             inputs.UI.Directions.canceled -= OnDirectionPressed;
+
+            inputs.CharacterInput.Move.started -= OnMovementInputPressed;
+            inputs.CharacterInput.Move.canceled -= OnMovementInputPressed;
+            inputs.CharacterInput.Move.performed -= OnMovementInputPressed;
+            inputs.CharacterInput.PlayerCamera.started -= OnPlayerCameraMoved;
+            inputs.CharacterInput.PlayerCamera.canceled -= OnPlayerCameraMoved;
+            inputs.CharacterInput.PlayerCamera.performed -= OnPlayerCameraMoved;
+
+            inputs.FreeLookCamera.Movement.started -= OnFLCamMoved;
+            inputs.FreeLookCamera.Movement.canceled -= OnFLCamMoved;
+            inputs.FreeLookCamera.Movement.performed -= OnFLCamMoved;
+
+            inputs.FreeLookCamera.Lift.started -= OnFLCamLift;
+            inputs.FreeLookCamera.Lift.canceled -= OnFLCamLift;
+            inputs.FreeLookCamera.Lift.performed -= OnFLCamLift;
+
+            inputs.FreeLookCamera.Rotate.started -= OnFLCamRotate;
+            inputs.FreeLookCamera.Rotate.canceled -= OnFLCamRotate;
+            inputs.FreeLookCamera.Rotate.performed -= OnFLCamRotate;
+
+            HotSpotSelection.OnWayPointSet-=NavModeStart;
+
         }
     }
 
@@ -471,6 +529,78 @@ public class InputManager : MonoBehaviour
             {
                 OnArrowPressed?.Invoke();
             }
+
+    private void OnMovementInputPressed(InputAction.CallbackContext context)
+    {
+
+        Vector2 movementInput;
+
+        if (isPlaying)
+        {
+            movementInput = context.ReadValue<Vector2>();
+
+            OnMovementInput?.Invoke(movementInput);
+        }
+    }
+
+    private void OnPlayerCameraMoved(InputAction.CallbackContext context)
+    {
+
+        Vector2 movementInput;
+
+        if (isPlaying)
+        {
+            movementInput = context.ReadValue<Vector2>();
+
+            OnPlayerCameraInput?.Invoke(movementInput);
+        }
+    }
+    private void OnFLCamMoved(InputAction.CallbackContext context)
+    {
+
+        Vector2 movementInput;
+
+        if (isPlaying)
+        {
+            movementInput = context.ReadValue<Vector2>();
+
+            OnFLCamMovement?.Invoke(movementInput);
+        }
+    }
+
+    private void OnFLCamLift(InputAction.CallbackContext context)
+    {
+        float liftInput;
+        
+        if (isPlaying)
+        {
+            liftInput = context.ReadValue<float>();
+
+            OnFLCamLifting?.Invoke(liftInput);
+        }
+    }
+
+    private void OnFLCamRotate(InputAction.CallbackContext context)
+    {
+        Vector2 movementInput;
+
+        if (isPlaying)
+        {
+            movementInput = context.ReadValue<Vector2>();
+
+            OnFLCamRotInput?.Invoke(movementInput);
+        }
+    }
+
+    private void NavModeStart(){
+        if (isPlaying)
+        {
+            Debug.Log($"{GetType().Name}.cs > State is PLAYING, entering navigation mode");
+
+            mode = Mode.Nav;
+
+            OnChangeMode?.Invoke(mode);
+
         }
     }
 }

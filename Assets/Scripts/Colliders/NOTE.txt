@@ -1,0 +1,4 @@
+Capire perché non si toglie il materiale
+Gestire materiali multipli
+Sistemare selezione gerarchia
+Gestire assegnazione rigidbody e controllo layer. Probabilmente meglio usare transform
