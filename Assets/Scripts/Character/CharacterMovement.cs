@@ -57,13 +57,12 @@ public class CharacterMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        _rigidbody.angularVelocity = Vector3.zero;
         if (_localMovement.y > 0.5f)
         {
             if (_startSpeed <= 0) _startSpeed = 0;
             if (_startSpeed < WalkSpeed)
             {
-                Debug.Log("Sto andando avanti");
+                //Debug.Log("Sto andando avanti");
                 //transform.Translate(gameObject.transform.forward * _startSpeed * Time.deltaTime);
                 _rigidbody.velocity = -_startSpeed * transform.forward;
                 _startSpeed += _startAccel * Time.deltaTime;

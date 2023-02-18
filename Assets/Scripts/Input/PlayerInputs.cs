@@ -236,6 +236,24 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TranslateFurniture"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""9ed9fa83-6793-4514-a34e-c1b95cd1650a"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateFurniture"",
+                    ""type"": ""Button"",
+                    ""id"": ""79d63508-15fb-4867-a04f-a657d83f239a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -304,6 +322,94 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""PlayerCamera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""IJKL"",
+                    ""id"": ""ff61e3be-7340-4e90-8289-51050e93127a"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TranslateFurniture"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""ec3df1f0-7ea0-4159-87fd-6c2b49af8ded"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TranslateFurniture"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""e7da9d3e-bf1c-4fb6-91d5-0e03fca6acbc"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TranslateFurniture"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""eaa45627-9919-43da-9ca1-526149ca9829"",
+                    ""path"": ""<Keyboard>/j"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TranslateFurniture"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""1afbf433-a8ab-481a-ac0f-2eafb8427668"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TranslateFurniture"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""RotateAntiClock"",
+                    ""id"": ""0ee195df-09be-4b14-b1b6-a52f67fabfb2"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateFurniture"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""55488ebc-10b1-4806-b633-794e274ee640"",
+                    ""path"": ""<Keyboard>/u"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateFurniture"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""283943a0-b2a9-4da7-af21-f37ff8348c95"",
+                    ""path"": ""<Keyboard>/o"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateFurniture"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -512,6 +618,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_CharacterInput = asset.FindActionMap("CharacterInput", throwIfNotFound: true);
         m_CharacterInput_Move = m_CharacterInput.FindAction("Move", throwIfNotFound: true);
         m_CharacterInput_PlayerCamera = m_CharacterInput.FindAction("PlayerCamera", throwIfNotFound: true);
+        m_CharacterInput_TranslateFurniture = m_CharacterInput.FindAction("TranslateFurniture", throwIfNotFound: true);
+        m_CharacterInput_RotateFurniture = m_CharacterInput.FindAction("RotateFurniture", throwIfNotFound: true);
         // FreeLookCamera
         m_FreeLookCamera = asset.FindActionMap("FreeLookCamera", throwIfNotFound: true);
         m_FreeLookCamera_Movement = m_FreeLookCamera.FindAction("Movement", throwIfNotFound: true);
@@ -659,12 +767,16 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private ICharacterInputActions m_CharacterInputActionsCallbackInterface;
     private readonly InputAction m_CharacterInput_Move;
     private readonly InputAction m_CharacterInput_PlayerCamera;
+    private readonly InputAction m_CharacterInput_TranslateFurniture;
+    private readonly InputAction m_CharacterInput_RotateFurniture;
     public struct CharacterInputActions
     {
         private @PlayerInputs m_Wrapper;
         public CharacterInputActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_CharacterInput_Move;
         public InputAction @PlayerCamera => m_Wrapper.m_CharacterInput_PlayerCamera;
+        public InputAction @TranslateFurniture => m_Wrapper.m_CharacterInput_TranslateFurniture;
+        public InputAction @RotateFurniture => m_Wrapper.m_CharacterInput_RotateFurniture;
         public InputActionMap Get() { return m_Wrapper.m_CharacterInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -680,6 +792,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @PlayerCamera.started -= m_Wrapper.m_CharacterInputActionsCallbackInterface.OnPlayerCamera;
                 @PlayerCamera.performed -= m_Wrapper.m_CharacterInputActionsCallbackInterface.OnPlayerCamera;
                 @PlayerCamera.canceled -= m_Wrapper.m_CharacterInputActionsCallbackInterface.OnPlayerCamera;
+                @TranslateFurniture.started -= m_Wrapper.m_CharacterInputActionsCallbackInterface.OnTranslateFurniture;
+                @TranslateFurniture.performed -= m_Wrapper.m_CharacterInputActionsCallbackInterface.OnTranslateFurniture;
+                @TranslateFurniture.canceled -= m_Wrapper.m_CharacterInputActionsCallbackInterface.OnTranslateFurniture;
+                @RotateFurniture.started -= m_Wrapper.m_CharacterInputActionsCallbackInterface.OnRotateFurniture;
+                @RotateFurniture.performed -= m_Wrapper.m_CharacterInputActionsCallbackInterface.OnRotateFurniture;
+                @RotateFurniture.canceled -= m_Wrapper.m_CharacterInputActionsCallbackInterface.OnRotateFurniture;
             }
             m_Wrapper.m_CharacterInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -690,6 +808,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @PlayerCamera.started += instance.OnPlayerCamera;
                 @PlayerCamera.performed += instance.OnPlayerCamera;
                 @PlayerCamera.canceled += instance.OnPlayerCamera;
+                @TranslateFurniture.started += instance.OnTranslateFurniture;
+                @TranslateFurniture.performed += instance.OnTranslateFurniture;
+                @TranslateFurniture.canceled += instance.OnTranslateFurniture;
+                @RotateFurniture.started += instance.OnRotateFurniture;
+                @RotateFurniture.performed += instance.OnRotateFurniture;
+                @RotateFurniture.canceled += instance.OnRotateFurniture;
             }
         }
     }
@@ -757,6 +881,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnPlayerCamera(InputAction.CallbackContext context);
+        void OnTranslateFurniture(InputAction.CallbackContext context);
+        void OnRotateFurniture(InputAction.CallbackContext context);
     }
     public interface IFreeLookCameraActions
     {

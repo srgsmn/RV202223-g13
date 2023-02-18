@@ -25,7 +25,8 @@ public class FurnitureSelection : MonoBehaviour
     private bool isEmpty;
     private bool _selectionToNav=false;
     private bool _moveToNav=false;
-
+    private Vector2 _localTranslation; // furniture
+    private float _localRotation; // furniture
 
     private Vector3 _originalPosition;
 
@@ -73,17 +74,19 @@ public class FurnitureSelection : MonoBehaviour
                     _selectionToNav=false;
                     _currentMode = e_mode.mode_navigation;
                 }
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetButtonDown("Space") /*GetKeyDown(KeyCode.Space)*/ )
                 {
                     if (_selected != null)
                     {
                         mesh_ex=_selected.TryGetComponent(typeof(Renderer),out Component mf);
+                        /*
                         if (mesh_ex){
                             //_active_rb = _selected.GetComponent<Rigidbody>();
                         }
                         else {
                             //_active_rb = _selected.transform.parent.gameObject.GetComponent<Rigidbody>();
                         }
+                        */
                         //_active_rb.isKinematic=false;
                         if (!IsStructural(_selected.name.ToLower()) && !IsFixed(_selected.name.ToLower())){
                             _originalPosition=_selected.transform.position;
@@ -105,7 +108,7 @@ public class FurnitureSelection : MonoBehaviour
                 }
                 break;
             case e_mode.mode_move:
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetButtonDown("Space"))
                 {   
 
                     if (_selected != null)
@@ -141,29 +144,33 @@ public class FurnitureSelection : MonoBehaviour
             case e_mode.mode_move:
                 Debug.Log("active object is  =" + _selected.name);
                 
-                if (Input.GetKey(KeyCode.I))
+                if (_localTranslation.y > 0.5)
                 {
                     _selected.transform.Translate(0.1f, 0, 0, Space.World);
                     //_active_rb.velocity = MoveSpeed * Vector3.forward;
                 }
-                else if (Input.GetKey(KeyCode.K))
+                else if (_localTranslation.y < 0.5)
                 {
                     _selected.transform.Translate(-0.1f, 0, 0, Space.World);
                     //_active_rb.velocity = -MoveSpeed * Vector3.forward;
                 }
-                else if (Input.GetKey(KeyCode.J))
+                else if (_localTranslation.x < 0.5)
                 {
                     _selected.transform.Translate(0, 0, -0.1f, Space.World);
                     //_active_rb.velocity = MoveSpeed * Vector3.left;
                 }
-                else if (Input.GetKey(KeyCode.L))
+                else if (_localTranslation.x > 0.5)
                 {   
                     _selected.transform.Translate(0, 0, 0.1f, Space.World);
                     //_active_rb.velocity = -MoveSpeed * Vector3.left;
                 }
-                else
+                else if(_localRotation > 0.5)
                 {
                     //_active_rb.velocity = Vector3.zero;
+                    _selected.transform.Rotate(0f, 1f, 0f);
+                } else if(_localRotation < 0.5)
+                {
+                    _selected.transform.Rotate(0f, -1f, 0f);
                 }
                 break;
             case e_mode.mode_navigation: case e_mode.mode_selection: default: break;
@@ -285,12 +292,25 @@ public class FurnitureSelection : MonoBehaviour
         }
     }
 
+    private void ApplyTranslation(Vector2 delta) 
+    {
+        _localTranslation = delta;
+    }
+    private void ApplyRotation(float delta)
+    {
+        _localRotation = delta;
+    }
+
     private void Awake(){
-        InputManager.OnChangeMode+=ChangeMode;
+        InputManager.OnChangeMode += ChangeMode;
+        InputManager.OnFurnitureTranslation += ApplyTranslation;
+        InputManager.OnFurnitureRotation += ApplyRotation;
         //InputManager.OnBack+=
     }
     private void OnDestroy(){
-        InputManager.OnChangeMode-=ChangeMode;
+        InputManager.OnChangeMode -= ChangeMode;
+        InputManager.OnFurnitureTranslation -= ApplyTranslation;
+        InputManager.OnFurnitureRotation -= ApplyRotation;
         //InputManager.OnBack-=
     }
 }
