@@ -529,6 +529,8 @@ public class InputManager : MonoBehaviour
             {
                 OnArrowPressed?.Invoke();
             }
+        }
+    }
 
     private void OnMovementInputPressed(InputAction.CallbackContext context)
     {
