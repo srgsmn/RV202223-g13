@@ -3,17 +3,14 @@
  *      https://answers.unity.com/questions/1397703/system-io-file-directory-problem.html
  *      
  */
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
-using System.Data;
 using Utilities;
 
 public class FileManager : MonoBehaviour
 {
-    [System.Serializable]
+    [Serializable]
     public class ExampleClass
     {
         public int exInt;
