@@ -32,7 +32,7 @@ public class FreeLookCamera : MonoBehaviour
     /// <summary>
     /// Sensitivity for free look.
     /// </summary>
-    public float freeLookSensitivity = 3f;
+    public float freeLookSensitivity = 0.7f;
 
     /// <summary>
     /// Amount to zoom the camera when using the mouse wheel.

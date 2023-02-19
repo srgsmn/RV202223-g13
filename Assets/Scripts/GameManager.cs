@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
 
         tutorialPrefab = Resources.Load(PREFABS.TUTORIAL) as GameObject;
         pauseMenuPrefab = Resources.Load(PREFABS.PAUSE) as GameObject;
-        modeHUDPrefab = Resources.Load(PREFABS.MODE) as GameObject;
+        modeHUDPrefab = Resources.Load(PREFABS.HUD) as GameObject;
         finalePrefab = Resources.Load(PREFABS.FINALE) as GameObject;
 
         if (tutorialPrefab == null)

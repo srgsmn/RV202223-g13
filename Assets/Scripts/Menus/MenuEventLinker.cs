@@ -16,12 +16,12 @@ public class MenuEventLinker : MonoBehaviour
         EventsSubscriber();
     }
 
-    private void Start()
+    private void OnEnable()
     {
         FindFirstButton();
     }
 
-    private void OnEnable()
+    private void Start()
     {
         SetAsFirstButton(firstButton.gameObject);
         lastHovered = firstButton;
