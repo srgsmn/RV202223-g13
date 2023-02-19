@@ -216,7 +216,7 @@ public class InputManager : MonoBehaviour
             inputs.UI.Back.started -= OnBackPressed;
             inputs.UI.Pause.started -= OnPausePressed;
             inputs.UI.Space.started -= OnSpacePressed;
-            inputs.UI.Enter.started += OnEnterPressed;
+            inputs.UI.Enter.started -= OnEnterPressed;
             inputs.UI.Mode1.started -= OnMode1Pressed;
             inputs.UI.Mode2.started -= OnMode2Pressed;
             inputs.UI.Mode3.started -= OnMode3Pressed;

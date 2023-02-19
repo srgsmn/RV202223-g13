@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Utilities;
@@ -22,6 +21,7 @@ public class HUDManager : MonoBehaviour
 
     [Header("Other UI elements:")]
     [SerializeField] Image frame;
+    [SerializeField] Image vf;
     [SerializeField] Image MsgsBg, TipsBg, InventoryBg;
     [SerializeField][ReadOnlyInspector] Color32 EPColor = new Color32(55, 215, 250, 255);
     [SerializeField][ReadOnlyInspector] Color32 NavColor = new Color32(235, 250, 255, 255);
@@ -63,6 +63,7 @@ public class HUDManager : MonoBehaviour
             InputManager.OnRotate += OnRotate;
             InputManager.OnTranslate += OnTranslate;
             InputManager.OnBack += CancelAction;
+            InputManager.OnConfirm += ConfirmAction;
         }
         else
         {
@@ -71,7 +72,12 @@ public class HUDManager : MonoBehaviour
             InputManager.OnRotate -= OnRotate;
             InputManager.OnTranslate -= OnTranslate;
             InputManager.OnBack -= CancelAction;
+            InputManager.OnConfirm -= ConfirmAction;
         }
+    }
+
+    private void SetVFActive(bool flag = true) {
+        vf.gameObject.SetActive(flag);
     }
 
     private void ChangeMode(Mode mode)
@@ -79,6 +85,11 @@ public class HUDManager : MonoBehaviour
         Debug.Log($"{GetType().Name}.cs > CHANGING mode to {mode}");
 
         activeMode = mode;
+
+        if (activeMode == Mode.Edit)
+        {
+            SetVFActive();
+        }
 
         ChangeColors(mode);
         DisplayMessage(mode);
@@ -99,7 +110,6 @@ public class HUDManager : MonoBehaviour
     private void ResetTips()
     {
         Debug.Log($"{GetType().Name}.cs > RESET tips and inventory");
-
     }
 
     private void ChangeColors(Mode mode)
@@ -131,6 +141,7 @@ public class HUDManager : MonoBehaviour
 
         if (mode != Mode.Nav)
             frame.color = color;
+
         MsgsBg.color = color;
         TipsBg.color = color;
     }
@@ -225,6 +236,8 @@ public class HUDManager : MonoBehaviour
             case Mode.Edit:
                 buff = EditTips[1];
 
+                SetVFActive(false);
+
                 break;
 
             case Mode.Plan:
@@ -264,6 +277,18 @@ public class HUDManager : MonoBehaviour
     private void CancelAction()
     {
         ChangeMode(activeMode);
+    }
+
+    private void ConfirmAction()
+    {
+        switch (activeMode)
+        {
+            case Mode.Edit:
+
+                ChangeMode(Mode.Edit);
+
+                break;
+        }
     }
     /*
     private void ActivateInventory()
