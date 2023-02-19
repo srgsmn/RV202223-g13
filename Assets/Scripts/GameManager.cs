@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField][ReadOnlyInspector] SceneType activeScene;
     [SerializeField][ReadOnlyInspector] public int sceneIndex = 0;
     [SerializeField][ReadOnlyInspector] SceneState state;
+    [SerializeField][ReadOnlyInspector] string sessionTimestamp;
     [SerializeField][ReadOnlyInspector] string sessionID;
 
     [Header("Loading:")]
@@ -195,7 +196,7 @@ public class GameManager : MonoBehaviour
             ShowHUD();
             ShowTutorial();
 
-            SetSessionID();
+            SetSessionData();
         }
     }
 
@@ -308,9 +309,15 @@ public class GameManager : MonoBehaviour
         OnSceneUpdate?.Invoke(activeScene, state);
     }
 
-    private void SetSessionID()
+    private void SetSessionData()
     {
-        sessionID = DateTime.Now.ToString("yyyy-MM-dd-HH-mmss").Replace("-", "");
+        sessionTimestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        sessionID = DateTime.Now.ToString("yyyy-MM-dd HH-mmss").Replace("-", "").Replace(":","").Replace(" ", "");
+    }
+
+    public string GetSessionTimestamp()
+    {
+        return sessionTimestamp;
     }
 
     public string GetSessionID()
