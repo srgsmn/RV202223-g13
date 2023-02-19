@@ -70,6 +70,7 @@ GameObject:
   - component: {fileID: 2188027412392716393}
   - component: {fileID: 2188027412392716395}
   - component: {fileID: 2188027412392716392}
+  - component: {fileID: 6989647355433444983}
   m_Layer: 5
   m_Name: AlertPanel
   m_TagString: Untagged
@@ -139,6 +140,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6989647355433444983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2188027412392716406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b90fbd438c6c466e855ac968568482f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventSystem: {fileID: 0}
+  firstButton: {fileID: 0}
+  lastHovered: {fileID: 0}
 --- !u!1 &2188027412944349436
 GameObject:
   m_ObjectHideFlags: 0
