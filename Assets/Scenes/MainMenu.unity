@@ -231,6 +231,7 @@ MonoBehaviour:
   activeScene: 0
   sceneIndex: 0
   state: 0
+  sessionTimestamp: 
   sessionID: 
   isLoading: 0
   tutorialPrefab: {fileID: 470832742217394522, guid: e647a07fa6bed4802b65739599569b40, type: 3}
@@ -12185,7 +12186,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: d141638dcd7bf483e8983862f88b9cc2, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12194,7 +12195,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 0.25
 --- !u!222 &1509243922
 CanvasRenderer:
   m_ObjectHideFlags: 0
