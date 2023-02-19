@@ -1415,6 +1415,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventSystem: {fileID: 0}
   firstButton: {fileID: 0}
+  lastHovered: {fileID: 0}
 --- !u!1 &5624403257254113198
 GameObject:
   m_ObjectHideFlags: 0
@@ -2597,10 +2598,18 @@ MonoBehaviour:
   MsgsBg: {fileID: 5006951486430869296}
   TipsBg: {fileID: 1954778331359153293}
   InventoryBg: {fileID: 4751499029455091703}
-  EPColor: {r: 0, g: 0, b: 0, a: 1}
-  NavColor: {r: 0, g: 1, b: 0, a: 1}
-  EditColor: {r: 1, g: 0, b: 0, a: 1}
-  PlanColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  EPColor:
+    serializedVersion: 2
+    rgba: 4294629175
+  NavColor:
+    serializedVersion: 2
+    rgba: 4294965995
+  EditColor:
+    serializedVersion: 2
+    rgba: 4280832245
+  PlanColor:
+    serializedVersion: 2
+    rgba: 4283486720
 --- !u!1 &6846082121306095212
 GameObject:
   m_ObjectHideFlags: 0

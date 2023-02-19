@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField][ReadOnlyInspector] SceneType activeScene;
     [SerializeField][ReadOnlyInspector] public int sceneIndex = 0;
     [SerializeField][ReadOnlyInspector] SceneState state;
+    [SerializeField][ReadOnlyInspector] string sessionID;
 
     [Header("Loading:")]
     [SerializeField][ReadOnlyInspector] bool isLoading = false;
@@ -32,6 +34,10 @@ public class GameManager : MonoBehaviour
     [Header("Mode HUD:")]
     [SerializeField][ReadOnlyInspector] GameObject modeHUDPrefab;
     private GameObject modeHUDInstance;
+
+    [Header("Mode HUD:")]
+    [SerializeField][ReadOnlyInspector] GameObject finalePrefab;
+    private GameObject finaleInstance;
 
     /*
     [Header("Event System:")]
@@ -60,8 +66,9 @@ public class GameManager : MonoBehaviour
         tutorialPrefab = Resources.Load(PREFABS.TUTORIAL) as GameObject;
         pauseMenuPrefab = Resources.Load(PREFABS.PAUSE) as GameObject;
         modeHUDPrefab = Resources.Load(PREFABS.MODE) as GameObject;
+        finalePrefab = Resources.Load(PREFABS.FINALE) as GameObject;
 
-        if(tutorialPrefab == null)
+        if (tutorialPrefab == null)
             Debug.LogError($"{GetType().Name}.cs > Tutorial prefab is MISSING");
 
         //eventSystem = EventSystem.current;
@@ -185,12 +192,14 @@ public class GameManager : MonoBehaviour
         // Check index for tutorial
         if (sceneIndex > 1)
         {
-            ShowModeHUD();
+            ShowHUD();
             ShowTutorial();
+
+            SetSessionID();
         }
     }
 
-    private void ShowModeHUD()
+    private void ShowHUD()
     {
         modeHUDInstance = Instantiate(modeHUDPrefab);
     }
@@ -205,6 +214,8 @@ public class GameManager : MonoBehaviour
 
         state = SceneState.Tutorial;
 
+        Time.timeScale = 0;
+
         OnSceneUpdate?.Invoke(activeScene, state);
     }
 
@@ -216,7 +227,15 @@ public class GameManager : MonoBehaviour
 
         state = SceneState.Playing;
 
+        Time.timeScale = 1;
+
         OnSceneUpdate?.Invoke(activeScene, state);
+    }
+
+    private void ShowEndScreen()
+    {
+        modeHUDInstance.SetActive(false);
+        finaleInstance = Instantiate(finalePrefab);
     }
 
     public void ShowMainMenu()
@@ -226,6 +245,21 @@ public class GameManager : MonoBehaviour
         DisplayScene(SceneType.MainMenu);
 
         OnSceneUpdate?.Invoke(activeScene, state);
+    }
+
+    public void EndsGame()
+    {
+        if (state == SceneState.Playing)
+        {
+            state = SceneState.Endgame;
+
+            ShowEndScreen();
+        }
+    }
+
+    public void ReloadScene()
+    {
+        DisplayScene(activeScene);
     }
 
     private void OnPauseInput()
@@ -267,6 +301,16 @@ public class GameManager : MonoBehaviour
         }
 
         OnSceneUpdate?.Invoke(activeScene, state);
+    }
+
+    private void SetSessionID()
+    {
+        sessionID = DateTime.Now.ToString("yyyy-MM-dd-HH-mmss").Replace("-", "");
+    }
+
+    public string GetSessionID()
+    {
+        return sessionID;
     }
 
     /// <summary>
