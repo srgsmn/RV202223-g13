@@ -95,6 +95,8 @@ public class InputManager : MonoBehaviour
     public static event FLCamLiftEv OnFLCamLifting;
     public delegate void FLCamRotationEv(Vector2 move);
     public static event FLCamRotationEv OnFLCamRotInput;
+    public delegate void FLCamZoomEv(float zoom);
+    public static event FLCamZoomEv OnFLCamZoomInput;
     public delegate void FurnitureTraslationEv(Vector2 move);
     public static event FurnitureTraslationEv OnFurnitureTranslation;
     public delegate void FurnitureRotationEv(float rotate);
@@ -131,14 +133,15 @@ public class InputManager : MonoBehaviour
             inputs.FreeLookCamera.Movement.started += OnFLCamMoved;
             inputs.FreeLookCamera.Movement.canceled += OnFLCamMoved;
             inputs.FreeLookCamera.Movement.performed += OnFLCamMoved;
-
             inputs.FreeLookCamera.Lift.started += OnFLCamLift;
             inputs.FreeLookCamera.Lift.canceled += OnFLCamLift;
             inputs.FreeLookCamera.Lift.performed += OnFLCamLift;
-
             inputs.FreeLookCamera.Rotate.started += OnFLCamRotate;
             inputs.FreeLookCamera.Rotate.canceled += OnFLCamRotate;
             inputs.FreeLookCamera.Rotate.performed += OnFLCamRotate;
+            inputs.FreeLookCamera.Zoom.started += OnFLCamZoom;
+            inputs.FreeLookCamera.Zoom.canceled += OnFLCamZoom;
+            inputs.FreeLookCamera.Zoom.performed += OnFLCamZoom;
 
 
             HotSpotSelection.OnWayPointSet+=NavModeStart;
@@ -414,6 +417,18 @@ public class InputManager : MonoBehaviour
             movementInput = context.ReadValue<Vector2>();
 
             OnFLCamRotInput?.Invoke(movementInput);
+        }
+    }
+
+    private void OnFLCamZoom(InputAction.CallbackContext context)
+    {
+        float zoomInput;
+
+        if (isPlaying)
+        {
+            zoomInput = context.ReadValue<float>();
+
+            OnFLCamZoomInput?.Invoke(zoomInput);
         }
     }
 

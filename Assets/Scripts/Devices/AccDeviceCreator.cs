@@ -185,11 +185,10 @@ public class AccDeviceCreator : MonoBehaviour
                                 {
                                     slope = 100f;
                                 }
+                                Debug.Log("Pendenza: " + slope);
 
                                 if (slope < 0.10)
                                 {
-                                    Debug.Log(_doorClosest.name);
-
                                     _wpRND = _ramp_pf.GetComponentsInChildren<Renderer>();
                                     foreach (Renderer x in _wpRND)
                                     {

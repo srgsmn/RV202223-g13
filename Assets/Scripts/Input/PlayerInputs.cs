@@ -443,6 +443,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Zoom"",
+                    ""type"": ""Button"",
+                    ""id"": ""9141d743-831c-46f5-9e82-b5aa080f0caa"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -599,6 +608,39 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""MouseScroll"",
+                    ""id"": ""f56cd219-7398-4902-9a87-70e023211ed5"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""3343325c-e29e-4ba4-841b-8192fb9c1295"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""cdc2bed7-26fc-41f1-afcb-a31412d00419"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -625,6 +667,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_FreeLookCamera_Movement = m_FreeLookCamera.FindAction("Movement", throwIfNotFound: true);
         m_FreeLookCamera_Lift = m_FreeLookCamera.FindAction("Lift", throwIfNotFound: true);
         m_FreeLookCamera_Rotate = m_FreeLookCamera.FindAction("Rotate", throwIfNotFound: true);
+        m_FreeLookCamera_Zoom = m_FreeLookCamera.FindAction("Zoom", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -825,6 +868,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_FreeLookCamera_Movement;
     private readonly InputAction m_FreeLookCamera_Lift;
     private readonly InputAction m_FreeLookCamera_Rotate;
+    private readonly InputAction m_FreeLookCamera_Zoom;
     public struct FreeLookCameraActions
     {
         private @PlayerInputs m_Wrapper;
@@ -832,6 +876,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_FreeLookCamera_Movement;
         public InputAction @Lift => m_Wrapper.m_FreeLookCamera_Lift;
         public InputAction @Rotate => m_Wrapper.m_FreeLookCamera_Rotate;
+        public InputAction @Zoom => m_Wrapper.m_FreeLookCamera_Zoom;
         public InputActionMap Get() { return m_Wrapper.m_FreeLookCamera; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -850,6 +895,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Rotate.started -= m_Wrapper.m_FreeLookCameraActionsCallbackInterface.OnRotate;
                 @Rotate.performed -= m_Wrapper.m_FreeLookCameraActionsCallbackInterface.OnRotate;
                 @Rotate.canceled -= m_Wrapper.m_FreeLookCameraActionsCallbackInterface.OnRotate;
+                @Zoom.started -= m_Wrapper.m_FreeLookCameraActionsCallbackInterface.OnZoom;
+                @Zoom.performed -= m_Wrapper.m_FreeLookCameraActionsCallbackInterface.OnZoom;
+                @Zoom.canceled -= m_Wrapper.m_FreeLookCameraActionsCallbackInterface.OnZoom;
             }
             m_Wrapper.m_FreeLookCameraActionsCallbackInterface = instance;
             if (instance != null)
@@ -863,6 +911,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Rotate.started += instance.OnRotate;
                 @Rotate.performed += instance.OnRotate;
                 @Rotate.canceled += instance.OnRotate;
+                @Zoom.started += instance.OnZoom;
+                @Zoom.performed += instance.OnZoom;
+                @Zoom.canceled += instance.OnZoom;
             }
         }
     }
@@ -889,5 +940,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnLift(InputAction.CallbackContext context);
         void OnRotate(InputAction.CallbackContext context);
+        void OnZoom(InputAction.CallbackContext context);
     }
 }

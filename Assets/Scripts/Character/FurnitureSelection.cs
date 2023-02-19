@@ -29,18 +29,19 @@ public class FurnitureSelection : MonoBehaviour
     private float _localRotation; // furniture
 
     private Vector3 _originalPosition;
+    private float _originalRotation;
 
     #region GESTIONE_REPORT
     // posizione in cui trovi l'oggetto da spostare:
 
-    public delegate void TranslateFurniture(string pickedFurniture, Vector3 translation);
+    public delegate void TranslateFurniture(string pickedFurniture, Vector3 translation, float rotation);
     public static event TranslateFurniture OnFurnitureTranslation;
 
 
     // da inserire quando posi l'oggetto
     void LeaveFurniture()
     {
-        OnFurnitureTranslation?.Invoke(_selected.name, _selected.transform.position - _originalPosition);
+        OnFurnitureTranslation?.Invoke(_selected.name, _selected.transform.position - _originalPosition, _originalRotation);
     }
     #endregion
 
@@ -88,8 +89,10 @@ public class FurnitureSelection : MonoBehaviour
                         }
                         */
                         //_active_rb.isKinematic=false;
-                        if (!IsStructural(_selected.name.ToLower()) && !IsFixed(_selected.name.ToLower())){
-                            _originalPosition=_selected.transform.position;
+                        //if (!IsStructural(_selected.name.ToLower()) && !IsFixed(_selected.name.ToLower())){
+                        if (!CheckFixed(_selected)){
+                        _originalPosition = _selected.transform.position;
+                            _originalRotation = _selected.transform.rotation.y;
                             _currentMode = e_mode.mode_move;
                         }
                     }
@@ -149,12 +152,12 @@ public class FurnitureSelection : MonoBehaviour
                     _selected.transform.Translate(0.1f, 0, 0, Space.World);
                     //_active_rb.velocity = MoveSpeed * Vector3.forward;
                 }
-                else if (_localTranslation.y < 0.5)
+                else if (_localTranslation.y < -0.5)
                 {
                     _selected.transform.Translate(-0.1f, 0, 0, Space.World);
                     //_active_rb.velocity = -MoveSpeed * Vector3.forward;
                 }
-                else if (_localTranslation.x < 0.5)
+                else if (_localTranslation.x < -0.5)
                 {
                     _selected.transform.Translate(0, 0, -0.1f, Space.World);
                     //_active_rb.velocity = MoveSpeed * Vector3.left;
@@ -168,7 +171,7 @@ public class FurnitureSelection : MonoBehaviour
                 {
                     //_active_rb.velocity = Vector3.zero;
                     _selected.transform.Rotate(0f, 1f, 0f);
-                } else if(_localRotation < 0.5)
+                } else if(_localRotation < -0.5)
                 {
                     _selected.transform.Rotate(0f, -1f, 0f);
                 }
