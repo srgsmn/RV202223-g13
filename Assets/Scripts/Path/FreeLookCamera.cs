@@ -132,7 +132,7 @@ public class FreeLookCamera : MonoBehaviour
         //if (axis != 0)
         if(_localZoom > 0)
         {
-            var zoomSensitivity = fastMode ? this.fastZoomSensitivity : this.zoomSensitivity;
+            var zoomSensitivity = this.zoomSensitivity;
             transform.position = transform.position + transform.forward * _localZoom * zoomSensitivity;
         }
 
