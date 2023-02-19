@@ -231,12 +231,14 @@ MonoBehaviour:
   activeScene: 0
   sceneIndex: 0
   state: 0
+  sessionID: 
   isLoading: 0
   tutorialPrefab: {fileID: 470832742217394522, guid: e647a07fa6bed4802b65739599569b40, type: 3}
   tutorialOn: 0
   pauseMenuPrefab: {fileID: 0}
   isPaused: 0
   modeHUDPrefab: {fileID: 0}
+  finalePrefab: {fileID: 0}
 --- !u!4 &22575049
 Transform:
   m_ObjectHideFlags: 0
@@ -1230,7 +1232,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1084750939011375545, guid: 66af715b2cb4b45f9915964f3962e511, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66af715b2cb4b45f9915964f3962e511, type: 3}

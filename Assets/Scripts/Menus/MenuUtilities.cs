@@ -36,7 +36,7 @@ namespace MenuUtilities
 
     public enum PauseMenuAction
     {
-        None, Resume, Tutorial, Main, Quit
+        None, Resume, Tutorial, Main, Quit, Restart
     }
 
     public enum PopUpOpt

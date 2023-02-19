@@ -247,6 +247,11 @@ public class GameManager : MonoBehaviour
         OnSceneUpdate?.Invoke(activeScene, state);
     }
 
+    public void RestartScene()
+    {
+        DisplayScene(activeScene);
+    }
+
     public void EndsGame()
     {
         if (state == SceneState.Playing)

@@ -21,6 +21,7 @@ public class FileManager : MonoBehaviour
 
     public void SaveReport()
     {
+        /*
         string path = EditorUtility.SaveFolderPanel("Save the report to folder...", "", "");
 
         if (path.Length != 0)
@@ -35,7 +36,8 @@ public class FileManager : MonoBehaviour
 
             writer.WriteLine("Distanza totale: " + _totalDistance + "; \n");
             writer.Close();
-            */
+            
         }
+        */
     }
 }

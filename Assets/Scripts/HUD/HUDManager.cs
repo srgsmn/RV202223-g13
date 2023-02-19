@@ -90,6 +90,10 @@ public class HUDManager : MonoBehaviour
         {
             SetVFActive();
         }
+        else
+        {
+            SetVFActive(false);
+        }
 
         ChangeColors(mode);
         DisplayMessage(mode);
@@ -190,6 +194,11 @@ public class HUDManager : MonoBehaviour
 
     private void DisplayTips(Mode mode)
     {
+        if (activeTip != null)
+        {
+            activeTip.SetActive(false);
+        }
+
         if (mode != Mode.Plan)
         {
             TipsBg.gameObject.SetActive(true);
