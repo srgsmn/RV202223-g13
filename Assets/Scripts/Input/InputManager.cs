@@ -146,6 +146,12 @@ public class InputManager : MonoBehaviour
     public static event FLCamLiftEv OnFLCamLifting;
     public delegate void FLCamRotationEv(Vector2 move);
     public static event FLCamRotationEv OnFLCamRotInput;
+    public delegate void FLCamZoomEv(float zoom);
+    public static event FLCamZoomEv OnFLCamZoomInput;
+    public delegate void FurnitureTraslationEv(Vector2 move);
+    public static event FurnitureTraslationEv OnFurnitureTranslation;
+    public delegate void FurnitureRotationEv(float rotate);
+    public static event FurnitureRotationEv OnFurnitureRotation;
 
     private void EventSubscriber(bool subscribing = true)
     {
@@ -177,18 +183,26 @@ public class InputManager : MonoBehaviour
             inputs.CharacterInput.PlayerCamera.started += OnPlayerCameraMoved;
             inputs.CharacterInput.PlayerCamera.canceled += OnPlayerCameraMoved;
             inputs.CharacterInput.PlayerCamera.performed += OnPlayerCameraMoved;
+            inputs.CharacterInput.TranslateFurniture.started += OnFurnitureTranslationPressed;
+            inputs.CharacterInput.TranslateFurniture.canceled += OnFurnitureTranslationPressed;
+            inputs.CharacterInput.TranslateFurniture.performed += OnFurnitureTranslationPressed;
+            inputs.CharacterInput.RotateFurniture.started += OnFurnitureRotationPressed;
+            inputs.CharacterInput.RotateFurniture.canceled += OnFurnitureRotationPressed;
+            inputs.CharacterInput.RotateFurniture.performed += OnFurnitureRotationPressed;
 
             inputs.FreeLookCamera.Movement.started += OnFLCamMoved;
             inputs.FreeLookCamera.Movement.canceled += OnFLCamMoved;
             inputs.FreeLookCamera.Movement.performed += OnFLCamMoved;
-
             inputs.FreeLookCamera.Lift.started += OnFLCamLift;
             inputs.FreeLookCamera.Lift.canceled += OnFLCamLift;
             inputs.FreeLookCamera.Lift.performed += OnFLCamLift;
-
             inputs.FreeLookCamera.Rotate.started += OnFLCamRotate;
             inputs.FreeLookCamera.Rotate.canceled += OnFLCamRotate;
             inputs.FreeLookCamera.Rotate.performed += OnFLCamRotate;
+            inputs.FreeLookCamera.Zoom.started += OnFLCamZoom;
+            inputs.FreeLookCamera.Zoom.canceled += OnFLCamZoom;
+            inputs.FreeLookCamera.Zoom.performed += OnFLCamZoom;
+
 
             HotSpotSelection.OnWayPointSet+=NavModeStart;
 
@@ -545,6 +559,30 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    private void OnFurnitureTranslationPressed(InputAction.CallbackContext context)
+    {
+        Vector2 movementInput;
+
+        if (isPlaying)
+        {
+            movementInput = context.ReadValue<Vector2>();
+
+            OnFurnitureTranslation?.Invoke(movementInput);
+        }
+    }
+
+    private void OnFurnitureRotationPressed(InputAction.CallbackContext context)
+    {
+        float rotationInput;
+
+        if (isPlaying)
+        {
+            rotationInput = context.ReadValue<float>();
+
+            OnFurnitureRotation?.Invoke(rotationInput);
+        }
+    }
+
     private void OnPlayerCameraMoved(InputAction.CallbackContext context)
     {
 
@@ -591,6 +629,18 @@ public class InputManager : MonoBehaviour
             movementInput = context.ReadValue<Vector2>();
 
             OnFLCamRotInput?.Invoke(movementInput);
+        }
+    }
+
+    private void OnFLCamZoom(InputAction.CallbackContext context)
+    {
+        float zoomInput;
+
+        if (isPlaying)
+        {
+            zoomInput = context.ReadValue<float>();
+
+            OnFLCamZoomInput?.Invoke(zoomInput);
         }
     }
 

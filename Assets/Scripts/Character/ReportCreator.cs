@@ -11,18 +11,26 @@ public class ReportCreator : MonoBehaviour
         public Vector3 position;
     }
 
+    public struct RotoTranslation
+    {
+        public Vector3 translation;
+        public float rotation;
+    }
+
     private List<string> _allRecords;
-    private float _totalDistance = 0f;
+    private float _totalDistance;
     private List<Collision> _allCollisions;
-    private Dictionary<string, Vector3> _allTranslations;
+    private Dictionary<string, RotoTranslation> _allTranslations;
     private List<AccDevicePlacement> _allAccDevices;
     
     // Start is called before the first frame update
     void Awake()
     {
-        _allCollisions = new List<Collision>();
-        _allTranslations = new Dictionary<string, Vector3>();
         _allRecords = new List<string>();
+        _totalDistance = 0f;
+        _allCollisions = new List<Collision>();
+        _allTranslations = new Dictionary<string, RotoTranslation>();
+        _allAccDevices = new List<AccDevicePlacement>();
     }
 
     void AddDistance(float distance)
@@ -49,16 +57,22 @@ public class ReportCreator : MonoBehaviour
         
     }
 
-    void AddTranslation(string pickedFurniture, Vector3 translation)
+    void AddTranslation(string pickedFurniture, Vector3 translation, float rotation)
     {
         if (_allTranslations.ContainsKey(pickedFurniture))
         {
-            _allTranslations[pickedFurniture] += translation;
-        } else { 
-            _allTranslations.Add(pickedFurniture, translation); 
+            RotoTranslation a = _allTranslations[pickedFurniture];
+            a.translation += translation;
+            a.rotation += rotation;
+            _allTranslations[pickedFurniture] = a;
+        } else {
+            RotoTranslation a = new RotoTranslation();
+            a.translation += translation;
+            a.rotation += rotation;
+            _allTranslations.Add(pickedFurniture, a); 
         }
         Debug.Log("Spostato l'oggetto " + pickedFurniture + " di " + translation.magnitude + " m");
-        _allRecords.Add(new string("Spostato l'oggetto " + pickedFurniture + " di " + translation.magnitude + " m"));
+        _allRecords.Add(new string("Spostato l'oggetto " + pickedFurniture + " di " + translation.magnitude + " m" + ", e ruotato di " + rotation + "gradi"));
     }
 
     void AddAccDevice(string accDevice, Vector3 pos)
@@ -66,6 +80,7 @@ public class ReportCreator : MonoBehaviour
         AccDevicePlacement adp;
         adp.accDevice = new string(accDevice);
         adp.position = new Vector3(pos.x, pos.y, pos.z);
+        _allAccDevices.Add(adp);
         Debug.Log("Posizionato il dispositivo " + accDevice + " in " + pos.ToString());
         _allRecords.Add(new string("Posizionato il dispositivo " + accDevice + " in " + pos.ToString()));
     }
@@ -79,6 +94,12 @@ public class ReportCreator : MonoBehaviour
         {
             writer.WriteLine(a + ";\n");
         }
+        foreach(string a in _allTranslations.Keys)
+        {
+            writer.WriteLine("Mobile: '" + a + "', spostato di " + _allTranslations[a]);
+        }
+        writer.WriteLine("Numero di mobili spostati: " + _allTranslations.Count);
+        writer.WriteLine("Numero di collisioni: " + _allCollisions.Count + ";\n");
         writer.WriteLine("Distanza totale: " + _totalDistance + ";\n");
         writer.Close();
     }

@@ -157,7 +157,7 @@ public class NavMeshCreator : MonoBehaviour
         _needToStartPath=true;
     }
 
-    private void ToUpdateNavMesh(string pickedFurniture, Vector3 translation){
+    private void ToUpdateNavMesh(string pickedFurniture, Vector3 translation, float rotation){
         _needToUpdateNavMesh=true;
     }
 
