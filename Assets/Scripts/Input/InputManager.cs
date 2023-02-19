@@ -285,6 +285,14 @@ public class InputManager : MonoBehaviour
                     isPaused = true;
 
                     break;
+
+                case SceneState.Endgame:
+
+                    isTutorial = false;
+                    isPlaying = false;
+                    isPaused = false;
+
+                    break;
             }
     }
 
@@ -314,6 +322,7 @@ public class InputManager : MonoBehaviour
             if (objectSelected)
                 objectSelected = false;
         }
+        
             //OnBack?.Invoke();
     }
 

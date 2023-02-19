@@ -47,7 +47,7 @@ public class CharacterMovement : MonoBehaviour
             Debug.Log("Sono arrivato");
             OnTargetReached?.Invoke();
             _reportDone=true;
-            GameManager.Instance.ShowMainMenu();
+            GameManager.Instance.EndsGame();
         }
         
     }

@@ -25,19 +25,20 @@ public class GameManager : MonoBehaviour
     [Header("Tutorial:")]
     [SerializeField][ReadOnlyInspector] GameObject tutorialPrefab;
     [SerializeField][ReadOnlyInspector] private bool tutorialOn = false;
-    private GameObject tutorialInstance;
+    private GameObject _tutorialInstance;
 
     [Header("Pause:")]
     [SerializeField][ReadOnlyInspector] GameObject pauseMenuPrefab;
     [SerializeField][ReadOnlyInspector] bool isPaused = false;
-    private GameObject pauseMenuInstance;
+    private GameObject _pauseMenuInstance;
 
     [Header("Mode HUD:")]
     [SerializeField][ReadOnlyInspector] GameObject modeHUDPrefab;
-    private GameObject modeHUDInstance;
+    private GameObject _HUDInstance;
 
-    [Header("Mode HUD:")]
+    [Header("Finale:")]
     [SerializeField][ReadOnlyInspector] GameObject finalePrefab;
+    [SerializeField][ReadOnlyInspector] bool isFinale = false;
     private GameObject finaleInstance;
 
     /*
@@ -157,14 +158,12 @@ public class GameManager : MonoBehaviour
                 break;
 
             case SceneType.Demo1:
-                Debug.LogWarning("### TODO ### HERE IT SHOULD LOAD DEMO 1 SCENE");
 
                 SceneManager.LoadScene(2);
 
                 break;
 
             case SceneType.Demo2:
-                Debug.LogWarning("### TODO ### HERE IT SHOULD LOAD DEMO 2 SCENE");
 
                 SceneManager.LoadScene(3);
 
@@ -202,14 +201,12 @@ public class GameManager : MonoBehaviour
 
     private void ShowHUD()
     {
-        modeHUDInstance = Instantiate(modeHUDPrefab);
+        _HUDInstance = Instantiate(modeHUDPrefab);
     }
 
     private void ShowTutorial()
     {
-        Debug.LogWarning("### TODO ### HERE IT SHOULD LOAD THE TUTORIAL");
-
-        tutorialInstance = Instantiate(tutorialPrefab);
+        _tutorialInstance = Instantiate(tutorialPrefab);
 
         tutorialOn = true;
 
@@ -222,7 +219,7 @@ public class GameManager : MonoBehaviour
 
     private void HideTutorial()
     {
-        Destroy(tutorialInstance);
+        Destroy(_tutorialInstance);
 
         tutorialOn = false;
 
@@ -233,9 +230,21 @@ public class GameManager : MonoBehaviour
         OnSceneUpdate?.Invoke(activeScene, state);
     }
 
-    private void ShowEndScreen()
+    private void ShowFinalScreen()
     {
-        modeHUDInstance.SetActive(false);
+        _HUDInstance.SetActive(false);
+
+        Debug.Log($"{GetType().Name}.cs > Freezing background");
+
+        Time.timeScale = 0;
+
+        Debug.Log($"{GetType().Name}.cs > {Time.timeScale} Destroying HUD and pause");
+
+        Destroy(_HUDInstance);
+        //Destroy(_pauseMenuInstance);
+
+        Cursor.visible = true;
+
         finaleInstance = Instantiate(finalePrefab);
     }
 
@@ -258,8 +267,9 @@ public class GameManager : MonoBehaviour
         if (state == SceneState.Playing)
         {
             state = SceneState.Endgame;
+            isFinale = true;
 
-            ShowEndScreen();
+            ShowFinalScreen();
         }
     }
 
@@ -285,28 +295,32 @@ public class GameManager : MonoBehaviour
 
         OnPause?.Invoke(isPaused);
 
-        if (isPaused)
+        if (!isFinale)
         {
-            Debug.Log($"{GetType().Name}.cs > FREEZING the app and showing pause menu");
+            if (isPaused)
+            {
+                Debug.Log($"{GetType().Name}.cs > FREEZING the app and showing pause menu");
 
-            Time.timeScale = 0;
+                Time.timeScale = 0;
 
-            state = SceneState.Paused;
+                state = SceneState.Paused;
 
-            pauseMenuInstance = Instantiate(pauseMenuPrefab);
+                _pauseMenuInstance = Instantiate(pauseMenuPrefab);
+            }
+            else
+            {
+                Debug.Log($"{GetType().Name}.cs > UNFREEZING the app and destroying pause menu");
+
+                Destroy(_pauseMenuInstance);
+
+                Time.timeScale = 1;
+
+                state = SceneState.Playing;
+            }
+
+            OnSceneUpdate?.Invoke(activeScene, state);
         }
-        else
-        {
-            Debug.Log($"{GetType().Name}.cs > UNFREEZING the app and destroying pause menu");
-
-            Destroy(pauseMenuInstance);
-
-            Time.timeScale = 1;
-
-            state = SceneState.Playing;
-        }
-
-        OnSceneUpdate?.Invoke(activeScene, state);
+        
     }
 
     private void SetSessionData()
