@@ -35,7 +35,8 @@ public class SettingsMenu : MonoBehaviour
 
     private void Start()
     {
-        //txtRead.isOn = (bool)settMng.GetValue(SettingType.TextReader);
+        SetTextReader((bool)settMng.GetValue(SettingType.TextReader));
+        SetUIFeedback((bool)settMng.GetValue(SettingType.PlayEffects));
     }
 
     public void SetTextReader(bool isReading)
@@ -53,13 +54,21 @@ public class SettingsMenu : MonoBehaviour
     public void SetSpeechVolume(float volume)
     {
         Debug.Log($"{GetType().Name}.cs > CHANGING speech volume value to {volume}");
-        settMng.SetValue(SettingType.SpeechVolume, volume);
+
+        if(volume>-20)
+            settMng.SetValue(SettingType.SpeechVolume, volume);
+        else
+            settMng.SetValue(SettingType.SpeechVolume, -80f);
     }
 
     public void SetEffectsVolume(float volume)
     {
         Debug.Log($"{GetType().Name}.cs > CHANGING effects volume value to {volume}");
-        settMng.SetValue(SettingType.EffectsVolume, volume);
+
+        if (volume > -20)
+            settMng.SetValue(SettingType.EffectsVolume, volume);
+        else
+            settMng.SetValue(SettingType.EffectsVolume, -80f);
     }
 
     private void EventsSubscriber(bool subscribing = true)

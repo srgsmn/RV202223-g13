@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 9914812}
   - component: {fileID: 9914814}
   - component: {fileID: 9914813}
+  - component: {fileID: 9914815}
   m_Layer: 5
   m_Name: AppLogo
   m_TagString: Untagged
@@ -199,6 +200,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9914811}
   m_CullTransparentMesh: 1
+--- !u!114 &9914815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9914811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0d79fec73944f2e801ab8616ca7f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speechClip: {fileID: 8300000, guid: 8d269b3ef1b68472885cec7c8f0695d6, type: 3}
+  hasSFX: 0
+  hasSpeech: 0
+  isButton: 0
 --- !u!1 &22575047
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,7 +343,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.33103454, y: 1}
+  m_AnchorMax: {x: 0.3310345, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -489,6 +506,7 @@ GameObject:
   - component: {fileID: 95086653}
   - component: {fileID: 95086655}
   - component: {fileID: 95086654}
+  - component: {fileID: 95086656}
   m_Layer: 5
   m_Name: Text (TMP) (1)
   m_TagString: Untagged
@@ -615,6 +633,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 95086652}
   m_CullTransparentMesh: 1
+--- !u!114 &95086656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95086652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0d79fec73944f2e801ab8616ca7f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speechClip: {fileID: 8300000, guid: 300c5ede929924d7c994cd700e91e9e4, type: 3}
+  hasSFX: 0
+  hasSpeech: 0
+  isButton: 0
 --- !u!1 &109006983
 GameObject:
   m_ObjectHideFlags: 0
@@ -971,7 +1005,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 331613553}
   m_HandleRect: {fileID: 799454655}
   m_Direction: 0
-  m_MinValue: -80
+  m_MinValue: -20
   m_MaxValue: 0
   m_WholeNumbers: 0
   m_Value: 0
@@ -2450,6 +2484,10 @@ PrefabInstance:
       propertyPath: m_text
       value: ABOUT
       objectReference: {fileID: 0}
+    - target: {fileID: 9219056557228357821, guid: 305bd5b360f854d75b110b9204409934, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: dbfd06db9fb7047f0b74a94a87c07821, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 305bd5b360f854d75b110b9204409934, type: 3}
 --- !u!224 &244817672 stripped
@@ -2572,6 +2610,27 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2188027413171791547, guid: 4763c3f837a4441df92f1b4fb81e8a8b, type: 3}
   m_PrefabInstance: {fileID: 2188027412937405337}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &306239282 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4554533596337024172, guid: 933c2d93fd2c5485793eb42bef1df2ae, type: 3}
+  m_PrefabInstance: {fileID: 1700058022}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &306239286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306239282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0d79fec73944f2e801ab8616ca7f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speechClip: {fileID: 8300000, guid: 9ed3186d8c79c4043a84034d758d9f00, type: 3}
+  hasSFX: 0
+  hasSpeech: 0
+  isButton: 0
 --- !u!1 &318250951
 GameObject:
   m_ObjectHideFlags: 0
@@ -2993,6 +3052,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4607925949863447458, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 8f630243c0b8946769dc6cb6b76d6090, type: 3}
     - target: {fileID: 6228093230703872885, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
       propertyPath: _btnLabel
       value: PROJECT
@@ -3892,6 +3955,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4607925949863447458, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 7e766f39e7f95477f806c86fad9bc4bc, type: 3}
     - target: {fileID: 6228093230703872885, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
       propertyPath: _btnLabel
       value: BROWSE
@@ -4078,6 +4145,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4607925949863447458, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 3d5280e4689b24a94bb18421d71faadf, type: 3}
     - target: {fileID: 6228093230703872885, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
       propertyPath: _btnLabel
       value: PROJECT
@@ -4879,6 +4950,7 @@ GameObject:
   - component: {fileID: 611991616}
   - component: {fileID: 611991618}
   - component: {fileID: 611991617}
+  - component: {fileID: 611991619}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -5003,6 +5075,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 611991615}
   m_CullTransparentMesh: 1
+--- !u!114 &611991619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 611991615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0d79fec73944f2e801ab8616ca7f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speechClip: {fileID: 8300000, guid: 0c8f29c96e98c45bbbd78340f89dfebd, type: 3}
+  hasSFX: 0
+  hasSpeech: 0
+  isButton: 0
 --- !u!224 &612683862 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5816356230762518807, guid: 305bd5b360f854d75b110b9204409934, type: 3}
@@ -5445,6 +5533,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4607925949863447458, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 10fa9ccef4fe347a792ce5485276b962, type: 3}
     - target: {fileID: 6228093230703872885, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
       propertyPath: _btnLabel
       value: REPORTS
@@ -5494,7 +5586,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2296011028740038924, guid: c01aa68987fef4f4fb7648f63daeb6fc, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2296011028740038924, guid: c01aa68987fef4f4fb7648f63daeb6fc, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5593,6 +5685,7 @@ GameObject:
   - component: {fileID: 719245156}
   - component: {fileID: 719245158}
   - component: {fileID: 719245157}
+  - component: {fileID: 719245159}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -5717,6 +5810,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 719245155}
   m_CullTransparentMesh: 1
+--- !u!114 &719245159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719245155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0d79fec73944f2e801ab8616ca7f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speechClip: {fileID: 8300000, guid: 63b74bb3c20a747f7a91d7ae1209384e, type: 3}
+  hasSFX: 0
+  hasSpeech: 0
+  isButton: 0
 --- !u!1 &733034675
 GameObject:
   m_ObjectHideFlags: 0
@@ -7985,6 +8094,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &901278274 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4554533596337024172, guid: 933c2d93fd2c5485793eb42bef1df2ae, type: 3}
+  m_PrefabInstance: {fileID: 2971953440920798391}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &901278278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 901278274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0d79fec73944f2e801ab8616ca7f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speechClip: {fileID: 0}
+  hasSFX: 0
+  hasSpeech: 0
+  isButton: 0
 --- !u!1001 &924569275
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8080,6 +8210,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4607925949863447458, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 40b08ede86c904b458474c1a4f5cc18e, type: 3}
     - target: {fileID: 6228093230703872885, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
       propertyPath: _btnLabel
       value: SETTINGS
@@ -8649,6 +8783,7 @@ GameObject:
   - component: {fileID: 1031563358}
   - component: {fileID: 1031563360}
   - component: {fileID: 1031563359}
+  - component: {fileID: 1031563361}
   m_Layer: 5
   m_Name: Text (TMP) (3)
   m_TagString: Untagged
@@ -8700,16 +8835,18 @@ MonoBehaviour:
 
     3D Models
 
-    Unity worldbuilding
+    and worldbuilding
 
     3D Models
+
+    and
+    worldbuilding
 
     Scripting
 
     UI-UX
 
-    Core
-    app scripting'
+    Scripting'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 382c025c9e85d46bea0b3a10950e9f4b, type: 2}
   m_sharedMaterial: {fileID: -4418227437429727050, guid: 382c025c9e85d46bea0b3a10950e9f4b, type: 2}
@@ -8786,6 +8923,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1031563357}
   m_CullTransparentMesh: 1
+--- !u!114 &1031563361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1031563357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0d79fec73944f2e801ab8616ca7f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speechClip: {fileID: 8300000, guid: a1e0f1eafa307406a9e591bd953a19fb, type: 3}
+  hasSFX: 0
+  hasSpeech: 0
+  isButton: 0
 --- !u!1 &1031837184
 GameObject:
   m_ObjectHideFlags: 0
@@ -9239,6 +9392,10 @@ PrefabInstance:
       propertyPath: m_Navigation.m_WrapAround
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4607925949863447458, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b10179727c035469fbc5a82efb935a64, type: 3}
     - target: {fileID: 6228093230703872885, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
       propertyPath: _btnLabel
       value: QUIT
@@ -9264,6 +9421,7 @@ GameObject:
   - component: {fileID: 1093862597}
   - component: {fileID: 1093862599}
   - component: {fileID: 1093862598}
+  - component: {fileID: 1093862600}
   m_Layer: 5
   m_Name: Text (TMP) (1)
   m_TagString: Untagged
@@ -9403,6 +9561,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1093862596}
   m_CullTransparentMesh: 1
+--- !u!114 &1093862600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093862596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0d79fec73944f2e801ab8616ca7f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speechClip: {fileID: 8300000, guid: bb76213cd57c64363b292e51d3833c67, type: 3}
+  hasSFX: 0
+  hasSpeech: 0
+  isButton: 0
 --- !u!1001 &1110598323
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9424,7 +9598,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2296011028740038924, guid: c01aa68987fef4f4fb7648f63daeb6fc, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2296011028740038924, guid: c01aa68987fef4f4fb7648f63daeb6fc, type: 3}
       propertyPath: m_AnchorMax.x
@@ -9519,6 +9693,7 @@ GameObject:
   - component: {fileID: 1110806228}
   - component: {fileID: 1110806230}
   - component: {fileID: 1110806229}
+  - component: {fileID: 1110806231}
   m_Layer: 5
   m_Name: Description
   m_TagString: Untagged
@@ -9644,6 +9819,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1110806227}
   m_CullTransparentMesh: 1
+--- !u!114 &1110806231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1110806227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0d79fec73944f2e801ab8616ca7f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speechClip: {fileID: 8300000, guid: 22e7a956e231d42ab8a99f01c891c5bb, type: 3}
+  hasSFX: 0
+  hasSpeech: 0
+  isButton: 0
 --- !u!1 &1110940936
 GameObject:
   m_ObjectHideFlags: 0
@@ -9804,6 +9995,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4607925949863447458, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 353743d872c1b49d09b764295d34acb2, type: 3}
     - target: {fileID: 6228093230703872885, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
       propertyPath: _btnLabel
       value: ASSETS
@@ -9946,6 +10141,10 @@ PrefabInstance:
       propertyPath: m_text
       value: SETTINGS
       objectReference: {fileID: 0}
+    - target: {fileID: 9219056557228357821, guid: 305bd5b360f854d75b110b9204409934, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 40b08ede86c904b458474c1a4f5cc18e, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 305bd5b360f854d75b110b9204409934, type: 3}
 --- !u!224 &1144805071 stripped
@@ -10050,7 +10249,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 419086926}
   m_HandleRect: {fileID: 1717282158}
   m_Direction: 0
-  m_MinValue: -80
+  m_MinValue: -20
   m_MaxValue: 0
   m_WholeNumbers: 0
   m_Value: 0
@@ -10385,6 +10584,10 @@ PrefabInstance:
       propertyPath: m_Navigation.m_WrapAround
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4607925949863447458, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 753200d909f7149c5970c69bc5f34cc3, type: 3}
     - target: {fileID: 6228093230703872885, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
       propertyPath: _linkTo
       value: 2
@@ -10498,6 +10701,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4607925949863447458, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 7f79da5aecb9e43f784e3920e80741d2, type: 3}
     - target: {fileID: 6228093230703872885, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
       propertyPath: _linkTo
       value: 7
@@ -10605,6 +10812,7 @@ GameObject:
   - component: {fileID: 1242572964}
   - component: {fileID: 1242572966}
   - component: {fileID: 1242572965}
+  - component: {fileID: 1242572967}
   m_Layer: 5
   m_Name: Description
   m_TagString: Untagged
@@ -10730,6 +10938,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1242572963}
   m_CullTransparentMesh: 1
+--- !u!114 &1242572967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242572963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0d79fec73944f2e801ab8616ca7f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speechClip: {fileID: 8300000, guid: 7f91c6b1c3af64ad4a6fb3ad58d31714, type: 3}
+  hasSFX: 0
+  hasSpeech: 0
+  isButton: 0
 --- !u!1 &1262303094 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6719497855637460694, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
@@ -10997,6 +11221,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4607925949863447458, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 7f79da5aecb9e43f784e3920e80741d2, type: 3}
     - target: {fileID: 6228093230703872885, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
       propertyPath: _linkTo
       value: 7
@@ -11904,7 +12132,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2296011028740038924, guid: c01aa68987fef4f4fb7648f63daeb6fc, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2296011028740038924, guid: c01aa68987fef4f4fb7648f63daeb6fc, type: 3}
       propertyPath: m_AnchorMax.x
@@ -12343,6 +12571,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4607925949863447458, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: dbfd06db9fb7047f0b74a94a87c07821, type: 3}
     - target: {fileID: 6228093230703872885, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
       propertyPath: _btnLabel
       value: ABOUT
@@ -12565,6 +12797,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4607925949863447458, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 7f79da5aecb9e43f784e3920e80741d2, type: 3}
     - target: {fileID: 6228093230703872885, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
       propertyPath: _linkTo
       value: 7
@@ -12595,6 +12831,7 @@ GameObject:
   - component: {fileID: 1561683408}
   - component: {fileID: 1561683410}
   - component: {fileID: 1561683409}
+  - component: {fileID: 1561683411}
   m_Layer: 5
   m_Name: Text (TMP) (2)
   m_TagString: Untagged
@@ -12648,6 +12885,7 @@ MonoBehaviour:
 
 
     GASPARRE Claudia
+
 
     PETTITI
     Michele
@@ -12729,6 +12967,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1561683407}
   m_CullTransparentMesh: 1
+--- !u!114 &1561683411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1561683407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0d79fec73944f2e801ab8616ca7f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speechClip: {fileID: 8300000, guid: 6cf46e19f875b4055b8dfa7c45eec78e, type: 3}
+  hasSFX: 0
+  hasSpeech: 0
+  isButton: 0
 --- !u!1 &1565275705
 GameObject:
   m_ObjectHideFlags: 0
@@ -12889,6 +13143,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4607925949863447458, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 0c8f29c96e98c45bbbd78340f89dfebd, type: 3}
     - target: {fileID: 6228093230703872885, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
       propertyPath: _btnLabel
       value: DEMO 2
@@ -13349,6 +13607,10 @@ PrefabInstance:
       propertyPath: m_Interactable
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4607925949863447458, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 2e51fe1c77e7c432e958ed39daf31d45, type: 3}
     - target: {fileID: 6228093230703872885, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
       propertyPath: _btnLabel
       value: CONTROLLERS
@@ -13648,6 +13910,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4607925949863447458, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 63b74bb3c20a747f7a91d7ae1209384e, type: 3}
     - target: {fileID: 6228093230703872885, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
       propertyPath: _btnLabel
       value: DEMO 1
@@ -14207,8 +14473,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 33075478}
   m_HandleRect: {fileID: 33075477}
   m_Direction: 0
-  m_Value: -0.00000012584572
-  m_Size: 0.33103454
+  m_Value: -0.0000001258457
+  m_Size: 0.3310345
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -14847,6 +15113,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4607925949863447458, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 02636872c57b7492bb2987fdd5c2b8bf, type: 3}
     - target: {fileID: 6228093230703872885, guid: 7a8dc84c931684b1fbae8b842034844d, type: 3}
       propertyPath: _btnLabel
       value: AUDIO
@@ -15118,6 +15388,10 @@ PrefabInstance:
       propertyPath: m_text
       value: START
       objectReference: {fileID: 0}
+    - target: {fileID: 9219056557228357821, guid: 305bd5b360f854d75b110b9204409934, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 753200d909f7149c5970c69bc5f34cc3, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 305bd5b360f854d75b110b9204409934, type: 3}
 --- !u!224 &1779399347 stripped
@@ -15375,6 +15649,7 @@ GameObject:
   - component: {fileID: 1819795800}
   - component: {fileID: 1819795802}
   - component: {fileID: 1819795801}
+  - component: {fileID: 1819795803}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -15499,6 +15774,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1819795799}
   m_CullTransparentMesh: 1
+--- !u!114 &1819795803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819795799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0d79fec73944f2e801ab8616ca7f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speechClip: {fileID: 8300000, guid: 83d00dcb88bd8430c9075dd01de4b19f, type: 3}
+  hasSFX: 0
+  hasSpeech: 0
+  isButton: 0
 --- !u!1 &1824049028
 GameObject:
   m_ObjectHideFlags: 0
@@ -15533,7 +15824,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.33103448, y: 1}
+  m_AnchorMax: {x: 0.33103454, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -16168,6 +16459,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66af715b2cb4b45f9915964f3962e511, type: 3}
+--- !u!1 &1958283927 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4554533596337024172, guid: 933c2d93fd2c5485793eb42bef1df2ae, type: 3}
+  m_PrefabInstance: {fileID: 2041161514}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1958283931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958283927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0d79fec73944f2e801ab8616ca7f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speechClip: {fileID: 8300000, guid: fec9f086b5b1043709c39aab6558fa01, type: 3}
+  hasSFX: 0
+  hasSpeech: 0
+  isButton: 0
 --- !u!1 &1958544789 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1084750939011375545, guid: 66af715b2cb4b45f9915964f3962e511, type: 3}
@@ -16270,6 +16582,154 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1960343353}
   m_CullTransparentMesh: 1
+--- !u!1 &1960991432
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1960991435}
+  - component: {fileID: 1960991434}
+  - component: {fileID: 1960991433}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &1960991433
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960991432}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &1960991434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960991432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b953522688aac48f39280cf716b4c2c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  source: {fileID: 1960991433}
+  hover: {fileID: 8300000, guid: 4718fe9f35dd04115bd6d1917f446a6c, type: 3}
+  click: {fileID: 8300000, guid: ba17a61013adc4ac2a9d8f719fb2637a, type: 3}
+  sfxMx: {fileID: 24300002, guid: f104825505e4e4d1c9f3e02ed9c64b89, type: 2}
+  speechMx: {fileID: 24300002, guid: a37365c9e567c4e25ac5104014664e4e, type: 2}
+  speechOn: 0
+  sfxOn: 0
+--- !u!4 &1960991435
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960991432}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1963211431
 GameObject:
   m_ObjectHideFlags: 0
@@ -17320,8 +17780,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1824049030}
   m_HandleRect: {fileID: 1824049029}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 0.33103448
+  m_Value: -0.00000025169143
+  m_Size: 0.33103454
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -17631,6 +18091,7 @@ GameObject:
   - component: {fileID: 2134349934}
   - component: {fileID: 2134349936}
   - component: {fileID: 2134349935}
+  - component: {fileID: 2134349937}
   m_Layer: 5
   m_Name: Text (TMP) (1)
   m_TagString: Untagged
@@ -17755,6 +18216,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2134349933}
   m_CullTransparentMesh: 1
+--- !u!114 &2134349937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134349933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0d79fec73944f2e801ab8616ca7f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speechClip: {fileID: 8300000, guid: c311d8c56b3bb4341bdaca0ac202038f, type: 3}
+  hasSFX: 0
+  hasSpeech: 0
+  isButton: 0
 --- !u!1001 &1084750938509023485
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17959,6 +18436,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2427382380476629060, guid: 4763c3f837a4441df92f1b4fb81e8a8b, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 04e7144c548ab403598b68f18bff5e6e, type: 3}
+    - target: {fileID: 2427382381192094476, guid: 4763c3f837a4441df92f1b4fb81e8a8b, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b10179727c035469fbc5a82efb935a64, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4763c3f837a4441df92f1b4fb81e8a8b, type: 3}
 --- !u!1001 &2971953440920798391
@@ -18189,6 +18674,10 @@ PrefabInstance:
       propertyPath: m_text
       value: MAIN MENU
       objectReference: {fileID: 0}
+    - target: {fileID: 9219056557228357821, guid: 305bd5b360f854d75b110b9204409934, type: 3}
+      propertyPath: speechClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 8a7416ed428394918abcd784ae0efdc1, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 305bd5b360f854d75b110b9204409934, type: 3}
 --- !u!224 &5816356230150359362 stripped
