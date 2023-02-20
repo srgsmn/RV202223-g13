@@ -10,8 +10,8 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] SettingsManager settMng;
     [Header("Settings menu elements:")]
     [SerializeField] Toggle speechTgl;
-    [SerializeField] Toggle effectsTgl;
-    [SerializeField] Slider speechSlider, effectsSlider;
+    [SerializeField] Toggle effectsTgl, musicTgl;
+    [SerializeField] Slider speechSlider, effectsSlider, musicSlider;
 
     private void Awake()
     {
@@ -25,6 +25,11 @@ public class SettingsMenu : MonoBehaviour
             Debug.LogWarning($"{GetType().Name}.cs > Text read toggle not set in the inspector");
         }
 
+        if (musicTgl == null)
+        {
+            Debug.LogWarning($"{GetType().Name}.cs > Music toggle not set in the inspector");
+        }
+
         EventsSubscriber();
     }
 
@@ -35,8 +40,7 @@ public class SettingsMenu : MonoBehaviour
 
     private void Start()
     {
-        SetTextReader((bool)settMng.GetValue(SettingType.TextReader));
-        SetUIFeedback((bool)settMng.GetValue(SettingType.PlayEffects));
+        settMng.ResetValues();
     }
 
     public void SetTextReader(bool isReading)
@@ -69,6 +73,23 @@ public class SettingsMenu : MonoBehaviour
             settMng.SetValue(SettingType.EffectsVolume, volume);
         else
             settMng.SetValue(SettingType.EffectsVolume, -80f);
+    }
+
+    public void SetPlayMusic(bool hasMusic)
+    {
+        Debug.Log($"{GetType().Name}.cs > CHANGING play music from {!hasMusic} to {hasMusic}");
+
+        settMng.SetValue(SettingType.PlayMusic, hasMusic);
+    }
+
+    public void SetMusicVolume(float volume)
+    {
+        Debug.Log($"{GetType().Name}.cs > CHANGING music volume value to {volume}");
+
+        if (volume > -20)
+            settMng.SetValue(SettingType.MusicVolume, volume);
+        else
+            settMng.SetValue(SettingType.MusicVolume, -80f);
     }
 
     private void EventsSubscriber(bool subscribing = true)
@@ -110,6 +131,18 @@ public class SettingsMenu : MonoBehaviour
             case SettingType.PlayEffects:
 
                 effectsTgl.isOn = (bool)value;
+
+                break;
+
+            case SettingType.PlayMusic:
+
+                musicTgl.isOn = (bool)value;
+
+                break;
+
+            case SettingType.MusicVolume:
+
+                musicSlider.value = (float)value;
 
                 break;
         }

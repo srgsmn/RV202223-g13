@@ -7,13 +7,26 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-    [SerializeField] AudioSource source;
+    public static AudioManager Instance; // SINGLETON
+
+    [SerializeField] AudioSource _SFXSource, _musicSource;
     [SerializeField] AudioClip hover, click;
-    [SerializeField] AudioMixerGroup sfxMx, speechMx;
-    [SerializeField][ReadOnlyInspector] bool speechOn, sfxOn;
+    [SerializeField] AudioMixerGroup sfxMx, speechMx, musicMx;
+    [SerializeField][ReadOnlyInspector] bool speechOn, sfxOn, musicOn;
 
     private void Awake()
     {
+        // SINGLETON
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(Instance);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         EventsSubscriber();
     }
 
@@ -57,6 +70,12 @@ public class AudioManager : MonoBehaviour
                 speechOn = (bool)value;
 
                 break;
+
+            case SettingType.PlayMusic:
+
+                musicOn = (bool)value;
+
+                break;
         }
     }
 
@@ -71,7 +90,7 @@ public class AudioManager : MonoBehaviour
                     {
                         Debug.Log($"{GetType().Name}.cs >PLAYING hover sound...");
 
-                        source.clip = hover;
+                        _SFXSource.clip = hover;
                     }
 
                     break;
@@ -79,14 +98,14 @@ public class AudioManager : MonoBehaviour
                 case SoundType.click:
                     Debug.Log($"{GetType().Name}.cs >PLAYING click sound...");
 
-                    source.clip = click;
+                    _SFXSource.clip = click;
 
                     break;
             }
 
-            source.outputAudioMixerGroup = sfxMx;
+            _SFXSource.outputAudioMixerGroup = sfxMx;
 
-            source.Play();
+            _SFXSource.Play();
         }
     }
 
@@ -94,19 +113,19 @@ public class AudioManager : MonoBehaviour
     {
         if (speechOn)
         {
-            source.clip = clip;
+            _SFXSource.clip = clip;
 
-            source.outputAudioMixerGroup = speechMx;
+            _SFXSource.outputAudioMixerGroup = speechMx;
 
-            source.Play();
+            _SFXSource.Play();
         }
     }
 
     private void OnStop()
     {
-        if (source.isPlaying)
+        if (_SFXSource.isPlaying)
         {
-            source.Stop();
+            _SFXSource.Stop();
         }
     }
 }

@@ -8,9 +8,9 @@ public class SettingsManager : MonoBehaviour
 {
     public static SettingsManager Instance; // SINGLETON
 
-    [SerializeField][ReadOnlyInspector] bool _readTxt = false, _playEffects = true;
-    [SerializeField][ReadOnlyInspector] float _speechVolume = 0, _effectsVolume = 0;
-    [SerializeField] AudioMixer _speechMixer, _UIFbMixer;
+    [SerializeField][ReadOnlyInspector] bool _readTxt = false, _playEffects = true, _playMusic = true;
+    [SerializeField][ReadOnlyInspector] float _speechVolume = 0f, _effectsVolume = 0f, _musicVolume = 0f;
+    [SerializeField] AudioMixer _speechMixer, _UIFbMixer, _musixMixer;
 
     public delegate void SettingsUpdateEv(SettingType type, object value);
     public static SettingsUpdateEv OnSettingsUpdate;
@@ -29,7 +29,7 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void OnEnable()
     {
         ResetValues();
     }
@@ -43,6 +43,8 @@ public class SettingsManager : MonoBehaviour
         OnSettingsUpdate?.Invoke(SettingType.SpeechVolume, _speechVolume);
         OnSettingsUpdate?.Invoke(SettingType.PlayEffects, _playEffects);
         OnSettingsUpdate?.Invoke(SettingType.EffectsVolume, _effectsVolume);
+        OnSettingsUpdate?.Invoke(SettingType.PlayMusic, _playMusic);
+        OnSettingsUpdate?.Invoke(SettingType.MusicVolume, _musicVolume);
     }
 
     /// <summary>
@@ -76,6 +78,18 @@ public class SettingsManager : MonoBehaviour
             case SettingType.EffectsVolume:
 
                 value = _effectsVolume;
+
+                break;
+
+            case SettingType.PlayMusic:
+
+                value = _playMusic;
+
+                break;
+
+            case SettingType.MusicVolume:
+
+                value = _musicVolume;
 
                 break;
         }
@@ -123,6 +137,23 @@ public class SettingsManager : MonoBehaviour
 
                 _UIFbMixer.SetFloat("Volume", _effectsVolume);
                 OnSettingsUpdate?.Invoke(SettingType.EffectsVolume, _effectsVolume);
+
+                break;
+
+            case SettingType.PlayMusic:
+
+                _playMusic = (bool)value;
+
+                OnSettingsUpdate?.Invoke(SettingType.PlayMusic, _playMusic);
+
+                break;
+
+            case SettingType.MusicVolume:
+
+                _musicVolume = (float)value;
+
+                _musixMixer.SetFloat("Volume", _musicVolume);
+                OnSettingsUpdate?.Invoke(SettingType.MusicVolume, _musicVolume);
 
                 break;
         }
