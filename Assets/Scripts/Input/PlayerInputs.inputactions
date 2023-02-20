@@ -112,6 +112,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "MouseLtClick",
+                    "type": "Button",
+                    "id": "cb109152-d32a-452a-bd55-de006fb037ad",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -334,6 +343,17 @@
                     "action": "Directions",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "61a62183-b5bb-4eec-9659-633736dd5b26",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseLtClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

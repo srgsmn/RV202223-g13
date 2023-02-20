@@ -134,6 +134,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseLtClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""cb109152-d32a-452a-bd55-de006fb037ad"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -356,6 +365,17 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""Directions"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""61a62183-b5bb-4eec-9659-633736dd5b26"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseLtClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -805,6 +825,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_UI_Rotate = m_UI.FindAction("Rotate", throwIfNotFound: true);
         m_UI_Translate = m_UI.FindAction("Translate", throwIfNotFound: true);
         m_UI_Directions = m_UI.FindAction("Directions", throwIfNotFound: true);
+        m_UI_MouseLtClick = m_UI.FindAction("MouseLtClick", throwIfNotFound: true);
         // CharacterInput
         m_CharacterInput = asset.FindActionMap("CharacterInput", throwIfNotFound: true);
         m_CharacterInput_Move = m_CharacterInput.FindAction("Move", throwIfNotFound: true);
@@ -888,6 +909,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Rotate;
     private readonly InputAction m_UI_Translate;
     private readonly InputAction m_UI_Directions;
+    private readonly InputAction m_UI_MouseLtClick;
     public struct UIActions
     {
         private @PlayerInputs m_Wrapper;
@@ -904,6 +926,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @Rotate => m_Wrapper.m_UI_Rotate;
         public InputAction @Translate => m_Wrapper.m_UI_Translate;
         public InputAction @Directions => m_Wrapper.m_UI_Directions;
+        public InputAction @MouseLtClick => m_Wrapper.m_UI_MouseLtClick;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -949,6 +972,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Directions.started -= m_Wrapper.m_UIActionsCallbackInterface.OnDirections;
                 @Directions.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnDirections;
                 @Directions.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnDirections;
+                @MouseLtClick.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseLtClick;
+                @MouseLtClick.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseLtClick;
+                @MouseLtClick.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseLtClick;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -989,6 +1015,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Directions.started += instance.OnDirections;
                 @Directions.performed += instance.OnDirections;
                 @Directions.canceled += instance.OnDirections;
+                @MouseLtClick.started += instance.OnMouseLtClick;
+                @MouseLtClick.performed += instance.OnMouseLtClick;
+                @MouseLtClick.canceled += instance.OnMouseLtClick;
             }
         }
     }
@@ -1121,6 +1150,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnRotate(InputAction.CallbackContext context);
         void OnTranslate(InputAction.CallbackContext context);
         void OnDirections(InputAction.CallbackContext context);
+        void OnMouseLtClick(InputAction.CallbackContext context);
     }
     public interface ICharacterInputActions
     {

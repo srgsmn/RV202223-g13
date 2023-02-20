@@ -10889,8 +10889,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Use the SPACEBAR to place an waypoint on the target that appears on the
-    floor
+  m_text: Use the SPACEBAR (or LEFT MOUSE BUTTON) to place an waypoint on the target
+    that appears on the floor
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 382c025c9e85d46bea0b3a10950e9f4b, type: 2}
   m_sharedMaterial: {fileID: -4418227437429727050, guid: 382c025c9e85d46bea0b3a10950e9f4b, type: 2}
