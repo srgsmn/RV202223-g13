@@ -70,5 +70,16 @@ namespace Unity.AI.Navigation
                 return true;
             return m_AffectedAgents.IndexOf(agentTypeID) != -1;
         }
+
+        public void SetAffectedAgentType(int agentTypeID){
+            m_AffectedAgents.Clear();
+            m_AffectedAgents = new List<int>(new int[] {agentTypeID});
+        }
+
+        public void printAffectedAgents(){
+            foreach(int x in m_AffectedAgents){
+                Debug.Log(x);
+            }
+        }
     }
 }

@@ -7,53 +7,91 @@ using Unity.AI.Navigation;
 public class NavMeshCreator : MonoBehaviour
 {
     // Start is called before the first frame update
-    private NavMeshSurface _nvs;
-
+    private NavMeshSurface _nvsHumanoid;
+    private NavMeshSurface _nvsWheelchair;
     private string[] _walkableElements={"floor","pavimento","scala","scale","stairs","stair"};
     private string[] _passthroughElements={"porta","door","porte"};
-
-    public Transform _startSpot_transform;
-    public Transform _target_transform;
-
-    private Vector3 _startSpot_pos;
-    private Vector3 _target_pos;
+    public List<GameObject> _waypointList;
 
     private GameObject _myPrefab;
-    private GameObject _pathGuy;
+    private GameObject _pathGuyHumanoid;
+    private GameObject _pathGuyWheelchair;
 
-    private ParticleSystem _pathParticle;
-    private ParticleSystem.EmissionModule _emission;
+    private ParticleSystem _pathParticleHumanoid;
+    private ParticleSystem _pathParticleWheelchair;
+    private ParticleSystem.EmissionModule _emissionHumanoid;
+    private ParticleSystem.EmissionModule _emissionWheelchair;
 
-    private bool _agentMoving=false;
-    private bool _pathExists=false;
-
-    private bool _navMeshExists=false;
+    private bool _humanoidMoving=false;
+    private bool _wheelchairMoving=false;
+    private bool _humanoidPathExists=false;
+    private bool _wheelchairPathExists=false;
+    private bool _HumanoidNavMeshExists=false;
+    private bool _WheelchairNavMeshExists=false;
+    private NavMeshAgent _humanoidAgent;
+    private NavMeshAgent _wheelchairAgent;
+    private NavMeshPath _humanoidPath;
+    private NavMeshPath _wheelchairPath;
+    private int _humanoidPoint=0;
+    private int _wheelchairPoint=0;
 
     private bool _needToStartPath=false;
     private bool _needToUpdateNavMesh=false;
     void Start()
     {
-        
+        _humanoidPath = new NavMeshPath();
+        _wheelchairPath = new NavMeshPath();
     }
 
     // Update is called once per frame
     void Update()
     {   
-        if (_agentMoving){
-            if (_pathGuy.transform.position.x==_target_pos.x && _pathGuy.transform.position.z==_target_pos.z){
-                Debug.Log("Arrived");
-                _emission.enabled=false;
-                _agentMoving=false;
+        if (_humanoidMoving){
+            if (_humanoidPoint!=_waypointList.Count-1){
+                if (Vector3.Distance(_pathGuyHumanoid.transform.position,_waypointList[_humanoidPoint].transform.position)<=2.0f){
+                    _humanoidPoint++;
+                    _humanoidAgent.ResetPath();
+                    if(_humanoidAgent.CalculatePath(_waypointList[_humanoidPoint].transform.position,_humanoidPath)){
+                        Debug.Log(_humanoidAgent.SetPath(_humanoidPath));
+                    }
+                    else{
+                        _humanoidMoving=false;
+                    }
+                }
+            }
+            else if (Vector3.Distance(_pathGuyHumanoid.transform.position,_waypointList[_waypointList.Count-1].transform.position)<=2.0f){
+                Debug.Log("Human Arrived");
+                _humanoidMoving=false;
+            }
+        }
+        if (_wheelchairMoving){
+            if (_wheelchairPoint!=_waypointList.Count-1){
+                if (Vector3.Distance(_pathGuyWheelchair.transform.position,_waypointList[_wheelchairPoint].transform.position)<=2.0f){
+                    _wheelchairPoint++;
+                    _wheelchairAgent.ResetPath();
+                    if (_wheelchairAgent.CalculatePath(_waypointList[_wheelchairPoint].transform.position,_wheelchairPath)){
+                        Debug.Log(_wheelchairAgent.SetPath(_wheelchairPath));
+                    }
+                    else{
+                        _wheelchairMoving=false;
+                    }
+                }
+            }
+            else if (Vector3.Distance(_pathGuyWheelchair.transform.position,_waypointList[_waypointList.Count-1].transform.position)<=2.0f){
+                Debug.Log("Wheelchair Arrived");
+                _wheelchairMoving=false;
             }
         }
         if (_needToUpdateNavMesh){
-            if (_navMeshExists){
-                setAreas(this.transform);
-                _nvs.UpdateNavMesh(_nvs.navMeshData);
-                //UpdateNavMesh reagisce agli oggetti solo se aggiunti come figli del container
-                Debug.Log("Updated");
-                _needToStartPath=true;
+            if (_HumanoidNavMeshExists){
+                setAreas(this.transform,GetNavMeshAgentID("Humanoid").Value);
+                _nvsHumanoid.UpdateNavMesh(_nvsHumanoid.navMeshData);
             }
+            if (_WheelchairNavMeshExists){
+                setAreas(this.transform,GetNavMeshAgentID("Wheelchair").Value);
+                _nvsWheelchair.UpdateNavMesh(_nvsWheelchair.navMeshData);
+            }
+            _needToStartPath=true;
             _needToUpdateNavMesh=false;
         }
         /*if (Input.GetKeyDown("n")){
@@ -65,30 +103,69 @@ public class NavMeshCreator : MonoBehaviour
             }     
         }*/
         if (_needToStartPath){
-            CreatePathGuy(_startSpot_transform.position,_target_transform.position);
+            CreateHumanoidGuy();
+            _humanoidAgent.radius=0.00001f;
+            _humanoidAgent.SetPath(_humanoidPath);
+            CreateWheelchairGuy();
+            _wheelchairAgent.radius=0.00001f;
+            _wheelchairAgent.SetPath(_wheelchairPath);
             _needToStartPath=false;
         }
     }
 
-    public void CreateNavMesh(){
-        _navMeshExists=true;
-        _nvs=this.gameObject.AddComponent(typeof(NavMeshSurface)) as NavMeshSurface;
-        _nvs.collectObjects=CollectObjects.Children;
-        _nvs.defaultArea=1;
-        _nvs.overrideVoxelSize=true;
-        _nvs.voxelSize=0.1f;
-
-        //Set walkable areas
-        setAreas(this.transform);
-        
-
-        _nvs.BuildNavMesh();
+    public void InitializeNavMesh(){
+        if (_HumanoidNavMeshExists){
+                Debug.Log("NavMesh already exists");
+            }   
+            else{
+                CreateNavMesh(0);
+                _HumanoidNavMeshExists=true;
+            }  
+            if (_WheelchairNavMeshExists){
+                Debug.Log("NavMesh already exists");
+            }   
+            else{
+                CreateNavMesh(1);
+                _WheelchairNavMeshExists=true;
+            }     
     }
 
-    public void setAreas(Transform prn){
+    private void CreateNavMesh(int agentType){
+        NavMeshSurface nvs;
+        int? typeID=null;
+        if (agentType==0){
+            _HumanoidNavMeshExists=true;
+            typeID=GetNavMeshAgentID("Humanoid");
+        }
+        else if (agentType==1){
+            _WheelchairNavMeshExists=true;
+            typeID=GetNavMeshAgentID("Wheelchair");
+        }
+        nvs=this.gameObject.AddComponent(typeof(NavMeshSurface)) as NavMeshSurface;
+        nvs.collectObjects=CollectObjects.Children;
+        nvs.defaultArea=1;
+        if (typeID!=null){
+            nvs.agentTypeID=typeID.Value;
+        }
+        
+        if (typeID!=null){
+            setAreas(this.transform, typeID.Value);
+        }   
+        nvs.overrideVoxelSize=true;
+        nvs.voxelSize=0.08f;
+        nvs.BuildNavMesh();
+        if (agentType==0){
+            _nvsHumanoid=nvs;
+        }
+        else if (agentType==1){
+            _nvsWheelchair=nvs;
+        }
+    }
+
+    private void setAreas(Transform prn,int agentTypeID){
         foreach (Transform child in prn){
             if (child.childCount>0){
-                setAreas(child);
+                setAreas(child,agentTypeID);
             }
             if (IsWalkable(child.name.ToLower())){
                 NavMeshModifier nvm;
@@ -102,39 +179,83 @@ public class NavMeshCreator : MonoBehaviour
                 nvm.area=0;
             }
             if (IsPassthrough(child.name.ToLower())){
-                NavMeshModifier nvm;
-                if (!TryGetComponent(typeof(NavMeshModifier), out Component x)){
-                    nvm = child.gameObject.AddComponent(typeof(NavMeshModifier)) as NavMeshModifier;
+                if (agentTypeID==GetNavMeshAgentID("Humanoid").Value){
+                    //BOH
+                    NavMeshModifier nvm;
+                    if (!child.gameObject.TryGetComponent(typeof(NavMeshModifier), out Component x)){
+                        nvm = child.gameObject.AddComponent(typeof(NavMeshModifier)) as NavMeshModifier;
+                    }
+                    else{
+                        nvm=(NavMeshModifier)x;
+                    }
+                    nvm.ignoreFromBuild=true; 
+                    nvm.SetAffectedAgentType(agentTypeID);
                 }
-                else{
-                    nvm=(NavMeshModifier)x;
-                }
-                nvm.ignoreFromBuild=true;
             }
         }
 
     }
+    private void CreateHumanoidGuy(){
+        if (_humanoidPathExists){
+            _pathParticleHumanoid.Clear();
+            Destroy(_pathGuyHumanoid);
 
-    public void CreatePathGuy(Vector3 s, Vector3 t){
-        if (_pathExists){
-            _pathParticle.Clear();
-            Destroy(_pathGuy);
+            _humanoidPathExists=false;
         }
-        _target_pos=t;
-        _startSpot_pos=s;
+        _myPrefab = (GameObject)Resources.Load("Prefabs/path_guy_humanoid", typeof(GameObject));
+        _pathGuyHumanoid=Instantiate(_myPrefab, _waypointList[0].transform.position, Quaternion.identity);
+       
 
-        _myPrefab = (GameObject)Resources.Load("Prefabs/path_guy", typeof(GameObject));
-        _pathGuy=Instantiate(_myPrefab, _startSpot_pos, Quaternion.identity);
+        _pathParticleHumanoid = _pathGuyHumanoid.GetComponentInChildren<ParticleSystem>();
+        _emissionHumanoid = _pathParticleHumanoid.emission;
+        _emissionHumanoid.enabled = true;
 
-        _pathParticle = _pathGuy.GetComponentInChildren<ParticleSystem>();
-        _emission = _pathParticle.emission;
-        _emission.enabled = true;
-
-        NavMeshAgent agent=_pathGuy.GetComponent<NavMeshAgent>();
-        agent.destination=_target_pos;
-        _agentMoving=true;
-        _pathExists=true;
+        _humanoidAgent=_pathGuyHumanoid.GetComponent<NavMeshAgent>();
+        _humanoidAgent.CalculatePath(_waypointList[1].transform.position,_humanoidPath);
+        _humanoidPoint=1;
+        _humanoidMoving=true;
+        _humanoidPathExists=true;
     }
+
+    private void CreateWheelchairGuy(){
+        if (_wheelchairPathExists){
+            _pathParticleWheelchair.Clear();
+            Destroy(_pathGuyWheelchair);
+
+            _wheelchairPathExists=false;
+        }
+        
+
+        _myPrefab = (GameObject)Resources.Load("Prefabs/path_guy_wheelchair", typeof(GameObject));
+        _pathGuyWheelchair=Instantiate(_myPrefab, _waypointList[0].transform.position, Quaternion.identity);
+
+        _pathParticleWheelchair = _pathGuyWheelchair.GetComponentInChildren<ParticleSystem>();
+        _emissionWheelchair = _pathParticleWheelchair.emission;
+        _emissionWheelchair.enabled = true;
+
+        _wheelchairAgent=_pathGuyWheelchair.GetComponent<NavMeshAgent>();
+        _wheelchairAgent.CalculatePath(_waypointList[1].transform.position,_wheelchairPath);
+        _wheelchairPoint=1;
+        _wheelchairMoving=true;
+        _wheelchairPathExists=true;
+    }
+
+    /*private NavMeshPath PathFinder(NavMeshAgent nva){
+        NavMeshPath pt_finale = new NavMeshPath();
+        NavMeshPath pt = new NavMeshPath();
+        NavMeshQueryFilter qf = new NavMeshQueryFilter();
+        qf.agentTypeID=nva.agentTypeID;
+        bool pathFound;
+
+        pathFound = NavMesh.CalculatePath(_waypointList[0].transform.position,_waypointList[1].transform.position,qf,pt);
+        for (int i=1;i<_waypointList.Count-1 && pathFound && pt.status==NavMeshPathStatus.PathComplete;i++){
+            pathFound = NavMesh.CalculatePath(_waypointList[i].transform.position,_waypointList[i+1].transform.position,qf,pt);
+            if (pathFound){
+                pt_finale.
+            }
+        }
+    }*/
+
 
     private bool IsWalkable(string name){
         foreach (string x in _walkableElements){
@@ -153,6 +274,19 @@ public class NavMeshCreator : MonoBehaviour
         return false;
     }
 
+    private int? GetNavMeshAgentID(string name)
+    {
+        for (int i = 0; i < NavMesh.GetSettingsCount(); i++)
+        {
+            NavMeshBuildSettings settings = NavMesh.GetSettingsByIndex(index: i);
+            if (name == NavMesh.GetSettingsNameFromID(agentTypeID: settings.agentTypeID))
+            {
+                return settings.agentTypeID;
+            }
+        }
+        return null;
+    }
+
     private void StartGuy(){
         _needToStartPath=true;
     }
@@ -162,11 +296,11 @@ public class NavMeshCreator : MonoBehaviour
     }
 
     private void Awake(){
-        HotSpotSelection.OnWayPointSet+=StartGuy;
+        HotSpotSelection.OnEndPointSet+=StartGuy;
         FurnitureSelection.OnFurnitureTranslation+=ToUpdateNavMesh;
     }
     private void OnDisable(){
-        HotSpotSelection.OnWayPointSet-=StartGuy;
+        HotSpotSelection.OnEndPointSet-=StartGuy;
         FurnitureSelection.OnFurnitureTranslation-=ToUpdateNavMesh;
     }
 }
