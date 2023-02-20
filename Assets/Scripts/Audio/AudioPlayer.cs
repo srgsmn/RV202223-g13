@@ -37,15 +37,15 @@ public class AudioPlayer : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         if(hasSFX)
             OnPlaySound?.Invoke(SoundType.hover);
-        OnPlaySpeech?.Invoke(speechClip);
+        if(hasSpeech)
+            OnPlaySpeech?.Invoke(speechClip);
     }
 
     public void OnPointerClick(PointerEventData data)
     {
         Debug.Log($"{GetType().Name}.cs > Pointer clicked on {gameObject.name}");
 
-        if (hasSFX)
-            OnPlaySound?.Invoke(SoundType.click);
+        OnPlaySound?.Invoke(SoundType.click);
     }
 
     public void OnPointerExit(PointerEventData data)
@@ -59,8 +59,10 @@ public class AudioPlayer : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         Debug.Log($"{GetType().Name}.cs > Selection on {gameObject.name}");
 
-        OnPlaySound?.Invoke(SoundType.hover);
-        OnPlaySpeech?.Invoke(speechClip);
+        if (hasSFX)
+            OnPlaySound?.Invoke(SoundType.hover);
+        if(hasSpeech)
+            OnPlaySpeech?.Invoke(speechClip);
     }
 
     public void OnDeselect(BaseEventData data)
