@@ -122,6 +122,11 @@ public class PauseMenuButton : MonoBehaviour
                     OnMainMenu?.Invoke();
 
                     break;
+
+                case PauseMenuAction.Restart:
+                    GameManager.Instance.RestartScene();
+
+                    break;
 /*
                 case PauseMenuAction.Quit:
                     OnQuit?.Invoke();

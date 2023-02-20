@@ -176,6 +176,7 @@ public class InputManager : MonoBehaviour
             inputs.UI.Directions.started += OnDirectionPressed;
             inputs.UI.Directions.performed += OnDirectionPressed;
             inputs.UI.Directions.canceled += OnDirectionPressed;
+            inputs.UI.MouseLtClick.started += OnMouseLtPressed;
 
             inputs.CharacterInput.Move.started += OnMovementInputPressed;
             inputs.CharacterInput.Move.canceled += OnMovementInputPressed;
@@ -228,6 +229,7 @@ public class InputManager : MonoBehaviour
             inputs.UI.Directions.started -= OnDirectionPressed;
             inputs.UI.Directions.performed -= OnDirectionPressed;
             inputs.UI.Directions.canceled -= OnDirectionPressed;
+            inputs.UI.MouseLtClick.started -= OnMouseLtPressed;
 
             inputs.CharacterInput.Move.started -= OnMovementInputPressed;
             inputs.CharacterInput.Move.canceled -= OnMovementInputPressed;
@@ -285,6 +287,14 @@ public class InputManager : MonoBehaviour
                     isPaused = true;
 
                     break;
+
+                case SceneState.Endgame:
+
+                    isTutorial = false;
+                    isPlaying = false;
+                    isPaused = false;
+
+                    break;
             }
     }
 
@@ -314,6 +324,7 @@ public class InputManager : MonoBehaviour
             if (objectSelected)
                 objectSelected = false;
         }
+        
             //OnBack?.Invoke();
     }
 
@@ -366,6 +377,23 @@ public class InputManager : MonoBehaviour
                 else
                 {
                     OnConfirm?.Invoke();
+                }
+            }
+        }
+    }
+
+    private void OnMouseLtPressed(InputAction.CallbackContext context)
+    {
+        Debug.Log($"{GetType().Name}.cs > LEFT BUTTON pressed (context value as button {context.ReadValueAsButton()})");
+
+        if (context.ReadValueAsButton())
+        {
+            // Se sto giocando, seleziono cose
+            if (isPlaying)
+            {
+                if (mode == Mode.EPSelector)
+                {
+                    OnSelection?.Invoke();
                 }
             }
         }
