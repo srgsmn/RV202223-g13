@@ -233,6 +233,9 @@ MonoBehaviour:
   state: 0
   sessionTimestamp: 
   sessionID: 
+  loadingPanelPrefab: {fileID: 0}
+  loadingPanelInstance: {fileID: 0}
+  loadingSlider: {fileID: 0}
   isLoading: 0
   tutorialPrefab: {fileID: 470832742217394522, guid: e647a07fa6bed4802b65739599569b40, type: 3}
   tutorialOn: 0
@@ -240,6 +243,9 @@ MonoBehaviour:
   isPaused: 0
   modeHUDPrefab: {fileID: 0}
   finalePrefab: {fileID: 0}
+  isFinale: 0
+  eventSystem: {fileID: 0}
+  selectedGO: {fileID: 0}
 --- !u!4 &22575049
 Transform:
   m_ObjectHideFlags: 0
@@ -2599,8 +2605,8 @@ MonoBehaviour:
   _playEffects: 1
   _speechVolume: 0
   _effectsVolume: 0
-  _speechMixer: {fileID: 0}
-  _UIFbMixer: {fileID: 0}
+  _speechMixer: {fileID: 24100000, guid: a37365c9e567c4e25ac5104014664e4e, type: 2}
+  _UIFbMixer: {fileID: 24100000, guid: f104825505e4e4d1c9f3e02ed9c64b89, type: 2}
 --- !u!4 &318250953
 Transform:
   m_ObjectHideFlags: 0
@@ -14171,7 +14177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -17284,7 +17290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}

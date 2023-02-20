@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using System;
 
 public class GameManager : MonoBehaviour
@@ -20,6 +21,9 @@ public class GameManager : MonoBehaviour
     [SerializeField][ReadOnlyInspector] string sessionID;
 
     [Header("Loading:")]
+    [SerializeField][ReadOnlyInspector] GameObject loadingPanelPrefab;
+    [SerializeField][ReadOnlyInspector] GameObject loadingPanelInstance;
+    [SerializeField][ReadOnlyInspector] Slider loadingSlider;
     [SerializeField][ReadOnlyInspector] bool isLoading = false;
 
     [Header("Tutorial:")]
@@ -41,11 +45,9 @@ public class GameManager : MonoBehaviour
     [SerializeField][ReadOnlyInspector] bool isFinale = false;
     private GameObject finaleInstance;
 
-    /*
     [Header("Event System:")]
     [SerializeField][ReadOnlyInspector] EventSystem eventSystem;
     [SerializeField][ReadOnlyInspector] GameObject selectedGO;
-    */
 
     public delegate void PauseEv(bool isPaused = true);
     public static event PauseEv OnPause;
@@ -69,21 +71,20 @@ public class GameManager : MonoBehaviour
         pauseMenuPrefab = Resources.Load(PREFABS.PAUSE) as GameObject;
         modeHUDPrefab = Resources.Load(PREFABS.HUD) as GameObject;
         finalePrefab = Resources.Load(PREFABS.FINALE) as GameObject;
+        loadingPanelPrefab = Resources.Load(PREFABS.LOADING) as GameObject;
 
         if (tutorialPrefab == null)
             Debug.LogError($"{GetType().Name}.cs > Tutorial prefab is MISSING");
 
-        //eventSystem = EventSystem.current;
+        eventSystem = EventSystem.current;
 
         EventsSubscriber();
     }
 
-    /*
     private void Update()
     {
-        //selectedGO = eventSystem.currentSelectedGameObject;
+        selectedGO = eventSystem.currentSelectedGameObject;
     }
-    */
 
     private void OnDestroy()
     {
@@ -159,13 +160,15 @@ public class GameManager : MonoBehaviour
 
             case SceneType.Demo1:
 
-                SceneManager.LoadScene(2);
+                //SceneManager.LoadScene(2);
+                StartCoroutine(LoadSceneAsync(2));
 
                 break;
 
             case SceneType.Demo2:
 
-                SceneManager.LoadScene(3);
+                //SceneManager.LoadScene(3);
+                StartCoroutine(LoadSceneAsync(3));
 
                 break;
 
@@ -173,6 +176,7 @@ public class GameManager : MonoBehaviour
                 Debug.LogWarning("### TODO ### HERE IT SHOULD LOAD BROWSE SCENE");
 
                 //SceneManager.LoadScene(4);
+                StartCoroutine(LoadSceneAsync(4));
 
                 break;
         }
@@ -180,6 +184,28 @@ public class GameManager : MonoBehaviour
         activeScene = newScene;
 
         OnSceneUpdate(activeScene, SceneState.None);
+    }
+
+    IEnumerator LoadSceneAsync(int sceneId)
+    {
+        loadingPanelInstance = Instantiate(loadingPanelPrefab);
+
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneId);
+
+        loadingPanelInstance.SetActive(true);
+
+        loadingSlider = loadingPanelInstance.GetComponentInChildren<Slider>();
+
+        while (!operation.isDone)
+        {
+            float progressValue = Mathf.Clamp01(operation.progress / 0.9f);
+
+            Debug.Log($"{GetType().Name}.cs > Loading progress value is {progressValue}");
+
+            loadingSlider.value = progressValue;
+
+            yield return null;
+        }
     }
 
     /// <summary>

@@ -12,6 +12,7 @@ namespace Utilities
         public const string HUD = "Prefabs/HUDCanvas";
         public const string EVSYS = "Prefabs/EventSystem";
         public const string FINALE = "Prefabs/FinaleCanvas";
+        public const string LOADING = "Prefabs/LoadingCanvas";
     }
 
     public enum SceneType
