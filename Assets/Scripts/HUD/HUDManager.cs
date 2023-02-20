@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using Utilities;
+using TMPro;
 
 public class HUDManager : MonoBehaviour
 {
@@ -27,6 +28,8 @@ public class HUDManager : MonoBehaviour
     [SerializeField][ReadOnlyInspector] Color32 NavColor = new Color32(235, 250, 255, 255);
     [SerializeField][ReadOnlyInspector] Color32 EditColor = new Color32(245, 80, 40, 255);
     [SerializeField][ReadOnlyInspector] Color32 PlanColor = new Color32(0, 210, 80, 255);
+    [SerializeField][ReadOnlyInspector] Color32 ErrColor = new Color32(255, 45, 45, 255);
+    [SerializeField][ReadOnlyInspector] Color32 WarnColor = new Color32(255, 210, 45, 255);
 
 
     /*
@@ -64,6 +67,8 @@ public class HUDManager : MonoBehaviour
             InputManager.OnTranslate += OnTranslate;
             InputManager.OnBack += CancelAction;
             InputManager.OnConfirm += ConfirmAction;
+
+            GameManager.OnReport += NotifyError;
         }
         else
         {
@@ -73,6 +78,8 @@ public class HUDManager : MonoBehaviour
             InputManager.OnTranslate -= OnTranslate;
             InputManager.OnBack -= CancelAction;
             InputManager.OnConfirm -= ConfirmAction;
+
+            GameManager.OnReport -= NotifyError;
         }
     }
 
@@ -172,6 +179,11 @@ public class HUDManager : MonoBehaviour
 
             case Mode.Plan:
                 activeMsg = planMsg;
+
+                break;
+
+            case Mode.Generic:
+                activeMsg = generic;
 
                 break;
         }
@@ -299,6 +311,26 @@ public class HUDManager : MonoBehaviour
                 break;
         }
     }
+
+    private void NotifyError(ReportType type, string message)
+    {
+        //TODO
+
+        switch (type)
+        {
+            case ReportType.Error:
+                //TODO
+                generic.GetComponent<TextMeshProUGUI>().text = message;
+
+                MsgsBg.color = ErrColor;
+
+                DisplayMessage(Mode.Generic);
+
+
+                break;
+        }
+    }
+
     /*
     private void ActivateInventory()
     {

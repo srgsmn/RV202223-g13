@@ -53,6 +53,8 @@ public class GameManager : MonoBehaviour
     public static event PauseEv OnPause;
     public delegate void StateChangedEv(SceneType type, SceneState state);
     public static event StateChangedEv OnSceneUpdate;
+    public delegate void ReportEv(ReportType type, string message);
+    public static event ReportEv OnReport;
 
     private void Awake()
     {
@@ -346,7 +348,6 @@ public class GameManager : MonoBehaviour
 
             OnSceneUpdate?.Invoke(activeScene, state);
         }
-        
     }
 
     private void SetSessionData()
@@ -363,6 +364,11 @@ public class GameManager : MonoBehaviour
     public string GetSessionID()
     {
         return sessionID;
+    }
+
+    public void MakeReport(ReportType type, string message)
+    {
+        OnReport?.Invoke(type, message);
     }
 
     /// <summary>
