@@ -14833,11 +14833,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   source: {fileID: 1643289900}
-  clips:
-  - {fileID: 8300000, guid: 800caffc59ea240aba78e9406978236c, type: 3}
-  - {fileID: 8300000, guid: a3e5b2f3f8b33401cb874ac02436f4cd, type: 3}
-  - {fileID: 8300000, guid: 5a7f345e09ced488baf779b25fe15708, type: 3}
-  currentClip: {fileID: 0}
+  clip: {fileID: 8300000, guid: 800caffc59ea240aba78e9406978236c, type: 3}
   musicOn: 0
 --- !u!82 &1643289900
 AudioSource:

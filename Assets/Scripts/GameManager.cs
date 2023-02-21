@@ -55,6 +55,8 @@ public class GameManager : MonoBehaviour
     public static event StateChangedEv OnSceneUpdate;
     public delegate void ReportEv(ReportType type, string message);
     public static event ReportEv OnReport;
+    //public delegate void NewSceneIdEv(int i);
+    //public static event NewSceneIdEv OnNewSceneIndex;
 
     private void Awake()
     {
@@ -185,7 +187,7 @@ public class GameManager : MonoBehaviour
 
         activeScene = newScene;
 
-        OnSceneUpdate(activeScene, SceneState.None);
+        OnSceneUpdate?.Invoke(activeScene, SceneState.None);
     }
 
     IEnumerator LoadSceneAsync(int sceneId)
@@ -216,6 +218,8 @@ public class GameManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         sceneIndex = scene.buildIndex;
+
+        //OnNewSceneIndex?.Invoke(sceneIndex);
 
         // Check index for tutorial
         if (sceneIndex > 1)
