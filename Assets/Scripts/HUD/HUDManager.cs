@@ -161,6 +161,11 @@ public class HUDManager : MonoBehaviour
     {
         MsgsBg.gameObject.SetActive(true);
 
+        if (activeMsg != null)
+        {
+            activeMsg.SetActive(false);
+        }
+
         switch (mode)
         {
             case Mode.EPSelector:
