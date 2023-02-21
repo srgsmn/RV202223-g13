@@ -40,7 +40,18 @@ public class SettingsMenu : MonoBehaviour
 
     private void Start()
     {
-        settMng.ResetValues();
+        ResetValues();
+    }
+
+    private void ResetValues()
+    {
+        speechTgl.isOn = (bool)settMng.GetValue(SettingType.TextReader);
+        effectsTgl.isOn = (bool)settMng.GetValue(SettingType.PlayEffects);
+        musicTgl.isOn = (bool)settMng.GetValue(SettingType.PlayMusic);
+        speechSlider.value = (float)settMng.GetValue(SettingType.SpeechVolume);
+        effectsSlider.value = (float)settMng.GetValue(SettingType.EffectsVolume);
+        musicSlider.value = (float)settMng.GetValue(SettingType.MusicVolume);
+
     }
 
     public void SetTextReader(bool isReading)
