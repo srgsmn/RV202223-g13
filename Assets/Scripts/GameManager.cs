@@ -305,11 +305,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ReloadScene()
-    {
-        DisplayScene(activeScene);
-    }
-
     private void OnPauseInput()
     {
         SetPause(true);
