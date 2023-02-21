@@ -2572,8 +2572,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 672.49994, y: -637.5}
-  m_SizeDelta: {x: 1400, y: 75}
+  m_AnchoredPosition: {x: 672.49994, y: -660}
+  m_SizeDelta: {x: 1400, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &363713564
 MonoBehaviour:
@@ -4155,7 +4155,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 672.49994, y: -1112.5}
+  m_AnchoredPosition: {x: 672.49994, y: -1157.5}
   m_SizeDelta: {x: 1400, y: 175}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &549463796
@@ -5177,12 +5177,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '"Waiting Music" used in main menu.
+  m_text: '"Waiting Music" used in main menu
 
-    "Village" used in the house environment.
+    "Village" used in the house environment
 
     "Focus
-    Loop - Corporate Music" used in the office environment.'
+    Loop - Corporate Music" used in the office environment'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 14cee7edf2af44a7cbcf3c4f10f7baff, type: 2}
   m_sharedMaterial: {fileID: 4051222487073401868, guid: 14cee7edf2af44a7cbcf3c4f10f7baff, type: 2}
@@ -6945,7 +6945,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Start up audio clips.
+  m_text: 'Start up audio clips
+
+
+    UI feedback'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 14cee7edf2af44a7cbcf3c4f10f7baff, type: 2}
   m_sharedMaterial: {fileID: 4051222487073401868, guid: 14cee7edf2af44a7cbcf3c4f10f7baff, type: 2}
@@ -14338,7 +14341,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 672.49994, y: -1250}
+  m_AnchoredPosition: {x: 672.49994, y: -1295}
   m_SizeDelta: {x: 1400, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1605612692
@@ -14428,7 +14431,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 672.49994, y: -700}
+  m_AnchoredPosition: {x: 672.49994, y: -745}
   m_SizeDelta: {x: 1400, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1615063338
@@ -15469,7 +15472,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 672.49994, y: -950}
+  m_AnchoredPosition: {x: 672.49994, y: -995}
   m_SizeDelta: {x: 1400, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1645547870
@@ -17309,7 +17312,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 672.49994, y: -850}
+  m_AnchoredPosition: {x: 672.49994, y: -895}
   m_SizeDelta: {x: 1400, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1827660042
@@ -17820,7 +17823,10 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Mrthenoronha, Leszek Szary
 
-    (from Pixabay)'
+    (from Pixabay)
+
+    audioninja001 (from
+    Pixabay)'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 382c025c9e85d46bea0b3a10950e9f4b, type: 2}
   m_sharedMaterial: {fileID: -4418227437429727050, guid: 382c025c9e85d46bea0b3a10950e9f4b, type: 2}
