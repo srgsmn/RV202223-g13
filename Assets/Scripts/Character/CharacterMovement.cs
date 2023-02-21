@@ -49,6 +49,7 @@ public class CharacterMovement : MonoBehaviour
             _reportDone=true;
             GameManager.Instance.EndsGame();
         }
+        _rigidbody.isKinematic=!_rigidbody.isKinematic;
         
     }
     public void ApplyMovement(Vector2 movement){

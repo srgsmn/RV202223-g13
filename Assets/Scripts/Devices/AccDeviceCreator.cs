@@ -339,8 +339,10 @@ public class AccDeviceCreator : MonoBehaviour
     }
 
     private void InsertMode(Mode mode_input){
-        Debug.Log("Sto cercando di entrare in questa modalità");
         switch(mode_input){
+            case Mode.EPSelector:
+                _startInsert=false;
+                break;
             case Mode.Nav:
                 _startInsert=false;
                 break;
@@ -372,5 +374,7 @@ public class AccDeviceCreator : MonoBehaviour
     private void OnDestroy(){
         InventoryBtn.OnItemSelect-=Inserisci;
         InputManager.OnChangeMode-=InsertMode;
+        InputManager.OnFurnitureTranslation -= ApplyFurniTransl;
+        InputManager.OnFurnitureRotation -= ApplyFurniRot;
     }
 }

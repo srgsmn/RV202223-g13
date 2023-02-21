@@ -205,7 +205,7 @@ public class InputManager : MonoBehaviour
             inputs.FreeLookCamera.Zoom.performed += OnFLCamZoom;
 
 
-            HotSpotSelection.OnWayPointSet+=NavModeStart;
+            HotSpotSelection.OnEndPointSet+=NavModeStart;
 
         }
         else
@@ -250,7 +250,7 @@ public class InputManager : MonoBehaviour
             inputs.FreeLookCamera.Rotate.canceled -= OnFLCamRotate;
             inputs.FreeLookCamera.Rotate.performed -= OnFLCamRotate;
 
-            HotSpotSelection.OnWayPointSet-=NavModeStart;
+            HotSpotSelection.OnEndPointSet-=NavModeStart;
 
         }
     }

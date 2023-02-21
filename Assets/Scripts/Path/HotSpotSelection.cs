@@ -16,11 +16,9 @@ public class HotSpotSelection : MonoBehaviour
     public Camera PlayerCamera;
     public GameObject StartSpot;
     public GameObject Target;
-
     public GameObject Level;
 
     private float _range = 100f;
-    private GameObject _selected;
     private RaycastHit _raycastHit;
     private bool _startPointSet=false;
     private bool _targetPointSet=false;
@@ -28,13 +26,15 @@ public class HotSpotSelection : MonoBehaviour
     private GameObject _avatar_pf;
     private GameObject _avatar;
     private GameObject _waypoint_pf;
-    private GameObject _waypoint;
+    private GameObject _waypoint_cursor;
     private Renderer[] _wpRND;
     private bool _raysStarted=false;
     private Dictionary<Mat_key, Material> _inactive_materials;
+    private List<GameObject> _waypointList;
+    private int _numWaypoints;
 
     public delegate void StartNavigation();
-    public static event StartNavigation OnWayPointSet;
+    public static event StartNavigation OnEndPointSet;
 
 
     
@@ -43,6 +43,8 @@ public class HotSpotSelection : MonoBehaviour
         _waypoint_pf= (GameObject)Resources.Load("Prefabs/waypoint", typeof(GameObject));
         _avatar_pf=(GameObject)Resources.Load("Prefabs/avatar_finale",typeof(GameObject));
         _inactive_materials=new Dictionary<Mat_key,Material>();
+        _waypointList=new List<GameObject>();
+        _numWaypoints=0;
         /*if (Level!=null){
             MakeWallsTransparent(Level);
         }*/
@@ -53,43 +55,47 @@ public class HotSpotSelection : MonoBehaviour
     void Update()
     {   
         
-        if (!_targetPointSet){
-            if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward, out _raycastHit,_range))
-            {   
-                if(!_raysStarted && _raycastHit.transform.name.ToLower().IndexOf("floor")!=-1){
-                    _waypoint=Instantiate(_waypoint_pf, _raycastHit.point, Quaternion.identity);
-                    _raysStarted=true;
+        if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward, out _raycastHit,_range))
+        {  
+            if(!_raysStarted && _raycastHit.transform.name.ToLower().IndexOf("floor")!=-1){
+                _waypoint_cursor=Instantiate(_waypoint_pf, _raycastHit.point, Quaternion.identity);
+                _raysStarted=true;
+            }
+            
+            Debug.DrawRay(PlayerCamera.transform.position,_raycastHit.point-PlayerCamera.transform.position,Color.red,0.0f,true);
+            if (_waypoint_cursor!=null && _raycastHit.transform.name.ToLower().IndexOf("floor")!=-1){
+                _waypoint_cursor.transform.position=_raycastHit.point;
+            }
+            if (Input.GetKeyDown(KeyCode.L) && _waypoint_cursor!=null){
+                _waypointList.Add(Instantiate(_waypoint_pf,_raycastHit.point, Quaternion.identity));
+                if (_numWaypoints==0){
+                    _wpRND=_waypointList[0].GetComponentsInChildren<Renderer>();
+                    foreach(Renderer x in _wpRND){
+                        x.material.SetColor("_Color",Color.green);
+                        x.material.SetColor("_EmissionColor",Color.green);
+                    }
                 }
+                _numWaypoints++;
+            }
                 
-                Debug.DrawRay(PlayerCamera.transform.position,_raycastHit.point-PlayerCamera.transform.position,Color.red,0.0f,true);
-                if (_waypoint!=null && _raycastHit.transform.name.ToLower().IndexOf("floor")!=-1){
-                    _waypoint.transform.position=_raycastHit.point;
+        }
+        if (Input.GetKeyDown(KeyCode.Return)){
+            if (_numWaypoints<2){
+                Debug.Log("Non hai ancora inserito almeno 2 waypoint");
+            }
+            else{
+                _wpRND=_waypointList[_numWaypoints-1].GetComponentsInChildren<Renderer>();
+                foreach(Renderer x in _wpRND){
+                    x.material.SetColor("_Color",Color.green);
+                    x.material.SetColor("_EmissionColor",Color.green);
                 }
-                if (Input.GetKeyDown(KeyCode.L) && _waypoint!=null){
-                    if (!_startPointSet && StartSpot!=null){
-                        StartSpot.transform.position=_raycastHit.point;
-                        StartSpot.transform.position+=new Vector3(0.0f,0.5f,0.0f);
-                        _startPointSet=true;
-                        _wpRND=_waypoint.GetComponentsInChildren<Renderer>();
-                        foreach(Renderer x in _wpRND){
-                            x.material.SetColor("_Color",Color.green);
-                            x.material.SetColor("_EmissionColor",Color.green);
-                        }
-                        
-                    }
-                    else if (_startPointSet && Target!=null){
-                        Target.transform.position=_raycastHit.point;
-                        Target.transform.position+=new Vector3(0.0f,0.5f,0.0f);
-                        Destroy(_waypoint);
-                        _targetPointSet=true;
-                        //ResetWalls(Level);
-                        _avatar=Instantiate(_avatar_pf, StartSpot.transform.position+new Vector3(0.0f,-0.5f,0.0f), Quaternion.identity);
-                        _avatar.GetComponent<CharacterMovement>().Target=Target;
-                        SwitchCamera();
-                        OnWayPointSet?.Invoke();
-                        this.enabled=false;
-                    }
-                }
+                Destroy(_waypoint_cursor);
+                //ResetWalls(Level);
+                _avatar=Instantiate(_avatar_pf, _waypointList[0].transform.position, Quaternion.identity);
+                SwitchCamera();
+                OnEndPointSet?.Invoke();
+                Level.GetComponent<NavMeshCreator>()._waypointList=_waypointList;
+                this.enabled=false;
             }
         }
         
@@ -101,6 +107,7 @@ public class HotSpotSelection : MonoBehaviour
         _avatar.GetComponent<FurnitureSelection>().enabled=true;
         _avatar.GetComponent<AccDeviceCreator>().enabled=true;
         _avatar.GetComponent<AccDeviceCreator>().Level=Level;
+        _avatar.GetComponent<CharacterMovement>().Target=_waypointList[_waypointList.Count-1];
         PlayerCamera.enabled=false;
         FirstPerson.enabled=true;
     }

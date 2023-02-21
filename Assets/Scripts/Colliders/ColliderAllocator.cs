@@ -18,7 +18,7 @@ public class ColliderAllocator : MonoBehaviour
         AllocateColliders(_gt,true,false);
         if (TryGetComponent(typeof(NavMeshCreator),out Component x)){
             nc=(NavMeshCreator)x;
-            nc.CreateNavMesh();
+            nc.InitializeNavMesh();
         }
         _gt.GetComponentsInChildren<Collider>().ToList().ForEach(x => x.material=psmt);
     }
@@ -41,7 +41,7 @@ public class ColliderAllocator : MonoBehaviour
             children[i]=child;
             i++;
         }
-        Debug.Log("About to detach children of " + prn.name);
+        //Debug.Log("About to detach children of " + prn.name);
         prn.DetachChildren();
         foreach (Transform x in children){
             isStatic=true;
@@ -59,7 +59,7 @@ public class ColliderAllocator : MonoBehaviour
                 AllocateColliders(x,!mesh_ex,isStatic);
             }
             if (mesh_ex){
-                Debug.Log("Adding colliders to " + x.name);
+                //Debug.Log("Adding colliders to " + x.name);
                 AddColliders(x.gameObject, colliderType);
             }
             if (!container && mesh_ex && !staticParent){
@@ -90,7 +90,7 @@ public class ColliderAllocator : MonoBehaviour
     }
 
     private int ChooseColliders(GameObject x, MeshFilter mf){
-        
+
         Mesh mesh = mf.sharedMesh;
         Vector3 m_SizeM =mesh.bounds.size;
         float boxSize = m_SizeM.x * m_SizeM.y * m_SizeM.z;
