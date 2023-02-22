@@ -190,7 +190,12 @@ public class FileManager : MonoBehaviour
         }
     }
 
-    public string DataToTxt()
+    /// <summary>
+    /// Transform data to a string with "\t" chars. To avoid them, set the parameter to true (false by default)
+    /// </summary>
+    /// <param name="toDisplay">flag that if it's true removes "\t" chars if the string should be shown in screen, otherwise keeps them (false by default)</param>
+    /// <returns></returns>
+    public string DataToTxt(bool toDisplay=false)
     {
         string txt = $"WAYFINDER ACCESSIBILITY REPORT\n";
 
@@ -198,6 +203,9 @@ public class FileManager : MonoBehaviour
             txt += "";
         else
             txt += accRep.ToString();
+
+        if (toDisplay)
+            txt.Replace("\t", "");
 
         return txt;
     }

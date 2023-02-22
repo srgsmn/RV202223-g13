@@ -34,7 +34,7 @@ public class FinaleManager : MonoBehaviour
     {
         string data = "";
 
-        data = fm.DataToTxt();
+        data = fm.DataToTxt(true);
 
         int lines = Regex.Matches(data, "\n").Count + 5;
 
