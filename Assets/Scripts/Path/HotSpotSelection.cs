@@ -91,6 +91,7 @@ public class HotSpotSelection : MonoBehaviour
                 SwitchCamera();
                 OnEndPointSet?.Invoke();
                 Level.GetComponent<NavMeshCreator>()._waypointList=_waypointList;
+                this.gameObject.GetComponent<FreeLookCamera>().enabled=false;
                 this.enabled=false;
             }
         }

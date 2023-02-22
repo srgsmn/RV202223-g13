@@ -30,7 +30,8 @@ public class FollowPlayer : MonoBehaviour
         rotationX = Mathf.Clamp(rotationX - Input.GetAxis("Mouse Y") * TurnSpeedX, -15f, 45f);
         rotationY = Mathf.Clamp(rotationY - Input.GetAxis("Mouse X") * TurnSpeedY, -60f, 60f);
 
-        transform.localEulerAngles = new Vector3(rotationX, 180f - (rotationY + 15f), -0.1f * rotationY);
+        //transform.localEulerAngles = new Vector3(rotationX, 180f - (rotationY + 15f), -0.1f * rotationY);
+        transform.localEulerAngles = new Vector3(rotationX, 180f - (rotationY + 15f), 0.0f);
     }
 
     private void Awake()

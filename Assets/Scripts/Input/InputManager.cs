@@ -51,7 +51,7 @@ public class InputManager : MonoBehaviour
     [SerializeField][ReadOnlyInspector] bool isPaused;
     [SerializeField][ReadOnlyInspector] bool isTutorial;
     [SerializeField][ReadOnlyInspector] Mode mode;
-    [SerializeField][ReadOnlyInspector] bool objectSelected = false;
+    [SerializeField][ReadOnlyInspector] bool objectSelected;
     [SerializeField][ReadOnlyInspector] bool rotationSelected = false;
     [SerializeField][ReadOnlyInspector] bool translationSelected = false;
     [SerializeField]/*[ReadOnlyInspector]*/ bool hoverObject = false;
@@ -62,7 +62,6 @@ public class InputManager : MonoBehaviour
     private GameObject evSysInstance;
 
     private PlayerInputs inputs;
-
     private void Awake()
     {
         if (Instance == null)
@@ -111,6 +110,22 @@ public class InputManager : MonoBehaviour
     private void OnDestroy()
     {
         EventSubscriber(false);
+    }
+
+    private void Update(){
+        if (isPlaying){
+            if (Cursor.visible){
+                Cursor.visible=false;
+            }
+        }
+        if (isTutorial){
+            Cursor.visible=false;
+        }
+        else{
+            if (!Cursor.visible){
+                Cursor.visible=true;
+            }
+        }
     }
 
     public delegate void PauseEv();
@@ -207,6 +222,7 @@ public class InputManager : MonoBehaviour
 
             HotSpotSelection.OnEndPointSet+=NavModeStart;
             FurnitureSelection.OnHover+=SetHoverFlag;
+            FurnitureSelection.OnSelect+=SetObjectSelected;
 
             OnChangeMode += ResetFlags;
         }
@@ -254,6 +270,7 @@ public class InputManager : MonoBehaviour
 
             HotSpotSelection.OnEndPointSet-=NavModeStart;
             FurnitureSelection.OnHover-=SetHoverFlag;
+            FurnitureSelection.OnSelect-=SetObjectSelected;
 
             OnChangeMode -= ResetFlags;
         }
@@ -273,7 +290,7 @@ public class InputManager : MonoBehaviour
                     isTutorial = true;
                     isPlaying = false;
                     isPaused = false;
-
+                    Cursor.visible=true;
                     break;
 
                 case SceneState.Playing:
@@ -281,7 +298,7 @@ public class InputManager : MonoBehaviour
                     isTutorial = false;
                     isPlaying = true;
                     isPaused = false;
-
+                    Cursor.visible=false;
                     break;
 
                 case SceneState.Paused:
@@ -289,7 +306,7 @@ public class InputManager : MonoBehaviour
                     isTutorial = false;
                     isPlaying = false;
                     isPaused = true;
-
+                    Cursor.visible=true;
                     break;
 
                 case SceneState.Endgame:
@@ -297,7 +314,7 @@ public class InputManager : MonoBehaviour
                     isTutorial = false;
                     isPlaying = false;
                     isPaused = false;
-
+                    Cursor.visible=true;
                     break;
             }
     }
@@ -377,11 +394,10 @@ public class InputManager : MonoBehaviour
                     if (!objectSelected)
                     {
                         OnSelection?.Invoke();
-
-                        objectSelected = true;
                     }
                     else
                     {
+                        Debug.Log("Sto entrando su confirm");
                         objectSelected = false;
                         rotationSelected = false;
                         translationSelected = false;
@@ -392,7 +408,7 @@ public class InputManager : MonoBehaviour
                 }
                 else
                 {
-                    OnConfirm?.Invoke();
+                    //OnConfirm?.Invoke();
                 }
             }
         }
@@ -419,10 +435,13 @@ public class InputManager : MonoBehaviour
     {
         Debug.Log($"{GetType().Name}.cs > ENTER Key pressed (context value as button {context.ReadValueAsButton()})");
 
-        if (isPlaying)
-        {
-            OnConfirm?.Invoke();
-        }
+         if (isPlaying) 
+        { 
+            if(mode != Mode.Edit)
+            {
+                OnConfirm?.Invoke();;
+            } 
+        } 
     }
 
     /// <summary>
@@ -432,9 +451,6 @@ public class InputManager : MonoBehaviour
     public void SetHoverFlag(bool isHover)
     {
         hoverObject = isHover;
-
-        if (!hoverObject)
-            objectSelected = false;     // TODO
     }
 
     // MODE CHANGE
@@ -718,5 +734,11 @@ public class InputManager : MonoBehaviour
         rotationSelected = false;
         translationSelected = false;
         hoverObject = false;
+    }
+
+    private void SetObjectSelected(bool sel){
+        Debug.Log("Ci entro?" + sel);
+        objectSelected=sel;
+        Debug.Log("ObjectSelected: "+ objectSelected);  
     }
 }
