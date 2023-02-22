@@ -35,6 +35,13 @@ public class ReportCreator : MonoBehaviour
         AllAccDevices = new List<AccDevicePlacement>();
         AllRemoved = new List<string>();
         AllTranslations = new Dictionary<string, RotoTranslation>();
+
+        FurnitureSelection.OnFurnitureRemoval += RemoveFurniture;
+    }
+
+    private void OnDestroy()
+    {
+        FurnitureSelection.OnFurnitureRemoval -= RemoveFurniture;
     }
 
     void AddDistance(float distance)

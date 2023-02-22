@@ -40,3 +40,326 @@ Collision in (4.27, 0.19, 21.19) with 'Library_02';;
 Collision in (7.29, 0.94, 21.54) with DeskCase_01;
 
 Furniture: 'Chair_02', translated by (-1.71, 0.00, 0.56), and rotated around y axis by 0�;
+Total Distance: 37.74804;
+Number of collisions: 12;
+Number of moved pieces of furniture: 2;
+Number of removed pieces of furniture: 0;
+Number of devices: 0;
+Collision in (12.89, 0.98, 22.46) with 'Desktop_4P_01';;
+
+Collision in (12.89, 0.87, 22.46) with 'Desktop_4P_01';;
+
+Collision in (12.89, 0.87, 22.46) with 'Desktop_4P_01';;
+
+Collision in (11.97, 0.19, 23.45) with 'Chair_01';;
+
+Collision in (11.97, 0.10, 23.45) with 'Chair_01';;
+
+Collision in (9.84, 1.36, 23.25) with 'Chair_02';;
+
+Collision in (12.03, 0.01, 14.85) with 'Chair_01';;
+
+Collision in (11.99, 0.10, 14.82) with 'Chair_01';;
+
+Collision in (11.91, 1.36, 15.04) with 'Chair_01';;
+
+Collision in (11.87, 1.36, 15.13) with 'Chair_01';;
+
+Collision in (11.99, 0.10, 14.83) with 'Chair_01';;
+
+Furniture: 'DeskCase_01', translated by (0.20, 0.00, 1.11), and rotated around y axis by 0.5308437�;
+Furniture: 'Carpet_02', translated by (5.79, 0.00, 1.93), and rotated around y axis by -0.5000001�;
+Total Distance: 28.30794;
+Number of collisions: 21;
+Number of moved pieces of furniture: 2;
+Number of removed pieces of furniture: 6;
+Number of devices: 0;
+Collision in (12.26, 1.36, 18.20) with 'Chair_01';;
+
+Collision in (12.38, 0.97, 18.20) with 'Chair_01';;
+
+Collision in (12.51, 0.19, 18.34) with 'Chair_01';;
+
+Collision in (12.90, 1.07, 18.79) with 'Desktop_4P_01';;
+
+Collision in (8.70, 0.94, 21.54) with DeskCase_01;
+
+Removed piece of furniture: 'Chair_01', from position (12.51, 0.00, 15.14);
+
+Removed piece of furniture: 'Chair_01', from position (12.51, 0.00, 15.14);
+
+Removed piece of furniture: 'Desktop_4P_01', from position (13.74, 0.00, 16.41);
+
+Removed piece of furniture: 'Desktop_4P_01', from position (13.74, 0.00, 16.41);
+
+Removed piece of furniture: 'Furniture_01', from position (9.34, 0.00, 5.39);
+
+Removed piece of furniture: 'Furniture_01', from position (9.34, 0.00, 5.39);
+
+Collision in (10.85, 0.78, 5.88) with 'Carpet_01';;
+
+Collision in (10.85, 0.70, 5.88) with 'Carpet_01';;
+
+Collision in (10.85, 0.61, 5.88) with 'Carpet_01';;
+
+Collision in (10.13, 0.78, 5.87) with 'Carpet_01';;
+
+Collision in (10.13, 0.70, 5.87) with 'Carpet_01';;
+
+Collision in (10.13, 0.61, 5.87) with 'Carpet_01';;
+
+Collision in (9.95, 0.78, 5.87) with 'Carpet_01';;
+
+Collision in (9.95, 0.70, 5.87) with 'Carpet_01';;
+
+Collision in (9.95, 0.61, 5.87) with 'Carpet_01';;
+
+Collision in (9.78, 0.78, 5.87) with 'Carpet_01';;
+
+Collision in (9.78, 0.70, 5.87) with 'Carpet_01';;
+
+Collision in (9.78, 0.61, 5.87) with 'Carpet_01';;
+
+Collision in (9.64, 0.78, 5.85) with 'Carpet_01';;
+
+Collision in (9.64, 0.70, 5.85) with 'Carpet_01';;
+
+Collision in (9.64, 0.61, 5.85) with 'Carpet_01';;
+
+Furniture: 'Carpet_02', translated by (3.08, 0.00, -0.31), and rotated around y axis by -0.5000001�;
+Furniture: 'Carpet_01', translated by (0.00, 0.00, 0.00), and rotated around y axis by -0.5000001�;
+Furniture: 'Chair_01', removed;
+Furniture: 'Chair_01', removed;
+Furniture: 'Desktop_4P_01', removed;
+Furniture: 'Desktop_4P_01', removed;
+Furniture: 'Furniture_01', removed;
+Furniture: 'Furniture_01', removed;
+Total Distance: 22.164;
+Number of collisions: 8;
+Number of moved pieces of furniture: 3;
+Number of removed pieces of furniture: 4;
+Number of devices: 0;
+Collision in (12.27, 1.36, 18.18) with 'Chair_01';;
+
+Collision in (12.90, 0.98, 22.45) with 'Desktop_4P_01';;
+
+Collision in (12.90, 0.87, 22.45) with 'Desktop_4P_01';;
+
+Collision in (12.90, 1.09, 22.45) with 'Desktop_4P_01';;
+
+Collision in (13.23, 0.98, 22.46) with 'Desktop_4P_01';;
+
+Collision in (13.23, 1.09, 22.46) with 'Desktop_4P_01';;
+
+Collision in (13.02, 0.87, 22.44) with 'Desktop_4P_01';;
+
+Removed piece of furniture: 'Chair_02', from position (9.20, 0.00, 23.43);
+
+Removed piece of furniture: 'Chair_02', from position (9.20, 0.00, 23.43);
+
+Removed piece of furniture: 'Desktop_4P_01', from position (7.95, 0.00, 24.86);
+
+Removed piece of furniture: 'Desktop_4P_01', from position (7.95, 0.00, 24.86);
+
+Furniture: 'DeskCase_01', translated by (0.00, 0.00, 0.00), and rotated around y axis by 0.5000001�;
+Furniture: 'Chair_01', translated by (-5.98, 0.00, -5.31), and rotated around y axis by -0.1861767�;
+Furniture: 'Desktop_4P_01', translated by (6.15, 0.00, -12.21), and rotated around y axis by 0.7071068�;
+Furniture: 'Chair_02', removed;
+Furniture: 'Chair_02', removed;
+Furniture: 'Desktop_4P_01', removed;
+Furniture: 'Desktop_4P_01', removed;
+Total Distance: 21.66;
+Number of collisions: 89;
+Number of moved pieces of furniture: 2;
+Number of removed pieces of furniture: 4;
+Number of devices: 0;
+Removed piece of furniture: 'Chair_01', from position (12.32, 0.00, 23.86);
+
+Removed piece of furniture: 'Chair_01', from position (12.32, 0.00, 23.86);
+
+Collision in (13.06, 1.02, 23.84) with 'Computer_01';;
+
+Collision in (13.03, 1.07, 22.96) with 'Computer_01';;
+
+Collision in (12.82, 0.94, 24.53) with DeskCase_01;
+
+Collision in (9.37, 1.36, 25.86) with 'Chair_02';;
+
+Collision in (8.78, 1.09, 25.30) with 'Desktop_4P_01';;
+
+Collision in (9.40, 0.97, 23.92) with 'Chair_02';;
+
+Collision in (9.46, 1.36, 23.92) with 'Chair_02';;
+
+Collision in (9.46, 1.07, 23.92) with 'Chair_02';;
+
+Collision in (9.46, 1.26, 23.92) with 'Chair_02';;
+
+Collision in (9.51, 1.46, 23.96) with 'Chair_02';;
+
+Collision in (9.40, 0.87, 23.92) with 'Chair_02';;
+
+Collision in (8.80, 0.98, 24.71) with 'Desktop_4P_01';;
+
+Collision in (9.57, 1.36, 23.92) with 'Chair_02';;
+
+Collision in (9.59, 1.46, 23.89) with 'Chair_02';;
+
+Collision in (9.51, 1.46, 23.95) with 'Chair_02';;
+
+Collision in (9.52, 1.46, 23.97) with 'Chair_02';;
+
+Removed piece of furniture: 'Chair_02', from position (9.20, 0.00, 23.43);
+
+Removed piece of furniture: 'Chair_02', from position (9.20, 0.00, 23.43);
+
+Collision in (8.80, 0.98, 24.08) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.98, 24.02) with 'Desktop_4P_01';;
+
+Collision in (8.78, 1.09, 22.81) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.87, 22.81) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Collision in (8.78, 0.61, 22.80) with 'Desktop_4P_01';;
+
+Furniture: 'Desktop_4P_01', translated by (5.89, 0.00, -1.13), and rotated around y axis by 1.39169�;
+Furniture: 'DeskCase_01', translated by (-5.60, 0.00, -4.52), and rotated around y axis by 0.5000001�;
+Furniture: 'Chair_01', removed;
+Furniture: 'Chair_01', removed;
+Furniture: 'Chair_02', removed;
+Furniture: 'Chair_02', removed;
