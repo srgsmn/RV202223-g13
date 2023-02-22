@@ -32,6 +32,7 @@ public class FurnitureSelection : MonoBehaviour
     private e_mode _currentMode;
     private bool _selectionToNav=false;
     private bool _moveToNav=false;
+    private bool _moveToSel=false;
     private Vector2 _localTranslation; // furniture
     private float _localRotation; // furniture
 
@@ -144,7 +145,6 @@ public class FurnitureSelection : MonoBehaviour
                 if (_applyChange)
                 {   
                     _applyChange=false;
-                    Debug.Log("Confirm");
                     if (_selected != null)
                     {
                         DeHighlight(_selected);
@@ -167,7 +167,19 @@ public class FurnitureSelection : MonoBehaviour
                     _moveToNav=false;
                     _currentMode = e_mode.mode_navigation;
                 }
-                
+                if (_moveToSel)
+                {
+                    if (_selected != null)
+                    {
+                        DeHighlight(_selected);
+                        _selected.transform.position=_originalPosition;
+                        _selected.transform.Rotate(0.0f,_originalRotation-_selected.transform.rotation.y,0.0f,Space.Self);
+                        //_active_rb.isKinematic=true;
+                        _selected = null;
+                    }
+                    _moveToSel=false;
+                    _currentMode = e_mode.mode_selection;
+                }
                 
                 if (_localTranslation.y > 0.5)
                 {
@@ -358,7 +370,10 @@ public class FurnitureSelection : MonoBehaviour
                 }
                 break;
             case Mode.Edit:
-                _currentMode=e_mode.mode_selection;
+                if (_currentMode==e_mode.mode_move){
+                    _moveToSel=true;
+                }
+                //_currentMode=e_mode.mode_selection;
                 break;
             case Mode.Plan: //aggiungi device
                 _currentMode=e_mode.mode_navigation;

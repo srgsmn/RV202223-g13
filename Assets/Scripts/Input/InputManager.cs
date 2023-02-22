@@ -370,11 +370,23 @@ public class InputManager : MonoBehaviour
                 if (mode == Mode.EPSelector) {
                     OnSelection?.Invoke();
                 }
-                else if(mode == Mode.Edit && hoverObject)
-                {
-                    OnSelection?.Invoke();
+                else if(mode == Mode.Edit && hoverObject){
+                    if (!objectSelected)
+                        {
+                            OnSelection?.Invoke();
 
-                    objectSelected = true;
+                            objectSelected = true;
+                        }
+                    else
+                        {
+                            objectSelected = false;
+                            rotationSelected = false;
+                            translationSelected = false;
+
+                            mode = Mode.Edit;
+
+                            OnChangeMode?.Invoke(mode);
+                        }
                 }
                 else
                 {
