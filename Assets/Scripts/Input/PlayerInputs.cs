@@ -143,6 +143,33 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Point"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""b179cc2b-228b-490f-93ad-2657ce658550"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ScrollWheel"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""8dd29fd5-be1c-44df-9648-8ee0afd34eae"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""df7d0153-d4c8-4294-b81c-d13ea11f8139"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -374,6 +401,39 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""MouseLtClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3cb4b994-fe60-41f3-addc-81c7d5cf185f"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Point"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e0ba2777-b66d-4986-8d65-7d345354079b"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ScrollWheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7e05392e-45b3-4d73-ae5c-a4a13e5ec734"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -826,6 +886,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_UI_Translate = m_UI.FindAction("Translate", throwIfNotFound: true);
         m_UI_Directions = m_UI.FindAction("Directions", throwIfNotFound: true);
         m_UI_MouseLtClick = m_UI.FindAction("MouseLtClick", throwIfNotFound: true);
+        m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
+        m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
+        m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
         // CharacterInput
         m_CharacterInput = asset.FindActionMap("CharacterInput", throwIfNotFound: true);
         m_CharacterInput_Move = m_CharacterInput.FindAction("Move", throwIfNotFound: true);
@@ -910,6 +973,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Translate;
     private readonly InputAction m_UI_Directions;
     private readonly InputAction m_UI_MouseLtClick;
+    private readonly InputAction m_UI_Point;
+    private readonly InputAction m_UI_ScrollWheel;
+    private readonly InputAction m_UI_Click;
     public struct UIActions
     {
         private @PlayerInputs m_Wrapper;
@@ -927,6 +993,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @Translate => m_Wrapper.m_UI_Translate;
         public InputAction @Directions => m_Wrapper.m_UI_Directions;
         public InputAction @MouseLtClick => m_Wrapper.m_UI_MouseLtClick;
+        public InputAction @Point => m_Wrapper.m_UI_Point;
+        public InputAction @ScrollWheel => m_Wrapper.m_UI_ScrollWheel;
+        public InputAction @Click => m_Wrapper.m_UI_Click;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -975,6 +1044,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @MouseLtClick.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseLtClick;
                 @MouseLtClick.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseLtClick;
                 @MouseLtClick.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseLtClick;
+                @Point.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPoint;
+                @Point.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPoint;
+                @Point.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPoint;
+                @ScrollWheel.started -= m_Wrapper.m_UIActionsCallbackInterface.OnScrollWheel;
+                @ScrollWheel.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnScrollWheel;
+                @ScrollWheel.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnScrollWheel;
+                @Click.started -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
+                @Click.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
+                @Click.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -1018,6 +1096,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @MouseLtClick.started += instance.OnMouseLtClick;
                 @MouseLtClick.performed += instance.OnMouseLtClick;
                 @MouseLtClick.canceled += instance.OnMouseLtClick;
+                @Point.started += instance.OnPoint;
+                @Point.performed += instance.OnPoint;
+                @Point.canceled += instance.OnPoint;
+                @ScrollWheel.started += instance.OnScrollWheel;
+                @ScrollWheel.performed += instance.OnScrollWheel;
+                @ScrollWheel.canceled += instance.OnScrollWheel;
+                @Click.started += instance.OnClick;
+                @Click.performed += instance.OnClick;
+                @Click.canceled += instance.OnClick;
             }
         }
     }
@@ -1151,6 +1238,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnTranslate(InputAction.CallbackContext context);
         void OnDirections(InputAction.CallbackContext context);
         void OnMouseLtClick(InputAction.CallbackContext context);
+        void OnPoint(InputAction.CallbackContext context);
+        void OnScrollWheel(InputAction.CallbackContext context);
+        void OnClick(InputAction.CallbackContext context);
     }
     public interface ICharacterInputActions
     {

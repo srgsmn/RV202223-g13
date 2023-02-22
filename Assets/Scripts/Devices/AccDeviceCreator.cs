@@ -1,27 +1,44 @@
-using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 using Utilities;
+
 public class AccDeviceCreator : MonoBehaviour
 {   
     public enum acc_device {Button, Ramp, Stairlift};
+    public acc_device mode = acc_device.Button;
     public Camera PlayerCamera;
-    public List<GameObject> Doors;
-    public GameObject Level;
-    public acc_device device_type = acc_device.Button;
-    private float _range = 100f;
-    private Dictionary<string, Color[]> _originalMats = null;
-    private GameObject _selected;
+
+    public enum furniture_type { Generic, Door, Stair }
+
     private RaycastHit _raycastHit;
     private GameObject _waypoint_pf;
     private GameObject _waypoint;
-    private GameObject _button_pf;
-    private GameObject _ramp_pf;
-    private GameObject _button;
     private Renderer[] _wpRND;
+    private float _range = 1000f;
     private bool _raysStarted=false;
     private bool _startInsert=false;
-    private GameObject _doorClosest;
+    private bool _spacePressed = false;
+
+    // Button variables
+    public List<GameObject> Doors;
+    private GameObject _button_pf;
+
+    // Ramp variables
+    private GameObject Ramp = null;
+    private GameObject _ramp_pf;
+
+    // Stairlift variables     
+    public List<GameObject> Stairs;
+    private GameObject Stair;
+    private GameObject _stairlift_pf;
+    private GameObject _stairlift;
+    private Vector3 _linkStartPosition;
+    private Vector3 _linkEndPosition;
+    private bool _linkStartSet;
+    private NavMeshLink _nvl;
+
     private Vector2 _localTranslation; // accessibility device
     private float _localRotation; // accessibility device
 
@@ -32,7 +49,7 @@ public class AccDeviceCreator : MonoBehaviour
 
     void AccDevicePlaced()
     {
-        OnDeviceCreation?.Invoke(device_type.ToString(), _raycastHit.point);
+        OnDeviceCreation?.Invoke(mode.ToString(), _raycastHit.point);
     }
 
     #endregion
@@ -41,208 +58,223 @@ public class AccDeviceCreator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        FindDoors(Level);
-        Debug.Log("Ho trovato x porte con x = " + Doors.Count);
-        _waypoint_pf= (GameObject)Resources.Load("Prefabs/waypoint", typeof(GameObject));
+        //FindDoors(Level);
+        Doors = _findObjectsOfType("door");
+        Stairs = _findObjectsOfType("stair");
+        Debug.Log("Ho trovato " + Doors.Count + " porte e " + Stairs.Count + " scale");
         _button_pf = (GameObject)Resources.Load("Prefabs/Button", typeof(GameObject));
         _ramp_pf = (GameObject)Resources.Load("Prefabs/Adaptable_Ramp", typeof(GameObject));
+        _waypoint_pf= (GameObject)Resources.Load("Prefabs/waypoint", typeof(GameObject));
+        _stairlift_pf = (GameObject) Resources.Load("Prefabs/Stairlift_raw", typeof(GameObject));
+        _waypoint = Instantiate(_waypoint_pf);
+        _waypoint.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-       
+        int _doorClosest = -1;
         if (_startInsert){
-            if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward, out _raycastHit,_range))
-            {   
-                switch(device_type){
+            if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward, out _raycastHit, _range))
+            {
+                switch (mode)
+                {
                     case acc_device.Button:
-                    //BUTTON MODE
-                        if (_raycastHit.transform.name.ToLower().IndexOf("wall")!=-1){
-                            if(!_raysStarted){
-                                _waypoint=Instantiate(_waypoint_pf, _raycastHit.point, Quaternion.identity);
-                                _raysStarted=true;
-                            }
-                            Debug.DrawRay(PlayerCamera.transform.position,_raycastHit.point-PlayerCamera.transform.position,Color.red,0.0f,true);
-                            if (_waypoint!=null){
-                                _waypoint.transform.position=_raycastHit.point;
-                                _waypoint.transform.rotation=Quaternion.FromToRotation(Vector3.up, _raycastHit.normal);
-                                _doorClosest=FindClosestDoor(_waypoint.transform);
-                                if (_doorClosest!=null){
-                                    Debug.Log(_doorClosest.name);
-                                    if ((_doorClosest.transform.position-_raycastHit.point).magnitude<=2.5f){
-                                        _wpRND=_waypoint.GetComponentsInChildren<Renderer>();
-                                        foreach(Renderer x in _wpRND){
-                                            x.material.SetColor("_Color",Color.green);
-                                            x.material.SetColor("_EmissionColor",Color.green);
-                                        }
-                                        if (Input.GetKeyDown(KeyCode.Space)){
-                                            _button=Instantiate(_button_pf,_raycastHit.point,Quaternion.FromToRotation(Vector3.up,_raycastHit.normal));
-                                            Destroy(_doorClosest);
-                                            Destroy(_waypoint);
-                                            Doors.Clear();
-                                            FindDoors(Level);
-                                            AccDevicePlaced();
-                                        }
-                                    }
-                                    else{
-                                        _wpRND=_waypoint.GetComponentsInChildren<Renderer>();
-                                        foreach(Renderer x in _wpRND){
-                                            x.material.SetColor("_Color",Color.red);
-                                            x.material.SetColor("_EmissionColor",Color.red);
-                                        }
-                                    }
-                                }
-                            }
-                            else{
-                                if (_raysStarted){
-                                    Destroy(_waypoint);
-                                    _raysStarted=false;
-                                }
-                            }
-                        }
-                        break;
-                    case acc_device.Stairlift:
-                    /*STAIRLIFT MODE
-                        if (_raycastHit.transform.name.ToLower().IndexOf("floor")!=-1){
-                            if(!_raysStarted){
-                                _waypoint=Instantiate(_waypoint_pf, _raycastHit.point, Quaternion.identity);
-                                _raysStarted=true;
-                            }
-                            Debug.DrawRay(PlayerCamera.transform.position,_raycastHit.point-PlayerCamera.transform.position,Color.red,0.0f,true);
-                            if (_waypoint!=null){
-                                _waypoint.transform.position=_raycastHit.point;
-                                _waypoint.transform.rotation=Quaternion.FromToRotation(Vector3.up, _raycastHit.normal);
-                                if (Stair!=null){
-                                    if ((Stair.transform.position-_raycastHit.point).magnitude<=4.0f){
-                                        _wpRND=_waypoint.GetComponentsInChildren<Renderer>();
-                                        foreach(Renderer x in _wpRND){
-                                            x.material.SetColor("_Color",Color.green);
-                                            x.material.SetColor("_EmissionColor",Color.green);
-                                        }
-                                        if (Input.GetKeyDown(KeyCode.T)){
-                                            _button=Instantiate(_button_pf,_raycastHit.point,Quaternion.FromToRotation(Vector3.up,_raycastHit.normal));
-                                        }
-                                    }
-                                    else{
-                                        _wpRND=_waypoint.GetComponentsInChildren<Renderer>();
-                                        foreach(Renderer x in _wpRND){
-                                            x.material.SetColor("_Color",Color.red);
-                                            x.material.SetColor("_EmissionColor",Color.red);
-                                        }
-                                    }
-                                }
-                            }
-                            else{
-                                if (_raysStarted){
-                                    Destroy(_waypoint);
-                                    _raysStarted=false;
-                                }
-                            }
-                        }*/
-                        break;
-                    case acc_device.Ramp:
-                        // RAMP MODE
-                        if (_raycastHit.transform.name.ToLower().IndexOf("floor") != -1)
+                        //BUTTON MODE
+                        if (isOfType(_raycastHit.transform.gameObject, "wall"))
                         {
                             if (!_raysStarted)
                             {
-                                _ramp_pf = Instantiate(_ramp_pf, _raycastHit.point + _raycastHit.normal * 0.8f, Quaternion.FromToRotation(Vector3.forward, PlayerCamera.transform.forward));
-                                _ramp_pf.GetComponent<Rigidbody>().isKinematic = true;
-                                foreach (Rigidbody rb in _ramp_pf.GetComponentsInChildren<Rigidbody>())
-                                {
-                                    rb.isKinematic = true;
-                                }
-                                if (_originalMats == null)
-                                {
-                                    _originalMats = new Dictionary<string, Color[]>();
-                                }
-                                else
-                                {
-                                    _originalMats.Clear();
-                                }
-                                foreach (Renderer r in _ramp_pf.GetComponentsInChildren<Renderer>())
-                                {
-                                    _originalMats.Add(r.gameObject.name, getColors(r.materials));
-                                }
+                                //_waypoint=Instantiate(_waypoint_pf, _raycastHit.point, Quaternion.identity);
+                                _waypoint.SetActive(true);
+                                _waypoint.transform.SetPositionAndRotation(_raycastHit.point, Quaternion.identity);
                                 _raysStarted = true;
                             }
-                        
-                            Debug.DrawRay(PlayerCamera.transform.position, _ramp_pf.transform.position, Color.red, 0.0f, true);
-                            if (_ramp_pf != null)
+                            Debug.DrawRay(PlayerCamera.transform.position, _raycastHit.point - PlayerCamera.transform.position, Color.red, 0.0f, true);
+                            //if (_waypoint!=null){
+                            if (_waypoint.activeInHierarchy)
                             {
-                                Vector3 pos1, pos2;
-                                RaycastHit hit1, hit2;
-                                float slope;
-
-                                pos1 = _ramp_pf.transform.GetChild(1).position; // Rampa_salita, più lontana
-                                pos2 = _ramp_pf.transform.GetChild(2).position; // Rampa_discesa, più vicina
-                                if(Physics.Raycast(pos1, -Vector3.up, out hit1, 1f) &&
-                                    Physics.Raycast(pos2, -Vector3.up, out hit2, 1f))
+                                //_waypoint.transform.position=_raycastHit.point;
+                                //_waypoint.transform.rotation=Quaternion.FromToRotation(Vector3.up, _raycastHit.normal);
+                                _waypoint.transform.SetPositionAndRotation(_raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
+                                _doorClosest = _findClosest(Doors, _waypoint.transform.position);
+                                Debug.Log(Doors[_doorClosest].name);
+                                if ((Doors[_doorClosest].transform.position - _raycastHit.point).magnitude <= 2.5f)
                                 {
-                                    slope = Mathf.Abs(hit1.point.y - hit2.point.y) / (hit1.point.z - hit2.point.z);
-                                } else
-                                {
-                                    slope = 100f;
-                                }
-                                Debug.Log("Pendenza: " + slope);
-
-                                if (slope < 0.10)
-                                {
-                                    _wpRND = _ramp_pf.GetComponentsInChildren<Renderer>();
+                                    _wpRND = _waypoint.GetComponentsInChildren<Renderer>();
                                     foreach (Renderer x in _wpRND)
                                     {
-                                        for (int i = 0; i < x.materials.Length; i++)
-                                        {
-                                            x.materials[i].SetColor("_Color", Color.green);
-                                            x.materials[i].SetColor("_EmissionColor", Color.green);
-                                        }
+                                        x.material.SetColor("_Color", Color.green);
+                                        x.material.SetColor("_EmissionColor", Color.green);
                                     }
-                                    if (Input.GetButtonDown("Space"))
+                                    if (Input.GetKeyDown(KeyCode.Space))
                                     {
-                                        foreach (Renderer x in _wpRND)
-                                        {
-                                            for(int i = 0; i < x.materials.Length; i++)
-                                            {
-                                                Material m = x.materials[i];
-                                                m.SetColor("_Color", _originalMats[x.gameObject.name][i]);
-                                                m.SetColor("_EmissionColor", Color.clear);
-                                            }
-                                        }
-                                        _ramp_pf.GetComponent<Rigidbody>().isKinematic = false;
-                                        foreach (Rigidbody rb in _ramp_pf.GetComponentsInChildren<Rigidbody>())
-                                        {
-                                            rb.isKinematic = false;
-                                        }
+                                        Instantiate(_button_pf, _raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
+                                        //Destroy(_waypoint);
+                                        //Doors.Clear();
+                                        //FindDoors(Level);
+                                        Doors.RemoveAt(_doorClosest);
+                                        _waypoint.SetActive(false);
 
                                         AccDevicePlaced();
                                     }
-
                                 }
                                 else
                                 {
-                                    _wpRND = _ramp_pf.GetComponentsInChildren<Renderer>();
+                                    _wpRND = _waypoint.GetComponentsInChildren<Renderer>();
                                     foreach (Renderer x in _wpRND)
                                     {
-                                        foreach (Material m in x.materials)
-                                        {
-                                            m.SetColor("_Color", Color.red);
-                                            m.SetColor("_EmissionColor", Color.red);
-                                        }
+                                        x.material.SetColor("_Color", Color.red);
+                                        x.material.SetColor("_EmissionColor", Color.red);
                                     }
                                 }
-
                             }
                             else
                             {
                                 if (_raysStarted)
                                 {
-                                    Destroy(_waypoint);
+                                    //Destroy(_waypoint);
+                                    _waypoint.SetActive(false);
                                     _raysStarted = false;
                                 }
                             }
                         }
+                        break;
+                    case acc_device.Stairlift://STAIRLIFT MODE
+                        if (isOfType(_raycastHit.transform.gameObject, "floor"))
+                        {
+                            if (!_raysStarted)
+                            {
+                                //_waypoint=Instantiate(_waypoint_pf, _raycastHit.point, Quaternion.identity);
+                                _waypoint.SetActive(true);
+                                _waypoint.transform.SetPositionAndRotation(_raycastHit.point, Quaternion.identity);
+                                _raysStarted = true;
+                            }
+                            Debug.DrawRay(PlayerCamera.transform.position, _raycastHit.point - PlayerCamera.transform.position, Color.red, 0.0f, true);
+                            if (_waypoint.activeInHierarchy)
+                            {
+                                //_waypoint.transform.position = _raycastHit.point;
+                                //_waypoint.transform.rotation = Quaternion.FromToRotation(Vector3.up, _raycastHit.normal);
+                                _waypoint.transform.SetPositionAndRotation(_raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
+                                Stair = Stairs[_findClosest(Stairs, _raycastHit.point)];
+                                if ((Stair.transform.position - _raycastHit.point).magnitude <= 5f)
+                                {
+                                    _wpRND = _waypoint.GetComponentsInChildren<Renderer>();
+                                    foreach (Renderer x in _wpRND)
+                                    {
+                                        x.material.SetColor("_Color", Color.green);
+                                        x.material.SetColor("_EmissionColor", Color.green);
+                                    }
+                                    if (Input.GetKeyDown(KeyCode.T))
+                                    {
+                                        Stair.SetActive(false);
+                                        Stairs.Remove(Stair);
+                                        if (!_linkStartSet)
+                                        {
+                                            _linkStartPosition = _raycastHit.point;
+                                            _stairlift = Instantiate(_stairlift_pf, _raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
+                                            _stairlift.GetComponent<StairliftController>().SetStart(_linkStartPosition);
+                                            _linkStartSet = true;
+                                        }
+                                        else
+                                        {
+                                            _linkEndPosition = _raycastHit.point;
+                                            _stairlift.GetComponent<StairliftController>().SetEnd(_linkEndPosition);
+                                            CreateNavMeshLink();
+                                            _linkStartSet = false;
+                                            _waypoint.SetActive(false);
+                                            //Destroy(_waypoint);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    _wpRND = _waypoint.GetComponentsInChildren<Renderer>();
+                                    foreach (Renderer x in _wpRND)
+                                    {
+                                        x.material.SetColor("_Color", Color.red);
+                                        x.material.SetColor("_EmissionColor", Color.red);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (_raysStarted)
+                                {
+                                    //Destroy(_waypoint);
+                                    _waypoint.SetActive(false);
+                                    _raysStarted = false;
+                                }
+                            }
+                        }
+                        break;
+                    case acc_device.Ramp:
+                        // RAMP MODE
+                        if (isOfType(_raycastHit.transform.gameObject, "floor"))
+                        {
+                            if (!_raysStarted)
+                            {
+                                //_waypoint = Instantiate(_waypoint_pf, _raycastHit.point, Quaternion.identity);
+                                _waypoint.SetActive(true);
+                                _waypoint.transform.SetPositionAndRotation(_raycastHit.point, Quaternion.identity);
+                                _raysStarted = true;
+                            }
+                            Debug.DrawRay(PlayerCamera.transform.position, _raycastHit.point - PlayerCamera.transform.position, Color.red, 0.0f, true);
+                            if (_waypoint.activeInHierarchy)
+                            {
+                                //_waypoint.transform.position = _raycastHit.point;
+                                //_waypoint.transform.rotation = Quaternion.FromToRotation(Vector3.up, _raycastHit.normal);
+                                Vector3 pos1, pos2;
+                                RaycastHit hit1, hit2;
 
+                                _waypoint.transform.SetPositionAndRotation(_raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
+                                pos1 = _raycastHit.point + Vector3.up * 0.5f + PlayerCamera.transform.forward * 3.1404f; // posizione rampa_salita
+                                pos2 = _raycastHit.point + Vector3.up * 0.5f - PlayerCamera.transform.forward * 3.1404f; // posizione rampa_discesa
+                                Physics.Raycast(pos1, Vector3.down, out hit1, 10f);
+                                Physics.Raycast(pos2, Vector3.down, out hit2, 10f);
+                                if (Mathf.Abs(hit1.point.z - hit2.point.z) / 6.2808f <= 0.10f) // calcolo della pendenza
+                                {
+                                    _wpRND = _waypoint.GetComponentsInChildren<Renderer>();
+                                    foreach (Renderer x in _wpRND)
+                                    {
+                                        x.material.SetColor("_Color", Color.green);
+                                        x.material.SetColor("_EmissionColor", Color.green);
+                                    }
+                                    if (Input.GetKeyDown(KeyCode.Space))
+                                    {
+                                        Ramp = Instantiate(_ramp_pf, _raycastHit.point + Vector3.up * 0.5f, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
+                                        Ramp.GetComponent<Rigidbody>().isKinematic = true;
+                                        foreach (Rigidbody rb in Ramp.GetComponentsInChildren<Rigidbody>())
+                                        {
+                                            rb.isKinematic = true;
+                                        }
+                                        Ramp = null;
+                                        _spacePressed = false;
+                                        //Destroy(_waypoint);
+                                        _waypoint.SetActive(false);
+                                        AccDevicePlaced(); // !!!
+                                    }
+                                }
+                                else
+                                {
+                                    _wpRND = _waypoint.GetComponentsInChildren<Renderer>();
+                                    foreach (Renderer x in _wpRND)
+                                    {
+                                        x.material.SetColor("_Color", Color.red);
+                                        x.material.SetColor("_EmissionColor", Color.red);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (_raysStarted)
+                                {
+                                    //Destroy(_waypoint);
+                                    _waypoint.SetActive(false);
+                                    _raysStarted = false;
+                                }
+                            }
+                        }
                         break;
                     default: break;
                 }
@@ -252,34 +284,44 @@ public class AccDeviceCreator : MonoBehaviour
 
     private void FixedUpdate()
     {
-        switch (device_type)
+        switch (mode)
         {
             case acc_device.Ramp:
-                if(_ramp_pf != null)
+                if(Ramp != null)
                 {
                     if(_localTranslation.y > 0.5)
                     {
-                        _ramp_pf.transform.Translate(0f, 0f, 0.1f);
+                        Ramp.transform.Translate(0f, 0f, 0.1f);
                     }
                     if (_localTranslation.y < 0.5)
                     {
-                        _ramp_pf.transform.Translate(0f, 0f, -0.1f);
+                        Ramp.transform.Translate(0f, 0f, -0.1f);
                     }
                     if (_localTranslation.x > 0.5)
                     {
-                        _ramp_pf.transform.Translate(0.1f, 0f, 0f);
+                        Ramp.transform.Translate(0.1f, 0f, 0f);
                     }
                     if (_localTranslation.x < 0.5)
                     {
-                        _ramp_pf.transform.Translate(-0.1f, 0f, 0f);
+                        Ramp.transform.Translate(-0.1f, 0f, 0f);
                     }
                     if(_localRotation > 0.5)
                     {
-                        _ramp_pf.transform.Rotate(0f, 1f, 0f);
+                        Ramp.transform.Rotate(0f, 1f, 0f);
                     }
                     if (_localRotation < 0.5)
                     {
-                        _ramp_pf.transform.Rotate(0f, -1f, 0f);
+                        Ramp.transform.Rotate(0f, -1f, 0f);
+                    }
+                    if (_spacePressed)
+                    {
+                        Ramp.GetComponent<Rigidbody>().isKinematic = false;
+                        foreach(Rigidbody rb in Ramp.GetComponentsInChildren<Rigidbody>())
+                        {
+                            rb.isKinematic = false;
+                        }
+                        Ramp = null;
+                        _spacePressed = false;
                     }
                 }
                 break;
@@ -287,18 +329,38 @@ public class AccDeviceCreator : MonoBehaviour
         }
     }
 
-    private Color[] getColors(Material[] mats)
+    private void CreateNavMeshLink()
     {
-        Color[] colors = new Color[mats.Length];
-
-        for(int i = 0; i < mats.Length; i++)
+        GameObject _linkGo = new GameObject(Stair.name + "_link");
+        _linkGo.transform.parent = Stair.transform;
+        _linkGo.transform.position = Stair.GetComponent<Renderer>().bounds.center;
+        _nvl = _linkGo.AddComponent(typeof(NavMeshLink)) as NavMeshLink;
+        _nvl.agentTypeID = GetNavMeshAgentID("Wheelchair").Value;
+        _nvl.autoUpdate = false;
+        _nvl.width = GetNavMeshAgentWidth(_nvl.agentTypeID) + 1.5f;
+        _nvl.startPoint = _linkStartPosition - _linkGo.transform.position;
+        _nvl.endPoint = _linkEndPosition - _linkGo.transform.position;
+    }
+    private int? GetNavMeshAgentID(string name)
+    {
+        for (int i = 0; i < UnityEngine.AI.NavMesh.GetSettingsCount(); i++)
         {
-            colors[i] = mats[i].GetColor("_Color");
+            NavMeshBuildSettings settings = UnityEngine.AI.NavMesh.GetSettingsByIndex(index: i);
+            if (name == UnityEngine.AI.NavMesh.GetSettingsNameFromID(agentTypeID: settings.agentTypeID))
+            {
+                return settings.agentTypeID;
+            }
         }
-
-        return colors;
+        return null;
     }
 
+    private float GetNavMeshAgentWidth(int agentTypeID)
+    {
+        NavMeshBuildSettings settings = NavMesh.GetSettingsByID(agentTypeID);
+        return settings.agentRadius;
+    }
+
+    /*
     private void FindDoors(GameObject go){
         if (go.name.ToLower().IndexOf("door")!=-1){
             Doors.Add(go);
@@ -309,7 +371,58 @@ public class AccDeviceCreator : MonoBehaviour
             }
         }
     }
+    */
 
+    private bool isOfType(GameObject go, string type)
+    {
+        return (go.name.ToLower().IndexOf(type) != -1);
+    }
+
+    private List<GameObject> _findObjectsOfType(string type)
+    {
+        List<GameObject> go_list = new List<GameObject>();
+
+        foreach(GameObject g in gameObject.scene.GetRootGameObjects())
+        {
+            find_r(g, go_list, type);
+        }
+
+        return go_list;
+    }
+
+    private void find_r(GameObject go, List<GameObject> list, string type)
+    {
+        if (isOfType(go, type))
+        {
+            list.Add(go);
+        }
+        if (go.transform.childCount > 0)
+        {
+            foreach (Transform child in go.transform)
+            {
+                find_r(child.gameObject, list, type);
+            }
+        }
+    }
+
+    private int _findClosest(List<GameObject> list, Vector3 position)
+    {
+        float max = Mathf.Infinity;
+        int closest = -1;
+        for (int i = 0; i < list.Count; i++)
+        {
+            float dist = (position - list[i].transform.position).magnitude;
+            if (dist < max)
+            {
+                closest = i;
+                max = dist;
+            }
+        }
+
+        return closest;
+    }
+
+    /*
     private GameObject FindClosestDoor(Transform wp){
         float max=10000.0f;
         GameObject closest=new GameObject();//
@@ -322,17 +435,18 @@ public class AccDeviceCreator : MonoBehaviour
         }
         return closest;
     }
+    */
 
     private void Inserisci(AccItemType type){
         switch(type){
             case AccItemType.Ramp:
-                device_type=acc_device.Button;
+                mode=acc_device.Ramp;
                 break;
             case AccItemType.Stairlift:
-                device_type=acc_device.Button;
+                mode=acc_device.Stairlift;
                 break;
             case AccItemType.DoorButton: 
-                device_type=acc_device.Button;
+                mode=acc_device.Button;
                 break;
             default:break;
         }
@@ -364,17 +478,24 @@ public class AccDeviceCreator : MonoBehaviour
         _localRotation = delta;
     }
 
-    private void Awake(){
+    private void PressSpace()
+    {
+        _spacePressed = true;
+    }
+
+    private void OnEnable(){
         InventoryBtn.OnItemSelect+=Inserisci;
         InputManager.OnChangeMode+=InsertMode;
         InputManager.OnFurnitureTranslation += ApplyFurniTransl;
         InputManager.OnFurnitureRotation += ApplyFurniRot;
+        InputManager.OnSelection += PressSpace;
     }
 
-    private void OnDestroy(){
+    private void OnDisable(){
         InventoryBtn.OnItemSelect-=Inserisci;
         InputManager.OnChangeMode-=InsertMode;
         InputManager.OnFurnitureTranslation -= ApplyFurniTransl;
         InputManager.OnFurnitureRotation -= ApplyFurniRot;
+        InputManager.OnSelection -= PressSpace;
     }
 }

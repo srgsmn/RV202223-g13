@@ -47,7 +47,7 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            SettingsManager.OnSettingsUpdate += OnSettingsUpdate;
+            SettingsManager.OnSettingsUpdate -= OnSettingsUpdate;
 
             AudioPlayer.OnPlaySound -= OnPlaySound;
             AudioPlayer.OnPlaySpeech -= OnPlaySpeech;

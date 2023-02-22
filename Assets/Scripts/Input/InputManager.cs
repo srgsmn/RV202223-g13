@@ -208,6 +208,7 @@ public class InputManager : MonoBehaviour
             HotSpotSelection.OnEndPointSet+=NavModeStart;
             FurnitureSelection.OnHover+=SetHoverFlag;
 
+            OnChangeMode += ResetFlags;
         }
         else
         {
@@ -254,6 +255,7 @@ public class InputManager : MonoBehaviour
             HotSpotSelection.OnEndPointSet-=NavModeStart;
             FurnitureSelection.OnHover-=SetHoverFlag;
 
+            OnChangeMode -= ResetFlags;
         }
     }
 
@@ -370,23 +372,23 @@ public class InputManager : MonoBehaviour
                 if (mode == Mode.EPSelector) {
                     OnSelection?.Invoke();
                 }
-                else if(mode == Mode.Edit && hoverObject){
+                else if(mode == Mode.Edit && hoverObject)
+                {
                     if (!objectSelected)
-                        {
-                            OnSelection?.Invoke();
+                    {
+                        OnSelection?.Invoke();
 
-                            objectSelected = true;
-                        }
+                        objectSelected = true;
+                    }
                     else
-                        {
-                            objectSelected = false;
-                            rotationSelected = false;
-                            translationSelected = false;
+                    {
+                        objectSelected = false;
+                        rotationSelected = false;
+                        translationSelected = false;
 
-                            mode = Mode.Edit;
+                        OnConfirm?.Invoke();
+                    }
 
-                            OnChangeMode?.Invoke(mode);
-                        }
                 }
                 else
                 {
@@ -430,6 +432,9 @@ public class InputManager : MonoBehaviour
     public void SetHoverFlag(bool isHover)
     {
         hoverObject = isHover;
+
+        if (!hoverObject)
+            objectSelected = false;     // TODO
     }
 
     // MODE CHANGE
@@ -515,6 +520,12 @@ public class InputManager : MonoBehaviour
                 Debug.Log($"{GetType().Name}.cs > State is PLAYING + mode is EDIT: Eliminating the object...");
 
                 OnEliminate?.Invoke();
+
+                objectSelected = false;
+
+                mode = Mode.Edit;
+
+                OnChangeMode?.Invoke(mode);
             }
         }
     }
@@ -701,4 +712,11 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    private void ResetFlags(Mode modo)
+    {
+        objectSelected = false;
+        rotationSelected = false;
+        translationSelected = false;
+        hoverObject = false;
+    }
 }

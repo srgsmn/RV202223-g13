@@ -2233,8 +2233,7 @@ GameObject:
   - component: {fileID: 5781563405005723445}
   - component: {fileID: 149229448826290492}
   - component: {fileID: 4273636782993225987}
-  - component: {fileID: 2205907215789406440}
-  - component: {fileID: 3719726123890947214}
+  - component: {fileID: 929859466389608262}
   m_Layer: 0
   m_Name: avatar_finale
   m_TagString: Untagged
@@ -2334,7 +2333,7 @@ MonoBehaviour:
   LookSpeed: 160
   MassCenter: {fileID: 5781563404163759655}
   Target: {fileID: 0}
---- !u!114 &2205907215789406440
+--- !u!114 &929859466389608262
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2343,25 +2342,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4883956922944849732}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 127188e150a36024bbc20d65afae9b88, type: 3}
+  m_Script: {fileID: 11500000, guid: 504f9472d171ac941bd4fde74ebf673d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 1
   PlayerCamera: {fileID: 234486168566736135}
   Doors: []
-  Level: {fileID: 0}
-  device_type: 0
---- !u!114 &3719726123890947214
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4883956922944849732}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa45b143a78653b43a5d8214c10d6e5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  Stairs: []
 --- !u!1 &5043664709734160260
 GameObject:
   m_ObjectHideFlags: 0

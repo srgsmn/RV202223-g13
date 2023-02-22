@@ -102,7 +102,6 @@ public class HotSpotSelection : MonoBehaviour
         _avatar.GetComponent<CharacterMovement>().enabled=true;
         _avatar.GetComponent<FurnitureSelection>().enabled=true;
         _avatar.GetComponent<AccDeviceCreator>().enabled=true;
-        _avatar.GetComponent<AccDeviceCreator>().Level=Level;
         _avatar.GetComponent<CharacterMovement>().Target=_waypointList[_waypointList.Count-1];
         PlayerCamera.enabled=false;
         FirstPerson.enabled=true;
