@@ -38,6 +38,7 @@ public class CharacterMovement : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _rigidbody.centerOfMass=MassCenter.position - this.transform.position;
         _rigidbody.velocity = Vector3.zero;
+        _rigidbody.freezeRotation=true;
 
         //int curr_mode = gameObject.GetComponent<FurnitureSelection>().GetCurrentMode(); // valid
     }
@@ -52,7 +53,8 @@ public class CharacterMovement : MonoBehaviour
             _reportDone=true;
             GameManager.Instance.EndsGame();
         }
-        _rigidbody.isKinematic=!_rigidbody.isKinematic;
+        _rigidbody.angularVelocity = Vector3.zero;
+
         
     }
     public void ApplyMovement(Vector2 movement){
