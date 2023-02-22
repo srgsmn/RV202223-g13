@@ -206,6 +206,7 @@ public class InputManager : MonoBehaviour
 
 
             HotSpotSelection.OnEndPointSet+=NavModeStart;
+            FurnitureSelection.OnHover+=SetHoverFlag;
 
         }
         else
@@ -251,6 +252,7 @@ public class InputManager : MonoBehaviour
             inputs.FreeLookCamera.Rotate.performed -= OnFLCamRotate;
 
             HotSpotSelection.OnEndPointSet-=NavModeStart;
+            FurnitureSelection.OnHover-=SetHoverFlag;
 
         }
     }
@@ -523,7 +525,7 @@ public class InputManager : MonoBehaviour
 
     private void OnTranslatePressed(InputAction.CallbackContext context)
     {
-        Debug.Log($"{GetType().Name}.cs > R Key pressed (context value as button {context.ReadValueAsButton()})");
+        Debug.Log($"{GetType().Name}.cs > T Key pressed (context value as button {context.ReadValueAsButton()})");
 
         if (context.ReadValueAsButton())
         {
@@ -543,34 +545,37 @@ public class InputManager : MonoBehaviour
 
         Debug.Log($"{GetType().Name}.cs > Arrow key pressed (context value as button {value})");
 
-        if (value != Vector2.zero)
+        //if (value != Vector2.zero)
+        if (isPlaying && mode == Mode.Edit)
         {
-            if (isPlaying && mode == Mode.Edit)
+            if (rotationSelected)
             {
-                if (rotationSelected)
-                {
-                    if (value.x > 0)
-                        OnRotate?.Invoke(RotDir.Cw);
-                    else
-                        OnRotate?.Invoke(RotDir.CCw);
-                }
-                else if (translationSelected)
-                {
-                    if (value.x > 0)
-                        OnTranslate?.Invoke(TranDir.Rt);
-                    else
-                        OnTranslate?.Invoke(TranDir.Lt);
-
-                    if (value.y > 0)
-                        OnTranslate?.Invoke(TranDir.Fwd);
-                    else
-                        OnTranslate?.Invoke(TranDir.Bwd);
-                }
+                if (value.x > 0.5)
+                    OnRotate?.Invoke(RotDir.Cw);
+                else if (value.x<-0.5)
+                    OnRotate?.Invoke(RotDir.CCw);
+                else
+                    OnRotate?.Invoke(RotDir.None);
             }
-            else
+            else if (translationSelected)
             {
-                OnArrowPressed?.Invoke();
+                if (value.x > 0.5)
+                    OnTranslate?.Invoke(TranDir.Rt);
+                else if (value.x<-0.5)
+                    OnTranslate?.Invoke(TranDir.Lt);
+                else
+                    OnTranslate?.Invoke(TranDir.NoneX);
+                if (value.y > 0.5)
+                    OnTranslate?.Invoke(TranDir.Fwd);
+                else if(value.y < -0.5)
+                    OnTranslate?.Invoke(TranDir.Bwd);
+                else
+                    OnTranslate?.Invoke(TranDir.NoneY);
             }
+        }
+        else
+        {
+            OnArrowPressed?.Invoke();
         }
     }
 
@@ -683,4 +688,5 @@ public class InputManager : MonoBehaviour
 
         }
     }
+
 }

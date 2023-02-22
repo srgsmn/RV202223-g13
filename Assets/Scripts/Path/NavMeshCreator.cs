@@ -82,6 +82,16 @@ public class NavMeshCreator : MonoBehaviour
                 _wheelchairMoving=false;
             }
         }
+        if (Input.GetKeyDown("u")){
+            if (_HumanoidNavMeshExists){
+                //setAreas(this.transform,GetNavMeshAgentID("Humanoid").Value);
+                _nvsHumanoid.UpdateNavMesh(_nvsHumanoid.navMeshData);
+            }
+            if (_WheelchairNavMeshExists){
+                //setAreas(this.transform,GetNavMeshAgentID("Wheelchair").Value);
+                _nvsWheelchair.UpdateNavMesh(_nvsWheelchair.navMeshData);
+            }
+        }
         if (_needToUpdateNavMesh){
             if (_HumanoidNavMeshExists){
                 setAreas(this.transform,GetNavMeshAgentID("Humanoid").Value);
@@ -153,6 +163,7 @@ public class NavMeshCreator : MonoBehaviour
         }   
         nvs.overrideVoxelSize=true;
         nvs.voxelSize=0.08f;
+        nvs.minRegionArea=0.1f;
         nvs.BuildNavMesh();
         if (agentType==0){
             _nvsHumanoid=nvs;
@@ -169,7 +180,7 @@ public class NavMeshCreator : MonoBehaviour
             }
             if (IsWalkable(child.name.ToLower())){
                 NavMeshModifier nvm;
-                if (!TryGetComponent(typeof(NavMeshModifier), out Component x)){
+                if (!child.gameObject.TryGetComponent(typeof(NavMeshModifier), out Component x)){
                     nvm = child.gameObject.AddComponent(typeof(NavMeshModifier)) as NavMeshModifier;
                 }
                 else{

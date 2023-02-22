@@ -14,14 +14,10 @@ public class HotSpotSelection : MonoBehaviour
         public string mat_name;
     }
     public Camera PlayerCamera;
-    public GameObject StartSpot;
-    public GameObject Target;
     public GameObject Level;
 
     private float _range = 100f;
-    private RaycastHit _raycastHit;
-    private bool _startPointSet=false;
-    private bool _targetPointSet=false;
+    private RaycastHit _raycastHit;     
 
     private GameObject _avatar_pf;
     private GameObject _avatar;

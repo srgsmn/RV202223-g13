@@ -45,7 +45,9 @@ namespace Utilities
     public enum RotDir
     {
         Cw, //Clockwise
-        CCw //CounterClockwise
+        CCw, //CounterClockwise
+
+        None
     }
 
     /// <summary>
@@ -56,7 +58,9 @@ namespace Utilities
         Fwd,    //Forward
         Bwd,    //Backward
         Lt,     //Left
-        Rt      //Right
+        Rt,      //Right
+        NoneX,
+        NoneY
     }
 
     public enum FileFormat
