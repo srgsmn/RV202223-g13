@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1221298536496443042}
   - component: {fileID: 2281189263649640204}
   - component: {fileID: 6847835301745374945}
-  - component: {fileID: 6847835301745374944}
+  - component: {fileID: 6609723677499026775}
   m_Layer: 0
   m_Name: Rampa
   m_TagString: Untagged
@@ -105,8 +105,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &6847835301745374944
-BoxCollider:
+--- !u!64 &6609723677499026775
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -115,9 +115,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.024796216, y: 0.062103022, z: 0.00079757784}
-  m_Center: {x: 2.5081944e-18, y: 0.00019022466, z: 0.00038616243}
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -6586172060114443403, guid: 37dbc0643d76d404581a87eef63912c5, type: 3}
 --- !u!1 &2049552479012567411
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,9 +130,9 @@ GameObject:
   - component: {fileID: 120141501727355550}
   - component: {fileID: 324649559714646645}
   - component: {fileID: 6061247052467897244}
-  - component: {fileID: 6061247052467897235}
   - component: {fileID: 6061247052467897234}
   - component: {fileID: 6061247052467897232}
+  - component: {fileID: 1243601911939639386}
   m_Layer: 0
   m_Name: Rampa_salita
   m_TagString: Untagged
@@ -207,19 +208,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6061247052467897235
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2049552479012567411}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.024796221, y: 0.008746195, z: 0.0005733907}
-  m_Center: {x: 3.2962337e-17, y: 0.0044681644, z: 0.0002740713}
 --- !u!54 &6061247052467897234
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -272,6 +260,20 @@ HingeJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!64 &1243601911939639386
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2049552479012567411}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1339724149581681975, guid: 37dbc0643d76d404581a87eef63912c5, type: 3}
 --- !u!1 &6547090425682074063
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,9 +336,9 @@ GameObject:
   - component: {fileID: 2003201977203006717}
   - component: {fileID: 8606420115711378827}
   - component: {fileID: 2771463095121299702}
-  - component: {fileID: 8606420115711378830}
   - component: {fileID: 8606420115711378825}
   - component: {fileID: 8606420115711378831}
+  - component: {fileID: 8747287110864642386}
   m_Layer: 0
   m_Name: Rampa_discesa
   m_TagString: Untagged
@@ -412,19 +414,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8606420115711378830
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8229427589294906414}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.024796195, y: 0.00874619, z: 0.00046477912}
-  m_Center: {x: -6.461302e-17, y: -0.0044526015, z: 0.00021976624}
 --- !u!54 &8606420115711378825
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -477,3 +466,17 @@ HingeJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!64 &8747287110864642386
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8229427589294906414}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4414340980574409783, guid: 37dbc0643d76d404581a87eef63912c5, type: 3}

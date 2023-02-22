@@ -24,6 +24,9 @@ public class CharacterMovement : MonoBehaviour
     public delegate void HasMoved(float distance);
     public static event HasMoved OnMovement;
 
+    public delegate void HasCollided(Collision collision);
+    public static event HasCollided OnPlayerCollision;
+
     public delegate void TargetReached();
     public static event TargetReached OnTargetReached;
 
@@ -109,13 +112,18 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        OnPlayerCollision?.Invoke(collision);
+    }
 
-    private void Awake()
+
+    private void OnEnable()
     {
         InputManager.OnMovementInput += ApplyMovement;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         InputManager.OnMovementInput -= ApplyMovement;
 

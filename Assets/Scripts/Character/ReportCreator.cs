@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ReportCreator : MonoBehaviour
 {    
+    
     public struct AccDevicePlacement
     {
         public string accDevice;
@@ -17,41 +18,42 @@ public class ReportCreator : MonoBehaviour
         public float rotation;
     }
 
-    private List<string> _allRecords;
-    private float _totalDistance;
-    private List<Collision> _allCollisions;
-    private Dictionary<string, RotoTranslation> _allTranslations;
-    private List<AccDevicePlacement> _allAccDevices;
+    public List<string> AllRecords;
+    public float TotalDistance;
+    public List<Collision> AllCollisions;
+    public List<AccDevicePlacement> AllAccDevices;
+    public Dictionary<string, RotoTranslation> AllTranslations;
     
     // Start is called before the first frame update
     void Awake()
     {
-        _allRecords = new List<string>();
-        _totalDistance = 0f;
-        _allCollisions = new List<Collision>();
-        _allTranslations = new Dictionary<string, RotoTranslation>();
-        _allAccDevices = new List<AccDevicePlacement>();
+        AllRecords = new List<string>();
+
+        TotalDistance = 0f;
+        AllCollisions = new List<Collision>();
+        AllAccDevices = new List<AccDevicePlacement>();
+        AllTranslations = new Dictionary<string, RotoTranslation>();
     }
 
     void AddDistance(float distance)
     {
-        _totalDistance += distance;
+        TotalDistance += distance;
         //Debug.Log("Distanza percorsa: " + distance + " m");
         //_allRecords.Add(new string("Distanza percorsa: " + distance + " m"));
     }
 
-    void OnCollisionEnter(Collision collision)
+    void PlayerCollision(Collision collision)
     {
-        _allCollisions.Add(collision);
+        AllCollisions.Add(collision);
         Debug.Log("Collisione in " + collision.GetContact(0).point + " con " + collision.collider.gameObject.name);
         if (collision.collider.gameObject.TryGetComponent(typeof(Renderer),out Component mf)){
             if (collision.collider.gameObject.name.ToLower().IndexOf("floor")==-1){
-                _allRecords.Add(new string("Collisione in " + collision.GetContact(0).point + " con " + collision.collider.gameObject.name));
+                AllRecords.Add(new string("Collision in " + collision.GetContact(0).point + " with " + collision.collider.gameObject.name));
             }
         }
         else{
             if (collision.collider.gameObject.transform.parent.name.ToLower().IndexOf("floor")==-1){
-                _allRecords.Add(new string("Collisione in " + collision.GetContact(0).point + " con " + collision.collider.gameObject.transform.parent.name));
+                AllRecords.Add(new string("Collision in " + collision.GetContact(0).point + " with '" + collision.collider.gameObject.transform.parent.name + "';"));
             }
         }
         
@@ -59,20 +61,20 @@ public class ReportCreator : MonoBehaviour
 
     void AddTranslation(string pickedFurniture, Vector3 translation, float rotation)
     {
-        if (_allTranslations.ContainsKey(pickedFurniture))
+        if (AllTranslations.ContainsKey(pickedFurniture))
         {
-            RotoTranslation a = _allTranslations[pickedFurniture];
+            RotoTranslation a = AllTranslations[pickedFurniture];
             a.translation += translation;
             a.rotation += rotation;
-            _allTranslations[pickedFurniture] = a;
+            AllTranslations[pickedFurniture] = a;
         } else {
             RotoTranslation a = new RotoTranslation();
-            a.translation += translation;
-            a.rotation += rotation;
-            _allTranslations.Add(pickedFurniture, a); 
+            a.translation = translation;
+            a.rotation = rotation;
+            AllTranslations.Add(pickedFurniture, a); 
         }
-        Debug.Log("Spostato l'oggetto " + pickedFurniture + " di " + translation.magnitude + " m");
-        _allRecords.Add(new string("Spostato l'oggetto " + pickedFurniture + " di " + translation.magnitude + " m" + ", e ruotato di " + rotation + "gradi"));
+        //Debug.Log("Spostato l'oggetto " + pickedFurniture + " di " + translation.magnitude + " m");
+        //AllRecords.Add(new string("Spostato l'oggetto " + pickedFurniture + " di " + translation.magnitude + " m" + ", e ruotato di " + rotation + "gradi"));
     }
 
     void AddAccDevice(string accDevice, Vector3 pos)
@@ -80,27 +82,30 @@ public class ReportCreator : MonoBehaviour
         AccDevicePlacement adp;
         adp.accDevice = new string(accDevice);
         adp.position = new Vector3(pos.x, pos.y, pos.z);
-        _allAccDevices.Add(adp);
+        AllAccDevices.Add(adp);
         Debug.Log("Posizionato il dispositivo " + accDevice + " in " + pos.ToString());
-        _allRecords.Add(new string("Posizionato il dispositivo " + accDevice + " in " + pos.ToString()));
+        AllRecords.Add(new string("Placed device '" + accDevice + "' in " + pos.ToString()));
     }
 
     void WriteReport()
     {
-        string path = Application.persistentDataPath + "/report.txt";
+        string path = Application.dataPath + "/report.txt";
         //Write some text to the test.txt file
         StreamWriter writer = new StreamWriter(path, true);
-        foreach(string a in _allRecords)
+        foreach(string a in AllRecords)
         {
             writer.WriteLine(a + ";\n");
         }
-        foreach(string a in _allTranslations.Keys)
+        foreach(string a in AllTranslations.Keys)
         {
-            writer.WriteLine("Mobile: '" + a + "', spostato di " + _allTranslations[a]);
+            string record = "Furniture: '" + a + "', translated by " + AllTranslations[a].translation + ", and rotated around y axis by " + AllTranslations[a].rotation + "°;";
+            writer.WriteLine(record);
+            AllRecords.Add(record);
         }
-        writer.WriteLine("Numero di mobili spostati: " + _allTranslations.Count);
-        writer.WriteLine("Numero di collisioni: " + _allCollisions.Count + ";\n");
-        writer.WriteLine("Distanza totale: " + _totalDistance + ";\n");
+        writer.WriteLine("Total Distance: " + TotalDistance + ";");
+        writer.WriteLine("Number of collisions: " + AllCollisions.Count + ";");
+        writer.WriteLine("Number of moved pieces of furniture: " + AllTranslations.Count + ";");
+        writer.WriteLine("Number of devices: " + AllAccDevices.Count + ";");
         writer.Close();
     }
 
@@ -108,6 +113,7 @@ public class ReportCreator : MonoBehaviour
     {
         CharacterMovement.OnMovement += AddDistance;
         CharacterMovement.OnTargetReached += WriteReport;
+        CharacterMovement.OnPlayerCollision += PlayerCollision;
         FurnitureSelection.OnFurnitureTranslation += AddTranslation;
         AccDeviceCreator.OnDeviceCreation += AddAccDevice;
     }
@@ -116,6 +122,7 @@ public class ReportCreator : MonoBehaviour
     {
         CharacterMovement.OnMovement -= AddDistance;
         CharacterMovement.OnTargetReached -= WriteReport;
+        CharacterMovement.OnPlayerCollision -= PlayerCollision;
         FurnitureSelection.OnFurnitureTranslation -= AddTranslation;
         AccDeviceCreator.OnDeviceCreation -= AddAccDevice;
     }
