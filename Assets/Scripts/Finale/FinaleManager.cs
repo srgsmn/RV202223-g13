@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Text.RegularExpressions;
 
 public class FinaleManager : MonoBehaviour
 {
     [SerializeField] GameObject FinaleBtnContainer, SaveAsPanel;
     [SerializeField] TextMeshProUGUI reportArea;
+    [SerializeField] FileManager fm;
 
     // Start is called before the first frame update
     void Start()
@@ -31,9 +33,10 @@ public class FinaleManager : MonoBehaviour
     private void LoadReport()
     {
         string data = "";
-        int lines = 0;
 
-        //TODO
+        data = fm.DataToTxt(true);
+
+        int lines = Regex.Matches(data, "\n").Count + 5;
 
         reportArea.text = data;
 

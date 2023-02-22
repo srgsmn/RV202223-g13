@@ -14,6 +14,7 @@ public class SaveParameterManager : MonoBehaviour
 
     private void Start()
     {
+        directoryField.text = fileManager.GetDirectory();
         fileNameField.text = fileManager.GetFileName();
     }
 

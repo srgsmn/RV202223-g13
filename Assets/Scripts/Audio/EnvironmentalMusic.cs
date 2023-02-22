@@ -6,8 +6,7 @@ using UnityEngine;
 public class EnvironmentalMusic : MonoBehaviour
 {
     [SerializeField] AudioSource source;
-    [SerializeField] AudioClip[] clips;
-    [SerializeField][ReadOnlyInspector] AudioClip currentClip;
+    [SerializeField] AudioClip clip;
     [SerializeField][ReadOnlyInspector] bool musicOn;
 
     private void Awake()
@@ -22,7 +21,24 @@ public class EnvironmentalMusic : MonoBehaviour
 
     private void Start()
     {
-        switch (GameManager.Instance.sceneIndex)
+        musicOn = (bool)SettingsManager.Instance.GetValue(SettingType.PlayMusic);
+        if (clip != null)
+        {
+            Debug.Log($"{GetType().Name}.cs > Setting clip to play to {clip}.");
+
+            source.clip = clip;
+
+            if (musicOn)
+                source.Play();
+            else
+                source.Pause();
+        }
+    }
+
+    /*
+    private void OnNewScene(int i)
+    {
+        switch (i)
         {
             case 1:
                 currentClip = clips[0];
@@ -47,21 +63,26 @@ public class EnvironmentalMusic : MonoBehaviour
 
         if (currentClip != null)
         {
+            Debug.Log($"{GetType().Name}.cs > Setting clip to play to {currentClip}.");
+
             source.clip = currentClip;
 
             source.Play();
         }
     }
+    */
 
     private void EventsSubcriber(bool subscribing = true)
     {
         if (subscribing)
         {
             SettingsManager.OnSettingsUpdate += SetValues;
+            //GameManager.OnNewSceneIndex += OnNewScene;
         }
         else
         {
             SettingsManager.OnSettingsUpdate -= SetValues;
+            //GameManager.OnNewSceneIndex -= OnNewScene;
         }
     }
 
