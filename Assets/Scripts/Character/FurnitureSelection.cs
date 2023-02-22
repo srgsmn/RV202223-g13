@@ -15,6 +15,15 @@ public class FurnitureSelection : MonoBehaviour
         public string obj_name;
         public string mat_name;
     }
+
+    public struct Mat_emission{
+        public Mat_emission(bool isem, Color emc){
+            isEmitting=isem;
+            emissionColor=emc;
+        }
+        public bool isEmitting;
+        public Color emissionColor;
+    }
     private string[] _structElements={"wall","floor", "ceiling","lavandino","roof","stair","scale"};
 
     //private static Color my_transparency = new Color(0, 0, 0, 0);
@@ -26,8 +35,9 @@ public class FurnitureSelection : MonoBehaviour
     public float MoveSpeed = 0.5f;
 
     private GameObject _selected;
+    private GameObject _toBeSelected;
     private Rigidbody _active_rb;
-    private Dictionary<Mat_key, Color> _inactive_materials;
+    private Dictionary<Mat_key, Mat_emission> _inactive_materials;
     private RaycastHit _raycastHit;
     private e_mode _currentMode;
     private bool _selectionToNav=false;
@@ -45,9 +55,12 @@ public class FurnitureSelection : MonoBehaviour
     #region GESTIONE_INPUT
         public delegate void Hover(bool isHovering);
         public static event Hover OnHover;
+
+        public delegate void SelectEvent(bool sel);
+        public static event SelectEvent OnSelect;
         private bool _spacePressed=false;
         private bool _eliminatePressed=false;
-        private bool _applyChange=true;
+        private bool _applyChange=false;
         private bool _toRotate=false;
 
     #endregion
@@ -55,15 +68,21 @@ public class FurnitureSelection : MonoBehaviour
 
     #region GESTIONE_REPORT
     // posizione in cui trovi l'oggetto da spostare:
-
-    public delegate void TranslateFurniture(string pickedFurniture, Vector3 translation, float rotation);
+public delegate void TranslateFurniture(string pickedFurniture, Vector3 translation, float rotation);
     public static event TranslateFurniture OnFurnitureTranslation;
+    public delegate void RemoveFurniture(string pickedFurniture, Vector3 translation);
+    public static event RemoveFurniture OnFurnitureRemoval;
 
 
     // da inserire quando posi l'oggetto
     void LeaveFurniture()
     {
         OnFurnitureTranslation?.Invoke(_selected.name, _selected.transform.position - _originalPosition, _originalRotation);
+    }
+
+    void TakeFurniture()
+    {
+        OnFurnitureRemoval?.Invoke(_selected.name, _selected.transform.position);
     }
     #endregion
 
@@ -72,7 +91,7 @@ public class FurnitureSelection : MonoBehaviour
     {
         _selected = null;
         _currentMode = e_mode.mode_navigation;
-        _inactive_materials=new Dictionary<Mat_key,Color>();
+        _inactive_materials=new Dictionary<Mat_key,Mat_emission>();
     }
 
     // Update is called once per frame
@@ -85,6 +104,29 @@ public class FurnitureSelection : MonoBehaviour
             case e_mode.mode_navigation:
                 break;
             case e_mode.mode_selection:
+                if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward, out _raycastHit, Range))
+                {   
+                    if(!_raycastHit.collider.gameObject.TryGetComponent(typeof(MeshFilter),out Component mf)){
+                        _toBeSelected=_raycastHit.collider.gameObject.transform.parent.gameObject;
+                    }
+                    else{
+                        _toBeSelected=_raycastHit.collider.gameObject;
+                    }
+                    if ((_selected == null || _selected.GetInstanceID() != _toBeSelected.GetInstanceID()))
+                    {
+                        if (_selected != null)
+                        {
+                            DeHighlight(_selected);
+                            OnHover?.Invoke(false);
+                            _selected=null;
+                        }
+                        if (!CheckFixed(_toBeSelected)){
+                            _selected = _toBeSelected;
+                            Highlight(_selected);
+                            OnHover?.Invoke(true);
+                        }
+                    }
+                }
                 if (_selectionToNav)
                 {
                     if(_selected != null)
@@ -101,7 +143,6 @@ public class FurnitureSelection : MonoBehaviour
                     _spacePressed=false;
                     if (_selected != null)
                     {
-                        mesh_ex=_selected.TryGetComponent(typeof(Renderer),out Component mf);
                         /*
                         if (mesh_ex){
                             //_active_rb = _selected.GetComponent<Rigidbody>();
@@ -112,30 +153,17 @@ public class FurnitureSelection : MonoBehaviour
                         */
                         //_active_rb.isKinematic=false;
                         //if (!IsStructural(_selected.name.ToLower()) && !IsFixed(_selected.name.ToLower())){
-                        if (!CheckFixed(_selected)){
-                            _originalPosition = _selected.transform.position;
-                            _originalRotation = _selected.transform.rotation.y;
-                            _currentMode = e_mode.mode_move;
-                        }
-                    }
-                }
-                if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward, out _raycastHit, Range))
-                {   
-                    if (_selected == null || _selected.GetInstanceID() != _raycastHit.collider.gameObject.GetInstanceID())
-                    {
-                        if (_selected != null)
-                        {
-                            DeHighlight(_selected);
-                            OnHover?.Invoke(false);
-                        }
-                        _selected = _raycastHit.transform.gameObject;
-                        Highlight(_selected);
-                        OnHover?.Invoke(true);
+                        _originalPosition = _selected.transform.position;
+                        _originalRotation = _selected.transform.rotation.y;
+                        OnSelect?.Invoke(true);
+                        _currentMode = e_mode.mode_move;
                     }
                 }
                 break;
             case e_mode.mode_move:
+                Debug.Log("oggetto selezionato");
                 if (_eliminatePressed){
+                    Debug.Log("Entro in eliminatePressed");
                     _eliminatePressed=false;
                     if (_selected!=null){
                         Destroy(_selected);
@@ -144,6 +172,7 @@ public class FurnitureSelection : MonoBehaviour
                 }
                 if (_applyChange)
                 {   
+                    Debug.Log("Entro in applychange");
                     _applyChange=false;
                     if (_selected != null)
                     {
@@ -151,11 +180,12 @@ public class FurnitureSelection : MonoBehaviour
                         LeaveFurniture();
                         //_active_rb.isKinematic=true;
                         _selected = null;
-                    }  
+                    }
                     _currentMode = e_mode.mode_selection;
                 }
                 if (_moveToNav)
                 {
+                    Debug.Log("Entro in movetonav");
                     if (_selected != null)
                     {
                         DeHighlight(_selected);
@@ -169,6 +199,7 @@ public class FurnitureSelection : MonoBehaviour
                 }
                 if (_moveToSel)
                 {
+                    Debug.Log("Entro in movetosel");
                     if (_selected != null)
                     {
                         DeHighlight(_selected);
@@ -180,25 +211,34 @@ public class FurnitureSelection : MonoBehaviour
                     _moveToSel=false;
                     _currentMode = e_mode.mode_selection;
                 }
-                
                 if (_localTranslation.y > 0.5)
                 {
-                    _selected.transform.Translate(0.1f, 0, 0, Space.World);
+                    _selected.transform.Translate(0.1f,0,0,PlayerCamera.transform);
+                    //_selected.transform.Translate(0.1f, 0, 0, Space.World);
                     //_active_rb.velocity = MoveSpeed * Vector3.forward;
                 }
                 else if (_localTranslation.y < -0.5)
                 {
-                    _selected.transform.Translate(-0.1f, 0, 0, Space.World);
+                    _selected.transform.Translate(-0.1f, 0, 0, PlayerCamera.transform);
+                    //_selected.transform.Translate(-0.1f, 0, 0, Space.World);
                     //_active_rb.velocity = -MoveSpeed * Vector3.forward;
                 }
                 if (_localTranslation.x < -0.5)
                 {
-                    _selected.transform.Translate(0, 0, -0.1f, Space.World);
+                    Vector3 direction=_selected.transform.position-PlayerCamera.transform.position;
+                    Vector3 horizontalPlane=new Vector3(0f,1.0f,0f);
+                    _selected.transform.Translate((Vector3.Normalize(Vector3.ProjectOnPlane(direction,horizontalPlane))*(-0.1f)),Space.World);
+                    //_selected.transform.Translate(0, 0, -0.1f, PlayerCamera.transform);
+                    //_selected.transform.Translate(0, 0, -0.1f, Space.World);
                     //_active_rb.velocity = MoveSpeed * Vector3.left;
                 }
                 else if (_localTranslation.x > 0.5)
                 {   
-                    _selected.transform.Translate(0, 0, 0.1f, Space.World);
+                    //_selected.transform.Translate(0, 0, 0.1f,PlayerCamera.transform);
+                    Vector3 direction=_selected.transform.position-PlayerCamera.transform.position;
+                    Vector3 horizontalPlane=new Vector3(0f,1.0f,0f);
+                    _selected.transform.Translate((Vector3.Normalize(Vector3.ProjectOnPlane(direction,horizontalPlane))*(0.1f)),Space.World);
+                    //_selected.transform.Translate(0, 0, 0.1f, Space.World);
                     //_active_rb.velocity = -MoveSpeed * Vector3.left;
                 }
                 if(_localRotation > 0.5)
@@ -284,8 +324,10 @@ public class FurnitureSelection : MonoBehaviour
             Material[] mat_set=r.materials;
             foreach (Material m in mat_set){
                 Mat_key k = new Mat_key(gobj.name,m.name);
-                _inactive_materials.Add(k,m.GetColor("_Color"));
-                m.SetColor("_Color",SelectedColor);
+                Mat_emission em = new Mat_emission(m.IsKeywordEnabled("_EMISSION"),m.GetColor("_EmissionColor"));
+                _inactive_materials.Add(k,em);
+                m.EnableKeyword("EMISSION");
+                m.SetColor("_EmissionColor",SelectedColor);
             }
         }
         else if (first){
@@ -317,14 +359,16 @@ public class FurnitureSelection : MonoBehaviour
     {
         Renderer r;
         bool mesh_ex;
-        Color old_col;
         mesh_ex=gobj.TryGetComponent(typeof(Renderer),out Component mf);
          if (mesh_ex){
             r = (Renderer) mf;
             Material[] mat_set=r.materials;
             foreach (Material m in mat_set){
-                old_col = _inactive_materials.GetValueOrDefault(new Mat_key(gobj.name,m.name));
-                m.SetColor("_Color",old_col);
+                Mat_emission old_col = _inactive_materials.GetValueOrDefault(new Mat_key(gobj.name,m.name));
+                if (!old_col.isEmitting){ 
+                    m.EnableKeyword("EMISSION");
+                }
+                m.SetColor("_EmissionColor",old_col.emissionColor);
             }
         }
         else if (first){
@@ -373,7 +417,9 @@ public class FurnitureSelection : MonoBehaviour
                 if (_currentMode==e_mode.mode_move){
                     _moveToSel=true;
                 }
-                //_currentMode=e_mode.mode_selection;
+                else{
+                    _currentMode=e_mode.mode_selection;
+                }
                 break;
             case Mode.Plan: //aggiungi device
                 _currentMode=e_mode.mode_navigation;

@@ -9,7 +9,6 @@ using System;
 using Utilities;
 using System.Collections;
 using System.Collections.Generic;
-using static UnityEditor.FilePathAttribute;
 
 public class FileManager : MonoBehaviour
 {
@@ -39,7 +38,7 @@ public class FileManager : MonoBehaviour
         public int translationsTotal;
         public TranslationEntry[] translationsList;
 
-        public AccessibilityReport(string sessionID, List<string> eventsList, List<string> collisionsList, List<string> accDevicesList, Dictionary<string, ReportCreator.RotoTranslation> translationsList, List<string> removedList)
+        public AccessibilityReport(string sessionID, List<string> eventsList, List<Collision> collisionsList, List<ReportCreator.AccDevicePlacement> accDevicesList, Dictionary<string, ReportCreator.RotoTranslation> translationsList, List<string> removedList)
         {
             this.sessionID = sessionID;
 
@@ -48,19 +47,25 @@ public class FileManager : MonoBehaviour
             eventsTotal = this.eventsList.Length;
 
             this.collisionsList = new string[collisionsList.ToArray().Length];
-            this.collisionsList = collisionsList.ToArray();
+            int i=0;
+            foreach(Collision c in collisionsList){
+                this.collisionsList[i++]=new string("Collision in " + c.GetContact(0).point + " with " + c.collider.gameObject.name);
+            }
             collisionsTotal = this.collisionsList.Length;
 
             this.accDevicesList = new string[accDevicesList.ToArray().Length];
-            this.accDevicesList = accDevicesList.ToArray();
+            i=0;
+            foreach(ReportCreator.AccDevicePlacement adp in accDevicesList){
+                this.accDevicesList[i++]=new string("Placed device: '" + adp.accDevice + "', in " + adp.position.ToString());
+            }
             accDevicesTotal = this.accDevicesList.Length;
 
 
             this.translationsList = new TranslationEntry[translationsList.Count];
             translationsTotal = this.translationsList.Length;
 
-            int i = 0;
-            foreach(KeyValuePair<string, ReportCreator.RotoTranslation> entry in translationsList)
+            i = 0;
+            foreach (KeyValuePair<string, ReportCreator.RotoTranslation> entry in translationsList)
             {
                 this.translationsList[i++] = new TranslationEntry(entry.Key, entry.Value);
             }
@@ -80,7 +85,7 @@ public class FileManager : MonoBehaviour
             string removed = "\n\n## REMOVED DEVICES HISTORY ##\n\n" + string.Join("\n", removedList);
             string translations = "\n\n## TRANSLATIONS HISTORY ##\n\n" + string.Join("\n", eventsList);
 
-            return intro+events+collisions+accDevs+removed+translations;
+            return intro + events + collisions + accDevs + removed + translations;
         }
 
         // INNER CLASS
@@ -159,25 +164,26 @@ public class FileManager : MonoBehaviour
         fileName = fileNameBase + sessionID;
 
         //TODO
-        _test = new ExampleClass();
+        //_test = new ExampleClass();
         //TODO Decommentare sotto e sostituire a _test
-        //accRep = new AccessibilityReport(sessionID, reportCreator._allRecords, reportCreator._allCollisions, reportCreator._allAccDevices, reportCreator._allTranslations, reportCreator.AllRemoved);
+        accRep = new AccessibilityReport(sessionID, reportCreator.AllRecords, reportCreator.AllCollisions, reportCreator.AllAccDevices, reportCreator.AllTranslations, reportCreator.AllRemoved);
     }
 
     public void SaveReport()
     {
-        string data ="";
+        string data = "";
 
         switch (fileFormat)
         {
             case FileFormat.TXT:
-                //data = DataToTxt(_test);    //TODO cambiare con accRep
+                //data = DataToTxt();    //TODO cambiare con accRep
+                data = DataToTxt();
 
                 break;
 
             case FileFormat.JSON:
-                data = JsonUtility.ToJson(_test);   //TODO cambiare con accRep
-                //data = JsonUtility.ToJson(accRep);
+                //data = JsonUtility.ToJson(_test);   //TODO cambiare con accRep
+                data = JsonUtility.ToJson(accRep);
 
                 break;
         }
@@ -207,7 +213,7 @@ public class FileManager : MonoBehaviour
     /// </summary>
     /// <param name="toDisplay">flag that if it's true removes "\t" chars if the string should be shown in screen, otherwise keeps them (false by default)</param>
     /// <returns></returns>
-    public string DataToTxt(bool toDisplay=false)
+    public string DataToTxt(bool toDisplay = false)
     {
         string txt = $"WAYFINDER ACCESSIBILITY REPORT\n";
 

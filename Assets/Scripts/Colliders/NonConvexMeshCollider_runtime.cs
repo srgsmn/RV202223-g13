@@ -91,7 +91,7 @@ public class NonConvexMeshCollider_runtime : MonoBehaviour
                 bc.size = b.Size;
                 bc.center = b.Center;
             }
-            Debug.Log("NonConvexMeshCollider: " + mergedBoxes.Length + " box colliders created");
+            //Debug.Log("NonConvexMeshCollider: " + mergedBoxes.Length + " box colliders created");
 
             //cleanup stuff not needed anymore on collider child obj
             DestroyImmediate(collidersGo.GetComponent<MeshFilter>());
