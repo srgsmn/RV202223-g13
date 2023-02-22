@@ -33,21 +33,28 @@ public class FileManager : MonoBehaviour
         public int accDevicesTotal;
         public string[] accDevicesList;
 
+        public int removedTotal;
+        public string[] removedList;
+
         public int translationsTotal;
         public TranslationEntry[] translationsList;
 
-        public AccessibilityReport(string sessionID, List<string> eventsList, List<string> collisionsList, List<string> accDevicesList, Dictionary<string, ReportCreator.RotoTranslation> translationsList)
+        public AccessibilityReport(string sessionID, List<string> eventsList, List<string> collisionsList, List<string> accDevicesList, Dictionary<string, ReportCreator.RotoTranslation> translationsList, List<string> removedList)
         {
             this.sessionID = sessionID;
 
+            this.eventsList = new string[eventsList.ToArray().Length];
             this.eventsList = eventsList.ToArray();
             eventsTotal = this.eventsList.Length;
 
+            this.collisionsList = new string[collisionsList.ToArray().Length];
             this.collisionsList = collisionsList.ToArray();
             collisionsTotal = this.collisionsList.Length;
 
+            this.accDevicesList = new string[accDevicesList.ToArray().Length];
             this.accDevicesList = accDevicesList.ToArray();
             accDevicesTotal = this.accDevicesList.Length;
+
 
             this.translationsList = new TranslationEntry[translationsList.Count];
             translationsTotal = this.translationsList.Length;
@@ -57,6 +64,10 @@ public class FileManager : MonoBehaviour
             {
                 this.translationsList[i++] = new TranslationEntry(entry.Key, entry.Value);
             }
+
+            this.removedList = new string[removedList.ToArray().Length];
+            this.removedList = removedList.ToArray();
+            removedTotal = this.removedList.Length;
         }
 
         public override string ToString()
@@ -66,9 +77,10 @@ public class FileManager : MonoBehaviour
             string events = "\n\n## EVENTS HISTORY ##\n\n" + string.Join("\n", eventsList);
             string collisions = "\n\n## COLLISIONS HISTORY ##\n\n" + string.Join("\n", collisionsList);
             string accDevs = "\n\n## ACCESSIBILITY DEVICES HISTORY ##\n\n" + string.Join("\n", accDevicesList);
+            string removed = "\n\n## REMOVED DEVICES HISTORY ##\n\n" + string.Join("\n", removedList);
             string translations = "\n\n## TRANSLATIONS HISTORY ##\n\n" + string.Join("\n", eventsList);
 
-            return intro+events+collisions+accDevs+translations;
+            return intro+events+collisions+accDevs+removed+translations;
         }
 
         // INNER CLASS
@@ -149,7 +161,7 @@ public class FileManager : MonoBehaviour
         //TODO
         _test = new ExampleClass();
         //TODO Decommentare sotto e sostituire a _test
-        //accRep = new AccessibilityReport(sessionID, reportCreator._allRecords, reportCreator._allCollisions, reportCreator._allAccDevices, reportCreator._allTranslations);
+        //accRep = new AccessibilityReport(sessionID, reportCreator._allRecords, reportCreator._allCollisions, reportCreator._allAccDevices, reportCreator._allTranslations, reportCreator.AllRemoved);
     }
 
     public void SaveReport()

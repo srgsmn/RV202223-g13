@@ -207,6 +207,7 @@ public class InputManager : MonoBehaviour
 
             HotSpotSelection.OnEndPointSet+=NavModeStart;
 
+            OnChangeMode += ResetFlags;
         }
         else
         {
@@ -252,6 +253,7 @@ public class InputManager : MonoBehaviour
 
             HotSpotSelection.OnEndPointSet-=NavModeStart;
 
+            OnChangeMode -= ResetFlags;
         }
     }
 
@@ -370,9 +372,20 @@ public class InputManager : MonoBehaviour
                 }
                 else if(mode == Mode.Edit && hoverObject)
                 {
-                    OnSelection?.Invoke();
+                    if (!objectSelected)
+                    {
+                        OnSelection?.Invoke();
 
-                    objectSelected = true;
+                        objectSelected = true;
+                    }
+                    else
+                    {
+                        objectSelected = false;
+                        rotationSelected = false;
+                        translationSelected = false;
+
+                        OnConfirm?.Invoke();
+                    }
                 }
                 else
                 {
@@ -416,6 +429,9 @@ public class InputManager : MonoBehaviour
     public void SetHoverFlag(bool isHover)
     {
         hoverObject = isHover;
+
+        if (!hoverObject)
+            objectSelected = false;     // TODO
     }
 
     // MODE CHANGE
@@ -501,6 +517,12 @@ public class InputManager : MonoBehaviour
                 Debug.Log($"{GetType().Name}.cs > State is PLAYING + mode is EDIT: Eliminating the object...");
 
                 OnEliminate?.Invoke();
+
+                objectSelected = false;
+
+                mode = Mode.Edit;
+
+                OnChangeMode?.Invoke(mode);
             }
         }
     }
@@ -523,7 +545,7 @@ public class InputManager : MonoBehaviour
 
     private void OnTranslatePressed(InputAction.CallbackContext context)
     {
-        Debug.Log($"{GetType().Name}.cs > R Key pressed (context value as button {context.ReadValueAsButton()})");
+        Debug.Log($"{GetType().Name}.cs > T Key pressed (context value as button {context.ReadValueAsButton()})");
 
         if (context.ReadValueAsButton())
         {
@@ -682,5 +704,13 @@ public class InputManager : MonoBehaviour
             OnChangeMode?.Invoke(mode);
 
         }
+    }
+
+    private void ResetFlags(Mode modo)
+    {
+        objectSelected = false;
+        rotationSelected = false;
+        translationSelected = false;
+        hoverObject = false;
     }
 }
