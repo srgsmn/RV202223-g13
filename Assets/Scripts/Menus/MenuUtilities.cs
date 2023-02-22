@@ -36,7 +36,7 @@ namespace MenuUtilities
 
     public enum PauseMenuAction
     {
-        None, Resume, Tutorial, Main, Quit
+        None, Resume, Tutorial, Main, Quit, Restart
     }
 
     public enum PopUpOpt
@@ -46,7 +46,7 @@ namespace MenuUtilities
 
     public enum SettingType
     {
-        SpeechVolume, TextReader, EffectsVolume, PlayEffects
+        SpeechVolume, TextReader, EffectsVolume, PlayEffects, PlayMusic, MusicVolume
     }
 }
 

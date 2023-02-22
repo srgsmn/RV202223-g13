@@ -1,8 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Utilities;
+using TMPro;
 
 public class HUDManager : MonoBehaviour
 {
@@ -22,11 +22,14 @@ public class HUDManager : MonoBehaviour
 
     [Header("Other UI elements:")]
     [SerializeField] Image frame;
+    [SerializeField] Image vf;
     [SerializeField] Image MsgsBg, TipsBg, InventoryBg;
     [SerializeField][ReadOnlyInspector] Color32 EPColor = new Color32(55, 215, 250, 255);
     [SerializeField][ReadOnlyInspector] Color32 NavColor = new Color32(235, 250, 255, 255);
     [SerializeField][ReadOnlyInspector] Color32 EditColor = new Color32(245, 80, 40, 255);
     [SerializeField][ReadOnlyInspector] Color32 PlanColor = new Color32(0, 210, 80, 255);
+    [SerializeField][ReadOnlyInspector] Color32 ErrColor = new Color32(255, 45, 45, 255);
+    [SerializeField][ReadOnlyInspector] Color32 WarnColor = new Color32(255, 210, 45, 255);
 
 
     /*
@@ -63,6 +66,9 @@ public class HUDManager : MonoBehaviour
             InputManager.OnRotate += OnRotate;
             InputManager.OnTranslate += OnTranslate;
             InputManager.OnBack += CancelAction;
+            InputManager.OnConfirm += ConfirmAction;
+
+            GameManager.OnReport += NotifyError;
         }
         else
         {
@@ -71,7 +77,14 @@ public class HUDManager : MonoBehaviour
             InputManager.OnRotate -= OnRotate;
             InputManager.OnTranslate -= OnTranslate;
             InputManager.OnBack -= CancelAction;
+            InputManager.OnConfirm -= ConfirmAction;
+
+            GameManager.OnReport -= NotifyError;
         }
+    }
+
+    private void SetVFActive(bool flag = true) {
+        vf.gameObject.SetActive(flag);
     }
 
     private void ChangeMode(Mode mode)
@@ -79,6 +92,15 @@ public class HUDManager : MonoBehaviour
         Debug.Log($"{GetType().Name}.cs > CHANGING mode to {mode}");
 
         activeMode = mode;
+
+        if (activeMode == Mode.Edit)
+        {
+            SetVFActive();
+        }
+        else
+        {
+            SetVFActive(false);
+        }
 
         ChangeColors(mode);
         DisplayMessage(mode);
@@ -99,7 +121,6 @@ public class HUDManager : MonoBehaviour
     private void ResetTips()
     {
         Debug.Log($"{GetType().Name}.cs > RESET tips and inventory");
-
     }
 
     private void ChangeColors(Mode mode)
@@ -131,6 +152,7 @@ public class HUDManager : MonoBehaviour
 
         if (mode != Mode.Nav)
             frame.color = color;
+
         MsgsBg.color = color;
         TipsBg.color = color;
     }
@@ -138,6 +160,11 @@ public class HUDManager : MonoBehaviour
     private void DisplayMessage(Mode mode)
     {
         MsgsBg.gameObject.SetActive(true);
+
+        if (activeMsg != null)
+        {
+            activeMsg.SetActive(false);
+        }
 
         switch (mode)
         {
@@ -157,6 +184,11 @@ public class HUDManager : MonoBehaviour
 
             case Mode.Plan:
                 activeMsg = planMsg;
+
+                break;
+
+            case Mode.Generic:
+                activeMsg = generic;
 
                 break;
         }
@@ -179,6 +211,11 @@ public class HUDManager : MonoBehaviour
 
     private void DisplayTips(Mode mode)
     {
+        if (activeTip != null)
+        {
+            activeTip.SetActive(false);
+        }
+
         if (mode != Mode.Plan)
         {
             TipsBg.gameObject.SetActive(true);
@@ -225,6 +262,8 @@ public class HUDManager : MonoBehaviour
             case Mode.Edit:
                 buff = EditTips[1];
 
+                SetVFActive(false);
+
                 break;
 
             case Mode.Plan:
@@ -265,6 +304,38 @@ public class HUDManager : MonoBehaviour
     {
         ChangeMode(activeMode);
     }
+
+    private void ConfirmAction()
+    {
+        switch (activeMode)
+        {
+            case Mode.Edit:
+
+                ChangeMode(Mode.Edit);
+
+                break;
+        }
+    }
+
+    private void NotifyError(ReportType type, string message)
+    {
+        //TODO
+
+        switch (type)
+        {
+            case ReportType.Error:
+                //TODO
+                generic.GetComponent<TextMeshProUGUI>().text = message;
+
+                MsgsBg.color = ErrColor;
+
+                DisplayMessage(Mode.Generic);
+
+
+                break;
+        }
+    }
+
     /*
     private void ActivateInventory()
     {

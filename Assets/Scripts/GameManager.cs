@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using System;
 
 public class GameManager : MonoBehaviour
@@ -16,39 +17,46 @@ public class GameManager : MonoBehaviour
     [SerializeField][ReadOnlyInspector] SceneType activeScene;
     [SerializeField][ReadOnlyInspector] public int sceneIndex = 0;
     [SerializeField][ReadOnlyInspector] SceneState state;
+    [SerializeField][ReadOnlyInspector] string sessionTimestamp;
     [SerializeField][ReadOnlyInspector] string sessionID;
 
     [Header("Loading:")]
+    [SerializeField][ReadOnlyInspector] GameObject loadingPanelPrefab;
+    [SerializeField][ReadOnlyInspector] GameObject loadingPanelInstance;
+    [SerializeField][ReadOnlyInspector] Slider loadingSlider;
     [SerializeField][ReadOnlyInspector] bool isLoading = false;
 
     [Header("Tutorial:")]
     [SerializeField][ReadOnlyInspector] GameObject tutorialPrefab;
     [SerializeField][ReadOnlyInspector] private bool tutorialOn = false;
-    private GameObject tutorialInstance;
+    private GameObject _tutorialInstance;
 
     [Header("Pause:")]
     [SerializeField][ReadOnlyInspector] GameObject pauseMenuPrefab;
     [SerializeField][ReadOnlyInspector] bool isPaused = false;
-    private GameObject pauseMenuInstance;
+    private GameObject _pauseMenuInstance;
 
     [Header("Mode HUD:")]
     [SerializeField][ReadOnlyInspector] GameObject modeHUDPrefab;
-    private GameObject modeHUDInstance;
+    private GameObject _HUDInstance;
 
-    [Header("Mode HUD:")]
+    [Header("Finale:")]
     [SerializeField][ReadOnlyInspector] GameObject finalePrefab;
+    [SerializeField][ReadOnlyInspector] bool isFinale = false;
     private GameObject finaleInstance;
 
-    /*
     [Header("Event System:")]
     [SerializeField][ReadOnlyInspector] EventSystem eventSystem;
     [SerializeField][ReadOnlyInspector] GameObject selectedGO;
-    */
 
     public delegate void PauseEv(bool isPaused = true);
     public static event PauseEv OnPause;
     public delegate void StateChangedEv(SceneType type, SceneState state);
     public static event StateChangedEv OnSceneUpdate;
+    public delegate void ReportEv(ReportType type, string message);
+    public static event ReportEv OnReport;
+    //public delegate void NewSceneIdEv(int i);
+    //public static event NewSceneIdEv OnNewSceneIndex;
 
     private void Awake()
     {
@@ -67,21 +75,20 @@ public class GameManager : MonoBehaviour
         pauseMenuPrefab = Resources.Load(PREFABS.PAUSE) as GameObject;
         modeHUDPrefab = Resources.Load(PREFABS.HUD) as GameObject;
         finalePrefab = Resources.Load(PREFABS.FINALE) as GameObject;
+        loadingPanelPrefab = Resources.Load(PREFABS.LOADING) as GameObject;
 
         if (tutorialPrefab == null)
             Debug.LogError($"{GetType().Name}.cs > Tutorial prefab is MISSING");
 
-        //eventSystem = EventSystem.current;
+        eventSystem = EventSystem.current;
 
         EventsSubscriber();
     }
 
-    /*
     private void Update()
     {
-        //selectedGO = eventSystem.currentSelectedGameObject;
+        selectedGO = eventSystem.currentSelectedGameObject;
     }
-    */
 
     private void OnDestroy()
     {
@@ -156,16 +163,16 @@ public class GameManager : MonoBehaviour
                 break;
 
             case SceneType.Demo1:
-                Debug.LogWarning("### TODO ### HERE IT SHOULD LOAD DEMO 1 SCENE");
 
-                SceneManager.LoadScene(2);
+                //SceneManager.LoadScene(2);
+                StartCoroutine(LoadSceneAsync(2));
 
                 break;
 
             case SceneType.Demo2:
-                Debug.LogWarning("### TODO ### HERE IT SHOULD LOAD DEMO 2 SCENE");
 
-                SceneManager.LoadScene(3);
+                //SceneManager.LoadScene(3);
+                StartCoroutine(LoadSceneAsync(3));
 
                 break;
 
@@ -173,13 +180,36 @@ public class GameManager : MonoBehaviour
                 Debug.LogWarning("### TODO ### HERE IT SHOULD LOAD BROWSE SCENE");
 
                 //SceneManager.LoadScene(4);
+                StartCoroutine(LoadSceneAsync(4));
 
                 break;
         }
 
         activeScene = newScene;
 
-        OnSceneUpdate(activeScene, SceneState.None);
+        OnSceneUpdate?.Invoke(activeScene, SceneState.None);
+    }
+
+    IEnumerator LoadSceneAsync(int sceneId)
+    {
+        loadingPanelInstance = Instantiate(loadingPanelPrefab);
+
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneId);
+
+        loadingPanelInstance.SetActive(true);
+
+        loadingSlider = loadingPanelInstance.GetComponentInChildren<Slider>();
+
+        while (!operation.isDone)
+        {
+            float progressValue = Mathf.Clamp01(operation.progress / 0.9f);
+
+            Debug.Log($"{GetType().Name}.cs > Loading progress value is {progressValue}");
+
+            loadingSlider.value = progressValue;
+
+            yield return null;
+        }
     }
 
     /// <summary>
@@ -189,26 +219,26 @@ public class GameManager : MonoBehaviour
     {
         sceneIndex = scene.buildIndex;
 
+        //OnNewSceneIndex?.Invoke(sceneIndex);
+
         // Check index for tutorial
         if (sceneIndex > 1)
         {
             ShowHUD();
             ShowTutorial();
 
-            SetSessionID();
+            SetSessionData();
         }
     }
 
     private void ShowHUD()
     {
-        modeHUDInstance = Instantiate(modeHUDPrefab);
+        _HUDInstance = Instantiate(modeHUDPrefab);
     }
 
     private void ShowTutorial()
     {
-        Debug.LogWarning("### TODO ### HERE IT SHOULD LOAD THE TUTORIAL");
-
-        tutorialInstance = Instantiate(tutorialPrefab);
+        _tutorialInstance = Instantiate(tutorialPrefab);
 
         tutorialOn = true;
 
@@ -221,7 +251,7 @@ public class GameManager : MonoBehaviour
 
     private void HideTutorial()
     {
-        Destroy(tutorialInstance);
+        Destroy(_tutorialInstance);
 
         tutorialOn = false;
 
@@ -232,9 +262,21 @@ public class GameManager : MonoBehaviour
         OnSceneUpdate?.Invoke(activeScene, state);
     }
 
-    private void ShowEndScreen()
+    private void ShowFinalScreen()
     {
-        modeHUDInstance.SetActive(false);
+        _HUDInstance.SetActive(false);
+
+        Debug.Log($"{GetType().Name}.cs > Freezing background");
+
+        Time.timeScale = 0;
+
+        Debug.Log($"{GetType().Name}.cs > {Time.timeScale} Destroying HUD and pause");
+
+        Destroy(_HUDInstance);
+        //Destroy(_pauseMenuInstance);
+
+        Cursor.visible = true;
+
         finaleInstance = Instantiate(finalePrefab);
     }
 
@@ -247,19 +289,20 @@ public class GameManager : MonoBehaviour
         OnSceneUpdate?.Invoke(activeScene, state);
     }
 
+    public void RestartScene()
+    {
+        DisplayScene(activeScene);
+    }
+
     public void EndsGame()
     {
         if (state == SceneState.Playing)
         {
             state = SceneState.Endgame;
+            isFinale = true;
 
-            ShowEndScreen();
+            ShowFinalScreen();
         }
-    }
-
-    public void ReloadScene()
-    {
-        DisplayScene(activeScene);
     }
 
     private void OnPauseInput()
@@ -279,38 +322,52 @@ public class GameManager : MonoBehaviour
 
         OnPause?.Invoke(isPaused);
 
-        if (isPaused)
+        if (!isFinale)
         {
-            Debug.Log($"{GetType().Name}.cs > FREEZING the app and showing pause menu");
+            if (isPaused)
+            {
+                Debug.Log($"{GetType().Name}.cs > FREEZING the app and showing pause menu");
 
-            Time.timeScale = 0;
+                Time.timeScale = 0;
 
-            state = SceneState.Paused;
+                state = SceneState.Paused;
 
-            pauseMenuInstance = Instantiate(pauseMenuPrefab);
+                _pauseMenuInstance = Instantiate(pauseMenuPrefab);
+            }
+            else
+            {
+                Debug.Log($"{GetType().Name}.cs > UNFREEZING the app and destroying pause menu");
+
+                Destroy(_pauseMenuInstance);
+
+                Time.timeScale = 1;
+
+                state = SceneState.Playing;
+            }
+
+            OnSceneUpdate?.Invoke(activeScene, state);
         }
-        else
-        {
-            Debug.Log($"{GetType().Name}.cs > UNFREEZING the app and destroying pause menu");
-
-            Destroy(pauseMenuInstance);
-
-            Time.timeScale = 1;
-
-            state = SceneState.Playing;
-        }
-
-        OnSceneUpdate?.Invoke(activeScene, state);
     }
 
-    private void SetSessionID()
+    private void SetSessionData()
     {
-        sessionID = DateTime.Now.ToString("yyyy-MM-dd-HH-mmss").Replace("-", "");
+        sessionTimestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        sessionID = DateTime.Now.ToString("yyyy-MM-dd HH-mmss").Replace("-", "").Replace(":","").Replace(" ", "");
+    }
+
+    public string GetSessionTimestamp()
+    {
+        return sessionTimestamp;
     }
 
     public string GetSessionID()
     {
         return sessionID;
+    }
+
+    public void MakeReport(ReportType type, string message)
+    {
+        OnReport?.Invoke(type, message);
     }
 
     /// <summary>

@@ -12,6 +12,7 @@ namespace Utilities
         public const string HUD = "Prefabs/HUDCanvas";
         public const string EVSYS = "Prefabs/EventSystem";
         public const string FINALE = "Prefabs/FinaleCanvas";
+        public const string LOADING = "Prefabs/LoadingCanvas";
     }
 
     public enum SceneType
@@ -29,7 +30,8 @@ namespace Utilities
         EPSelector, // Endpoint selector
         Nav,        // Navigation mode
         Edit,       // Edit mode
-        Plan        // Plan mode
+        Plan,       // Plan mode
+        Generic
     }
 
     public enum AccItemType
@@ -60,5 +62,10 @@ namespace Utilities
     public enum FileFormat
     {
         TXT=0, JSON=1
+    }
+
+    public enum ReportType
+    {
+        Generic, Error, Warning
     }
 }

@@ -86,7 +86,7 @@ public class FinaleBtn : MonoBehaviour
     {
         Debug.Log($"{GetType().Name}.cs > RESTARTING the scene...");
 
-        GameManager.Instance.ReloadScene();
+        GameManager.Instance.RestartScene();
     }
 
     private void DoChecks()

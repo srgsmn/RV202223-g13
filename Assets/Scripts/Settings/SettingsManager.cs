@@ -1,4 +1,3 @@
-//TEST :)
 using System.Collections;
 using System.Collections.Generic;
 using MenuUtilities;
@@ -9,9 +8,9 @@ public class SettingsManager : MonoBehaviour
 {
     public static SettingsManager Instance; // SINGLETON
 
-    [SerializeField][ReadOnlyInspector] bool _readTxt = false, _playEffects = true;
-    [SerializeField][ReadOnlyInspector] float _speechVolume = 0, _effectsVolume = 0;
-    [SerializeField] AudioMixer _speechMixer, _UIFbMixer;
+    [SerializeField][ReadOnlyInspector] bool _readTxt = false, _playEffects = true, _playMusic = true;
+    [SerializeField][ReadOnlyInspector] float _speechVolume = 0f, _effectsVolume = 0f, _musicVolume = -10;
+    [SerializeField] AudioMixer _speechMixer, _UIFbMixer, _musixMixer;
 
     public delegate void SettingsUpdateEv(SettingType type, object value);
     public static SettingsUpdateEv OnSettingsUpdate;
@@ -28,6 +27,8 @@ public class SettingsManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        SetDefaultValues();
     }
 
     private void Start()
@@ -35,15 +36,30 @@ public class SettingsManager : MonoBehaviour
         ResetValues();
     }
 
+    private void SetDefaultValues()
+    {
+        // flags:
+        _readTxt = false;
+        _playEffects = true;
+        _playMusic = true;
+
+        // floats:
+        _speechVolume = 0f;
+        _effectsVolume = 0f;
+        _musicVolume = -10f;
+    }
+
     /// <summary>
     /// Sends to every listener the default values of the app parameters
     /// </summary>
     public void ResetValues()
     {
-        OnSettingsUpdate?.Invoke(SettingType.TextReader, _readTxt);
-        OnSettingsUpdate?.Invoke(SettingType.SpeechVolume, _speechVolume);
-        OnSettingsUpdate?.Invoke(SettingType.PlayEffects, _playEffects);
-        OnSettingsUpdate?.Invoke(SettingType.EffectsVolume, _effectsVolume);
+        SetValue(SettingType.TextReader, _readTxt);
+        SetValue(SettingType.SpeechVolume, _speechVolume);
+        SetValue(SettingType.PlayEffects, _playEffects);
+        SetValue(SettingType.EffectsVolume, _effectsVolume);
+        SetValue(SettingType.PlayMusic, _playMusic);
+        SetValue(SettingType.MusicVolume, _musicVolume);
     }
 
     /// <summary>
@@ -77,6 +93,18 @@ public class SettingsManager : MonoBehaviour
             case SettingType.EffectsVolume:
 
                 value = _effectsVolume;
+
+                break;
+
+            case SettingType.PlayMusic:
+
+                value = _playMusic;
+
+                break;
+
+            case SettingType.MusicVolume:
+
+                value = _musicVolume;
 
                 break;
         }
@@ -124,6 +152,23 @@ public class SettingsManager : MonoBehaviour
 
                 _UIFbMixer.SetFloat("Volume", _effectsVolume);
                 OnSettingsUpdate?.Invoke(SettingType.EffectsVolume, _effectsVolume);
+
+                break;
+
+            case SettingType.PlayMusic:
+
+                _playMusic = (bool)value;
+
+                OnSettingsUpdate?.Invoke(SettingType.PlayMusic, _playMusic);
+
+                break;
+
+            case SettingType.MusicVolume:
+
+                _musicVolume = (float)value;
+
+                _musixMixer.SetFloat("Volume", _musicVolume);
+                OnSettingsUpdate?.Invoke(SettingType.MusicVolume, _musicVolume);
 
                 break;
         }

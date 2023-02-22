@@ -50,8 +50,9 @@ public class CharacterMovement : MonoBehaviour
             Debug.Log("Sono arrivato");
             OnTargetReached?.Invoke();
             _reportDone=true;
-            GameManager.Instance.ShowMainMenu();
+            GameManager.Instance.EndsGame();
         }
+        _rigidbody.isKinematic=!_rigidbody.isKinematic;
         
     }
     public void ApplyMovement(Vector2 movement){

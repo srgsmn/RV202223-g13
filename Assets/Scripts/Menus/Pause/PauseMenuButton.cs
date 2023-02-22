@@ -119,7 +119,13 @@ public class PauseMenuButton : MonoBehaviour
                     break;
 
                 case PauseMenuAction.Main:
-                    OnMainMenu?.Invoke();
+                    //OnMainMenu?.Invoke();
+                    GameManager.Instance.ShowMainMenu();
+
+                    break;
+
+                case PauseMenuAction.Restart:
+                    GameManager.Instance.RestartScene();
 
                     break;
 /*
