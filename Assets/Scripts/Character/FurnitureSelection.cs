@@ -35,7 +35,7 @@ public class FurnitureSelection : MonoBehaviour
     private GameObject _selected;
     private GameObject _toBeSelected;
     private Rigidbody _active_rb;
-    private Dictionary<Mat_key, Mat_emission> _inactive_materials;
+    private Dictionary<Mat_key, Color> _inactive_materials;
     private RaycastHit _raycastHit;
     private e_mode _currentMode;
     private bool _selectionToNav=false;
@@ -89,7 +89,7 @@ public class FurnitureSelection : MonoBehaviour
     {
         _selected = null;
         _currentMode = e_mode.mode_navigation;
-        _inactive_materials=new Dictionary<Mat_key,Mat_emission>();
+        _inactive_materials=new Dictionary<Mat_key,Color>();
     }
 
     // Update is called once per frame
@@ -328,10 +328,9 @@ public class FurnitureSelection : MonoBehaviour
             Material[] mat_set=r.materials;
             foreach (Material m in mat_set){
                 Mat_key k = new Mat_key(gobj.name,m.name);
-                Mat_emission em = new Mat_emission(m.IsKeywordEnabled("_EMISSION"),m.GetColor("_EmissionColor"));
-                _inactive_materials.Add(k,em);
-                m.EnableKeyword("EMISSION");
-                m.SetColor("_EmissionColor",SelectedColor);
+                //Mat_emission em = new Mat_emission(m.IsKeywordEnabled("_EMISSION"),m.GetColor("_EmissionColor"));
+                _inactive_materials.Add(k,m.GetColor("_Color"));
+                m.SetColor("_Color",SelectedColor);
             }
         }
         else if (first){
@@ -368,11 +367,9 @@ public class FurnitureSelection : MonoBehaviour
             r = (Renderer) mf;
             Material[] mat_set=r.materials;
             foreach (Material m in mat_set){
-                Mat_emission old_col = _inactive_materials.GetValueOrDefault(new Mat_key(gobj.name,m.name));
-                if (!old_col.isEmitting){ 
-                    m.EnableKeyword("EMISSION");
-                }
-                m.SetColor("_EmissionColor",old_col.emissionColor);
+                //Mat_emission old_col = _inactive_materials.GetValueOrDefault(new Mat_key(gobj.name,m.name));
+                Color old_col = _inactive_materials.GetValueOrDefault(new Mat_key(gobj.name,m.name));
+                m.SetColor("_Color",old_col);
             }
         }
         else if (first){

@@ -390,6 +390,9 @@ public class InputManager : MonoBehaviour
                     }
 
                 }
+                else if (mode==Mode.Plan || mode==Mode.Nav){
+                    OnSelection?.Invoke();  
+                }
                 else
                 {
                     //OnConfirm?.Invoke();
