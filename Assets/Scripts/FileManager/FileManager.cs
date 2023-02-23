@@ -9,23 +9,16 @@ using System;
 using Utilities;
 using System.Collections;
 using System.Collections.Generic;
-using static UnityEditor.FilePathAttribute;
+using TMPro;
+using System.Text.RegularExpressions;
 
 public class FileManager : MonoBehaviour
 {
-    //TODO CANCELLARE
-    [Serializable]
-    public class ExampleClass
-    {
-        public int exInt;
-        public float exFloat;
-        public string[] exArrString;
-    }
-
     [System.Serializable]
     public class AccessibilityReport
     {
         public string sessionID;
+        public float totalDistance;
         public int eventsTotal;
         public string[] eventsList;
         public int collisionsTotal;
@@ -33,42 +26,62 @@ public class FileManager : MonoBehaviour
         public int accDevicesTotal;
         public string[] accDevicesList;
 
+        public int removedTotal;
+        public string[] removedList;
+
         public int translationsTotal;
         public TranslationEntry[] translationsList;
 
-        public AccessibilityReport(string sessionID, List<string> eventsList, List<string> collisionsList, List<string> accDevicesList, Dictionary<string, ReportCreator.RotoTranslation> translationsList)
+        public AccessibilityReport(string sessionID, float totalDistance, List<string> eventsList, List<Collision> collisionsList, List<ReportCreator.AccDevicePlacement> accDevicesList, Dictionary<string, ReportCreator.RotoTranslation> translationsList, List<string> removedList)
         {
             this.sessionID = sessionID;
 
+            this.totalDistance = totalDistance;
+
+            this.eventsList = new string[eventsList.ToArray().Length];
             this.eventsList = eventsList.ToArray();
             eventsTotal = this.eventsList.Length;
 
-            this.collisionsList = collisionsList.ToArray();
+            this.collisionsList = new string[collisionsList.ToArray().Length];
+            int i=0;
+            foreach(Collision c in collisionsList){
+                this.collisionsList[i++]=new string("Collision in " + c.GetContact(0).point + " with " + c.collider.gameObject.name);
+            }
             collisionsTotal = this.collisionsList.Length;
 
-            this.accDevicesList = accDevicesList.ToArray();
+            this.accDevicesList = new string[accDevicesList.ToArray().Length];
+            i=0;
+            foreach(ReportCreator.AccDevicePlacement adp in accDevicesList){
+                this.accDevicesList[i++]=new string("Placed device: '" + adp.accDevice + "', in " + adp.position.ToString());
+            }
             accDevicesTotal = this.accDevicesList.Length;
+
 
             this.translationsList = new TranslationEntry[translationsList.Count];
             translationsTotal = this.translationsList.Length;
 
-            int i = 0;
-            foreach(KeyValuePair<string, ReportCreator.RotoTranslation> entry in translationsList)
+            i = 0;
+            foreach (KeyValuePair<string, ReportCreator.RotoTranslation> entry in translationsList)
             {
                 this.translationsList[i++] = new TranslationEntry(entry.Key, entry.Value);
             }
+
+            this.removedList = new string[removedList.ToArray().Length];
+            this.removedList = removedList.ToArray();
+            removedTotal = this.removedList.Length;
         }
 
         public override string ToString()
         {
-            string intro = $"Session ID = {sessionID}\n\nGENERAL DATA:\n\tTotal events: {eventsTotal}\n\tTotal collisions: {collisionsTotal}\n\tTotal accessibility devices added: {accDevicesTotal}\n\tTotal translations: {translationsTotal}";
+            string intro = $"Session ID = {sessionID}\n\nGENERAL DATA:\nTotal Distance: {totalDistance}\nTotal events: {eventsTotal}\nTotal collisions: {collisionsTotal}\nTotal accessibility devices added: {accDevicesTotal}\nTotal translations: {translationsTotal}";
 
             string events = "\n\n## EVENTS HISTORY ##\n\n" + string.Join("\n", eventsList);
             string collisions = "\n\n## COLLISIONS HISTORY ##\n\n" + string.Join("\n", collisionsList);
             string accDevs = "\n\n## ACCESSIBILITY DEVICES HISTORY ##\n\n" + string.Join("\n", accDevicesList);
+            string removed = "\n\n## REMOVED DEVICES HISTORY ##\n\n" + string.Join("\n", removedList);
             string translations = "\n\n## TRANSLATIONS HISTORY ##\n\n" + string.Join("\n", eventsList);
 
-            return intro+events+collisions+accDevs+translations;
+            return intro + events + collisions + accDevs + removed + translations;
         }
 
         // INNER CLASS
@@ -115,6 +128,8 @@ public class FileManager : MonoBehaviour
 
     private enum FileFormat { TXT = 0, JSON }
 
+    [SerializeField] private TextMeshProUGUI reportArea;
+
     [Header("Save info:")]
     [SerializeField][ReadOnlyInspector] private string sessionID;
     [SerializeField] private string path;
@@ -126,9 +141,6 @@ public class FileManager : MonoBehaviour
     [Header("Accessibility Report:")]
     [SerializeField] ReportCreator reportCreator;
     [SerializeField] AccessibilityReport accRep;
-
-    //TODO
-    ExampleClass _test;
 
     private void Awake()
     {
@@ -146,26 +158,31 @@ public class FileManager : MonoBehaviour
 
         fileName = fileNameBase + sessionID;
 
-        //TODO
-        _test = new ExampleClass();
-        //TODO Decommentare sotto e sostituire a _test
-        //accRep = new AccessibilityReport(sessionID, reportCreator._allRecords, reportCreator._allCollisions, reportCreator._allAccDevices, reportCreator._allTranslations);
+        accRep = new AccessibilityReport(sessionID, reportCreator.TotalDistance, reportCreator.AllRecords, reportCreator.AllCollisions, reportCreator.AllAccDevices, reportCreator.AllTranslations, reportCreator.AllRemoved);
+
+        string data;
+
+        data = DataToTxt();
+
+        int lines = Regex.Matches(data, "\n").Count + 5;
+
+        reportArea.text = data;
+        reportArea.rectTransform.sizeDelta = new Vector2(1000, lines * reportArea.fontSize);
     }
 
     public void SaveReport()
     {
-        string data ="";
+        string data = "";
 
         switch (fileFormat)
         {
             case FileFormat.TXT:
-                //data = DataToTxt(_test);    //TODO cambiare con accRep
+                data = DataToTxt();
 
                 break;
 
             case FileFormat.JSON:
-                data = JsonUtility.ToJson(_test);   //TODO cambiare con accRep
-                //data = JsonUtility.ToJson(accRep);
+                data = JsonUtility.ToJson(accRep);
 
                 break;
         }
@@ -195,7 +212,7 @@ public class FileManager : MonoBehaviour
     /// </summary>
     /// <param name="toDisplay">flag that if it's true removes "\t" chars if the string should be shown in screen, otherwise keeps them (false by default)</param>
     /// <returns></returns>
-    public string DataToTxt(bool toDisplay=false)
+    public string DataToTxt()
     {
         string txt = $"WAYFINDER ACCESSIBILITY REPORT\n";
 
@@ -203,9 +220,6 @@ public class FileManager : MonoBehaviour
             txt += "";
         else
             txt += accRep.ToString();
-
-        if (toDisplay)
-            txt.Replace("\t", "");
 
         return txt;
     }

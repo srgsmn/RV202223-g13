@@ -35,6 +35,13 @@ public class ReportCreator : MonoBehaviour
         AllAccDevices = new List<AccDevicePlacement>();
         AllRemoved = new List<string>();
         AllTranslations = new Dictionary<string, RotoTranslation>();
+
+        FurnitureSelection.OnFurnitureRemoval += RemoveFurniture;
+    }
+
+    private void OnDestroy()
+    {
+        FurnitureSelection.OnFurnitureRemoval -= RemoveFurniture;
     }
 
     void AddDistance(float distance)
@@ -48,7 +55,7 @@ public class ReportCreator : MonoBehaviour
     {
         AllCollisions.Add(collision);
         Debug.Log("Collisione in " + collision.GetContact(0).point + " con " + collision.collider.gameObject.name);
-        if (collision.collider.gameObject.TryGetComponent(typeof(Renderer),out Component mf)){
+        if (collision.collider.gameObject.TryGetComponent(typeof(MeshFilter),out Component mf)){
             if (collision.collider.gameObject.name.ToLower().IndexOf("floor")==-1){
                 AllRecords.Add(new string("Collision in " + collision.GetContact(0).point + " with " + collision.collider.gameObject.name));
             }
@@ -96,6 +103,7 @@ public class ReportCreator : MonoBehaviour
         AllRecords.Add(new string("Removed piece of furniture: '" + furni + "', from position " + pos));
     }
 
+    /*
     void WriteReport()
     {
         string path = Application.dataPath + "/report.txt";
@@ -113,7 +121,7 @@ public class ReportCreator : MonoBehaviour
         }
         foreach(string a in AllTranslations.Keys)
         {
-            string record = "Furniture: '" + a + "', translated by " + AllTranslations[a].translation + ", and rotated around y axis by " + AllTranslations[a].rotation + "°;";
+            string record = "Furniture: '" + a + "', translated by " + AllTranslations[a].translation + ", and rotated around y axis by " + AllTranslations[a].rotation + "ï¿½;";
             writer.WriteLine(record);
             AllRecords.Add(record);
         }
@@ -123,13 +131,15 @@ public class ReportCreator : MonoBehaviour
             writer.WriteLine(record);
             AllRecords.Add(record);
         }
+
         writer.Close();
     }
+    */
 
     private void OnEnable()
     {
         CharacterMovement.OnMovement += AddDistance;
-        CharacterMovement.OnTargetReached += WriteReport;
+        //CharacterMovement.OnTargetReached += WriteReport;
         CharacterMovement.OnPlayerCollision += PlayerCollision;
         FurnitureSelection.OnFurnitureTranslation += AddTranslation;
         FurnitureSelection.OnFurnitureRemoval += RemoveFurniture;
@@ -139,7 +149,7 @@ public class ReportCreator : MonoBehaviour
     private void OnDisable()
     {
         CharacterMovement.OnMovement -= AddDistance;
-        CharacterMovement.OnTargetReached -= WriteReport;
+        //CharacterMovement.OnTargetReached -= WriteReport;
         CharacterMovement.OnPlayerCollision -= PlayerCollision;
         FurnitureSelection.OnFurnitureTranslation -= AddTranslation;
         FurnitureSelection.OnFurnitureRemoval -= RemoveFurniture;

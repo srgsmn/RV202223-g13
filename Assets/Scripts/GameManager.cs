@@ -119,6 +119,8 @@ public class GameManager : MonoBehaviour
             // From Input Manager
             InputManager.OnPause += OnPauseInput;
             InputManager.OnResume += OnResumeInput;
+
+            OnSceneUpdate += CheckState;
         }
         else
         {
@@ -142,6 +144,8 @@ public class GameManager : MonoBehaviour
             // From Input Manager
             InputManager.OnPause -= OnPauseInput;
             InputManager.OnResume -= OnResumeInput;
+
+            OnSceneUpdate -= CheckState;
         }
     }
 
@@ -164,14 +168,12 @@ public class GameManager : MonoBehaviour
 
             case SceneType.Demo1:
 
-                //SceneManager.LoadScene(2);
                 StartCoroutine(LoadSceneAsync(2));
 
                 break;
 
             case SceneType.Demo2:
 
-                //SceneManager.LoadScene(3);
                 StartCoroutine(LoadSceneAsync(3));
 
                 break;
@@ -179,7 +181,6 @@ public class GameManager : MonoBehaviour
             case SceneType.Browse:
                 Debug.LogWarning("### TODO ### HERE IT SHOULD LOAD BROWSE SCENE");
 
-                //SceneManager.LoadScene(4);
                 StartCoroutine(LoadSceneAsync(4));
 
                 break;
@@ -275,8 +276,6 @@ public class GameManager : MonoBehaviour
         Destroy(_HUDInstance);
         //Destroy(_pauseMenuInstance);
 
-        Cursor.visible = true;
-
         finaleInstance = Instantiate(finalePrefab);
     }
 
@@ -368,6 +367,34 @@ public class GameManager : MonoBehaviour
     public void MakeReport(ReportType type, string message)
     {
         OnReport?.Invoke(type, message);
+    }
+
+    private void CheckState(SceneType type, SceneState state)
+    {
+        if(type==SceneType.Demo1 || type == SceneType.Demo2 || type == SceneType.Browse)
+        {
+            switch (state)
+            {
+                case SceneState.Tutorial:
+                case SceneState.Playing:
+                    //Cursor.visible = false;
+                    //Cursor.lockState = CursorLockMode.Locked;
+
+                    break;
+
+                case SceneState.Paused:
+                case SceneState.Endgame:
+                    //Cursor.visible = true;
+                    //Cursor.lockState = CursorLockMode.None;
+
+                    break;
+            }
+        }
+        else
+        {
+            //Cursor.visible = true;
+            //Cursor.lockState = CursorLockMode.None;
+        }
     }
 
     /// <summary>

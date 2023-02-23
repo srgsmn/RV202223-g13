@@ -51,7 +51,7 @@ public class InputManager : MonoBehaviour
     [SerializeField][ReadOnlyInspector] bool isPaused;
     [SerializeField][ReadOnlyInspector] bool isTutorial;
     [SerializeField][ReadOnlyInspector] Mode mode;
-    [SerializeField][ReadOnlyInspector] bool objectSelected = false;
+    [SerializeField][ReadOnlyInspector] bool objectSelected;
     [SerializeField][ReadOnlyInspector] bool rotationSelected = false;
     [SerializeField][ReadOnlyInspector] bool translationSelected = false;
     [SerializeField]/*[ReadOnlyInspector]*/ bool hoverObject = false;
@@ -62,7 +62,6 @@ public class InputManager : MonoBehaviour
     private GameObject evSysInstance;
 
     private PlayerInputs inputs;
-
     private void Awake()
     {
         if (Instance == null)
@@ -206,7 +205,10 @@ public class InputManager : MonoBehaviour
 
 
             HotSpotSelection.OnEndPointSet+=NavModeStart;
+            FurnitureSelection.OnHover+=SetHoverFlag;
+            FurnitureSelection.OnSelect+=SetObjectSelected;
 
+            OnChangeMode += ResetFlags;
         }
         else
         {
@@ -251,7 +253,10 @@ public class InputManager : MonoBehaviour
             inputs.FreeLookCamera.Rotate.performed -= OnFLCamRotate;
 
             HotSpotSelection.OnEndPointSet-=NavModeStart;
+            FurnitureSelection.OnHover-=SetHoverFlag;
+            FurnitureSelection.OnSelect-=SetObjectSelected;
 
+            OnChangeMode -= ResetFlags;
         }
     }
 
@@ -277,7 +282,7 @@ public class InputManager : MonoBehaviour
                     isTutorial = false;
                     isPlaying = true;
                     isPaused = false;
-
+                    
                     break;
 
                 case SceneState.Paused:
@@ -285,7 +290,7 @@ public class InputManager : MonoBehaviour
                     isTutorial = false;
                     isPlaying = false;
                     isPaused = true;
-
+                    
                     break;
 
                 case SceneState.Endgame:
@@ -293,7 +298,7 @@ public class InputManager : MonoBehaviour
                     isTutorial = false;
                     isPlaying = false;
                     isPaused = false;
-
+                    
                     break;
             }
     }
@@ -370,13 +375,24 @@ public class InputManager : MonoBehaviour
                 }
                 else if(mode == Mode.Edit && hoverObject)
                 {
-                    OnSelection?.Invoke();
+                    if (!objectSelected)
+                    {
+                        OnSelection?.Invoke();
+                    }
+                    else
+                    {
+                        Debug.Log("Sto entrando su confirm");
+                        objectSelected = false;
+                        rotationSelected = false;
+                        translationSelected = false;
 
-                    objectSelected = true;
+                        OnConfirm?.Invoke();
+                    }
+
                 }
                 else
                 {
-                    OnConfirm?.Invoke();
+                    //OnConfirm?.Invoke();
                 }
             }
         }
@@ -403,10 +419,13 @@ public class InputManager : MonoBehaviour
     {
         Debug.Log($"{GetType().Name}.cs > ENTER Key pressed (context value as button {context.ReadValueAsButton()})");
 
-        if (isPlaying)
-        {
-            OnConfirm?.Invoke();
-        }
+         if (isPlaying) 
+        { 
+            if(mode != Mode.Edit)
+            {
+                OnConfirm?.Invoke();;
+            } 
+        } 
     }
 
     /// <summary>
@@ -501,6 +520,12 @@ public class InputManager : MonoBehaviour
                 Debug.Log($"{GetType().Name}.cs > State is PLAYING + mode is EDIT: Eliminating the object...");
 
                 OnEliminate?.Invoke();
+
+                objectSelected = false;
+
+                mode = Mode.Edit;
+
+                OnChangeMode?.Invoke(mode);
             }
         }
     }
@@ -523,7 +548,7 @@ public class InputManager : MonoBehaviour
 
     private void OnTranslatePressed(InputAction.CallbackContext context)
     {
-        Debug.Log($"{GetType().Name}.cs > R Key pressed (context value as button {context.ReadValueAsButton()})");
+        Debug.Log($"{GetType().Name}.cs > T Key pressed (context value as button {context.ReadValueAsButton()})");
 
         if (context.ReadValueAsButton())
         {
@@ -543,34 +568,37 @@ public class InputManager : MonoBehaviour
 
         Debug.Log($"{GetType().Name}.cs > Arrow key pressed (context value as button {value})");
 
-        if (value != Vector2.zero)
+        //if (value != Vector2.zero)
+        if (isPlaying && mode == Mode.Edit)
         {
-            if (isPlaying && mode == Mode.Edit)
+            if (rotationSelected)
             {
-                if (rotationSelected)
-                {
-                    if (value.x > 0)
-                        OnRotate?.Invoke(RotDir.Cw);
-                    else
-                        OnRotate?.Invoke(RotDir.CCw);
-                }
-                else if (translationSelected)
-                {
-                    if (value.x > 0)
-                        OnTranslate?.Invoke(TranDir.Rt);
-                    else
-                        OnTranslate?.Invoke(TranDir.Lt);
-
-                    if (value.y > 0)
-                        OnTranslate?.Invoke(TranDir.Fwd);
-                    else
-                        OnTranslate?.Invoke(TranDir.Bwd);
-                }
+                if (value.x > 0.5)
+                    OnRotate?.Invoke(RotDir.Cw);
+                else if (value.x<-0.5)
+                    OnRotate?.Invoke(RotDir.CCw);
+                else
+                    OnRotate?.Invoke(RotDir.None);
             }
-            else
+            else if (translationSelected)
             {
-                OnArrowPressed?.Invoke();
+                if (value.x > 0.5)
+                    OnTranslate?.Invoke(TranDir.Rt);
+                else if (value.x<-0.5)
+                    OnTranslate?.Invoke(TranDir.Lt);
+                else
+                    OnTranslate?.Invoke(TranDir.NoneX);
+                if (value.y > 0.5)
+                    OnTranslate?.Invoke(TranDir.Fwd);
+                else if(value.y < -0.5)
+                    OnTranslate?.Invoke(TranDir.Bwd);
+                else
+                    OnTranslate?.Invoke(TranDir.NoneY);
             }
+        }
+        else
+        {
+            OnArrowPressed?.Invoke();
         }
     }
 
@@ -682,5 +710,19 @@ public class InputManager : MonoBehaviour
             OnChangeMode?.Invoke(mode);
 
         }
+    }
+
+    private void ResetFlags(Mode modo)
+    {
+        objectSelected = false;
+        rotationSelected = false;
+        translationSelected = false;
+        hoverObject = false;
+    }
+
+    private void SetObjectSelected(bool sel){
+        Debug.Log("Ci entro?" + sel);
+        objectSelected=sel;
+        Debug.Log("ObjectSelected: "+ objectSelected);  
     }
 }
