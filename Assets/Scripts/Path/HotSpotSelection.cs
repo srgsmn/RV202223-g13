@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HotSpotSelection : MonoBehaviour
 {
@@ -28,6 +29,8 @@ public class HotSpotSelection : MonoBehaviour
     private Dictionary<Mat_key, Material> _inactive_materials;
     private List<GameObject> _waypointList;
     private int _numWaypoints;
+    private bool _toPlaceWaypoint=false;
+    private bool _toConfirmWaypoints=false;
 
     public delegate void StartNavigation();
     public static event StartNavigation OnEndPointSet;
@@ -62,7 +65,8 @@ public class HotSpotSelection : MonoBehaviour
             if (_waypoint_cursor!=null && _raycastHit.transform.name.ToLower().IndexOf("floor")!=-1){
                 _waypoint_cursor.transform.position=_raycastHit.point;
             }
-            if (Input.GetKeyDown(KeyCode.L) && _waypoint_cursor!=null){
+            if (_toPlaceWaypoint && _waypoint_cursor!=null){
+                _toPlaceWaypoint=false;
                 _waypointList.Add(Instantiate(_waypoint_pf,_raycastHit.point, Quaternion.identity));
                 if (_numWaypoints==0){
                     _wpRND=_waypointList[0].GetComponentsInChildren<Renderer>();
@@ -75,18 +79,50 @@ public class HotSpotSelection : MonoBehaviour
             }
                 
         }
-        if (Input.GetKeyDown(KeyCode.Return)){
+        if (_toConfirmWaypoints){
+            _toConfirmWaypoints=false;
             if (_numWaypoints<2){
                 Debug.Log("Non hai ancora inserito almeno 2 waypoint");
             }
             else{
-                _wpRND=_waypointList[_numWaypoints-1].GetComponentsInChildren<Renderer>();
+                Color col;
+
+                _waypoint_pf=(GameObject)Resources.Load("Prefabs/StartpointCanvas", typeof(GameObject));
+                Instantiate(_waypoint_pf,_waypointList[0].transform);//.transform.SetParent(_waypointList[0].transform);
+                _wpRND=_waypointList[0].GetComponentsInChildren<Renderer>();
+                col=_waypoint_pf.transform.GetComponentInChildren<Image>().color;
                 foreach(Renderer x in _wpRND){
-                    x.material.SetColor("_Color",Color.green);
-                    x.material.SetColor("_EmissionColor",Color.green);
+                    x.material.SetColor("_Color",col);
+                    x.material.SetColor("_EmissionColor",col);
                 }
+
+
+                _waypoint_pf=(GameObject)Resources.Load("Prefabs/MidpointCanvas", typeof(GameObject));
+                for (int i=1;i<_numWaypoints-1;i++){
+                    Instantiate(_waypoint_pf,_waypointList[i].transform);//.transform.SetParent(_waypointList[i].transform);
+                    _wpRND=_waypointList[i].GetComponentsInChildren<Renderer>();
+                    col=_waypoint_pf.transform.GetComponentInChildren<Image>().color;
+                    foreach(Renderer x in _wpRND){
+                        x.material.SetColor("_Color",col);
+                        x.material.SetColor("_EmissionColor",col);
+                    }
+                }
+
+
+                _waypoint_pf=(GameObject)Resources.Load("Prefabs/EndpointCanvas", typeof(GameObject));
+                Instantiate(_waypoint_pf,_waypointList[_numWaypoints-1].transform);//.transform.SetParent(_waypointList[_numWaypoints-1].transform);
+                _wpRND=_waypointList[_numWaypoints-1].GetComponentsInChildren<Renderer>();
+                col=_waypoint_pf.transform.GetComponentInChildren<Image>().color;
+                foreach(Renderer x in _wpRND){
+                    x.material.SetColor("_Color",col);
+                    x.material.SetColor("_EmissionColor",col);
+                }
+
+
                 Destroy(_waypoint_cursor);
                 //ResetWalls(Level);
+
+
                 _avatar=Instantiate(_avatar_pf, _waypointList[0].transform.position, Quaternion.identity);
                 SwitchCamera();
                 OnEndPointSet?.Invoke();
@@ -167,5 +203,24 @@ public class HotSpotSelection : MonoBehaviour
                 m.renderQueue = -1;*/
             }
         }
+    }
+
+    private void PlaceWaypoint(){
+        _toPlaceWaypoint=true;
+    }
+
+    private void ConfirmWaypoints(){
+        _toConfirmWaypoints=true;
+    }
+
+    private void Awake(){
+        InputManager.OnSelection+=PlaceWaypoint;
+        InputManager.OnConfirm+=ConfirmWaypoints;
+    }
+
+    private void OnDisable(){
+        InputManager.OnSelection-=PlaceWaypoint;
+        InputManager.OnConfirm-=ConfirmWaypoints;
+
     }
 }

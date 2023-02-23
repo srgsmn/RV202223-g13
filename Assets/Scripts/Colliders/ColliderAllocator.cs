@@ -93,12 +93,12 @@ public class ColliderAllocator : MonoBehaviour
 
         Mesh mesh = mf.sharedMesh;
         Vector3 m_SizeM =mesh.bounds.size;
-        float boxSize = m_SizeM.x * m_SizeM.y * m_SizeM.z;
+        /*float boxSize = m_SizeM.x * m_SizeM.y * m_SizeM.z;
         float volume = VolumeOfMesh(mesh);
         if (volume>=0.9*boxSize){
             return 0;
-        }
-        else if (IsFixed(x.name.ToLower()) || IsStructural(x.name.ToLower())){
+        }*/
+        if (IsFixed(x.name.ToLower()) || IsStructural(x.name.ToLower())){
             return 1;    
         }
         return 2;

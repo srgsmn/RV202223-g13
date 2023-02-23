@@ -171,6 +171,7 @@ public class FurnitureSelection : MonoBehaviour
 
                         Destroy(_selected);
 
+
                         _moveToNav=true;
                     }
                 }
