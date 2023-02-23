@@ -131,9 +131,8 @@ public class AccDeviceCreator : MonoBehaviour
                                         x.material.SetColor("_Color", Color.green);
                                         x.material.SetColor("_EmissionColor", Color.green);
                                     }
-                                    if (_spacePressed)
+                                    if (Input.GetKeyDown(KeyCode.Space))
                                     {
-                                        _spacePressed=false;
                                         _button=Instantiate(_button_pf, _raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
                                         _button.GetComponent<ButtonController>().ConnectedDoor=Doors[_doorClosest];
                                         //Destroy(_waypoint);
@@ -183,7 +182,7 @@ public class AccDeviceCreator : MonoBehaviour
                                 //_waypoint.transform.rotation = Quaternion.FromToRotation(Vector3.up, _raycastHit.normal);
                                 _waypoint.transform.SetPositionAndRotation(_raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
                                 _stairClosest = _findClosest(Stairs, _raycastHit.point);
-                                if ((Stairs[_stairClosest].transform.position - _raycastHit.point).magnitude <= 5f)
+                                if ((Stairs[_stairClosest].transform.position - _raycastHit.point).magnitude <= 10f)
                                 {
                                     _wpRND = _waypoint.GetComponentsInChildren<Renderer>();
                                     foreach (Renderer x in _wpRND)
@@ -191,9 +190,8 @@ public class AccDeviceCreator : MonoBehaviour
                                         x.material.SetColor("_Color", Color.green);
                                         x.material.SetColor("_EmissionColor", Color.green);
                                     }
-                                    if (_spacePressed)
+                                    if (Input.GetKeyDown(KeyCode.Space))
                                     {
-                                        _spacePressed=false;
                                         if (!_linkStartSet)
                                         {
                                             // set start position
@@ -307,7 +305,7 @@ public class AccDeviceCreator : MonoBehaviour
                                         x.material.SetColor("_Color", Color.green);
                                         x.material.SetColor("_EmissionColor", Color.green);
                                     }
-                                    if (Input.GetKeyDown(KeyCode.T))
+                                    if (Input.GetKeyDown(KeyCode.Space))
                                     {
                                         Ramp.GetComponent<Rigidbody>().isKinematic = false;
                                         foreach (Rigidbody rb in Ramp.GetComponentsInChildren<Rigidbody>())
@@ -448,11 +446,15 @@ public class AccDeviceCreator : MonoBehaviour
         switch(type){
             case AccItemType.Ramp:
                 mode=acc_device.Ramp;
+                _destroy_ramp=false;
+                _placed_ramp=false;
                 break;
             case AccItemType.Stairlift:
+                _destroy_ramp=true;
                 mode=acc_device.Stairlift;
                 break;
             case AccItemType.DoorButton: 
+                _destroy_ramp=true;
                 mode=acc_device.Button;
                 break;
             default:break;

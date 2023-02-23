@@ -9,7 +9,7 @@ public class NavMeshCreator : MonoBehaviour
     // Start is called before the first frame update
     private NavMeshSurface _nvsHumanoid;
     private NavMeshSurface _nvsWheelchair;
-    private string[] _walkableElements={"floor","pavimento","scala","scale","stairs","stair"};
+    private string[] _walkableElements={"floor","pavimento","scala","scale","stairs","stair","wall"};
     private string[] _passthroughElements={"porta","door","porte"};
     public List<GameObject> _waypointList;
 
@@ -306,12 +306,18 @@ public class NavMeshCreator : MonoBehaviour
         _needToUpdateNavMesh=true;
     }
 
-    private void Awake(){
+    private void AddedDevice(string x,Vector3 k){
+                _needToUpdateNavMesh=true;
+    }
+
+    private void OnEnable(){
         HotSpotSelection.OnEndPointSet+=StartGuy;
         FurnitureSelection.OnFurnitureTranslation+=ToUpdateNavMesh;
+        AccDeviceCreator.OnDeviceCreation+=AddedDevice;
     }
     private void OnDisable(){
         HotSpotSelection.OnEndPointSet-=StartGuy;
         FurnitureSelection.OnFurnitureTranslation-=ToUpdateNavMesh;
+        AccDeviceCreator.OnDeviceCreation-=AddedDevice;
     }
 }
