@@ -166,7 +166,11 @@ public delegate void TranslateFurniture(string pickedFurniture, Vector3 translat
                     Debug.Log("Entro in eliminatePressed");
                     _eliminatePressed=false;
                     if (_selected!=null){
+
+                        OnFurnitureRemoval?.Invoke(_selected.name, _selected.transform.position);
+
                         Destroy(_selected);
+                        
                         _moveToNav=true;
                     }
                 }

@@ -40,3 +40,79 @@ Collision in (4.27, 0.19, 21.19) with 'Library_02';;
 Collision in (7.29, 0.94, 21.54) with DeskCase_01;
 
 Furniture: 'Chair_02', translated by (-1.71, 0.00, 0.56), and rotated around y axis by 0�;
+Total Distance: 184,8433;
+Number of collisions: 20;
+Number of moved pieces of furniture: 0;
+Number of removed pieces of furniture: 0;
+Number of devices: 0;
+Collision in (8.15, 0.01, -3.47) with DeskCase_01;
+
+Collision in (1.20, 0.23, -7.73) with Walls;
+
+Collision in (-1.40, 0.23, -2.90) with Walls;
+
+Collision in (-7.14, -0.01, -3.41) with rampa a caso;
+
+Collision in (-7.14, -0.01, -3.41) with rampa a caso;
+
+Collision in (-15.32, 3.16, -27.91) with Glass_Wall;
+
+Collision in (-16.31, 1.23, -27.87) with Chrome_fixed;
+
+Collision in (-16.31, 1.22, -27.89) with Chrome_fixed;
+
+Collision in (-16.31, 1.21, -27.91) with Chrome_fixed;
+
+Collision in (-10.73, 0.80, -3.62) with rampa a caso;
+
+Collision in (-10.73, 0.80, -3.62) with rampa a caso;
+
+Collision in (-10.69, 0.93, -2.62) with rampa a caso;
+
+Collision in (-10.69, 0.93, -2.62) with rampa a caso;
+
+Collision in (-10.16, 0.01, -3.62) with rampa a caso;
+
+Collision in (-10.16, 0.01, -3.62) with rampa a caso;
+
+Total Distance: 85,76376;
+Number of collisions: 25;
+Number of moved pieces of furniture: 0;
+Number of removed pieces of furniture: 0;
+Number of devices: 0;
+Collision in (-7.13, -0.01, -3.12) with rampa a caso;
+
+Collision in (-7.13, -0.01, -3.12) with rampa a caso;
+
+Collision in (-7.19, 0.01, -3.32) with rampa a caso;
+
+Collision in (-7.19, 0.01, -3.32) with rampa a caso;
+
+Collision in (-7.20, 0.01, -2.62) with rampa a caso;
+
+Collision in (-7.20, 0.01, -2.62) with rampa a caso;
+
+Collision in (-7.17, 0.00, -3.47) with rampa a caso;
+
+Collision in (-7.17, 0.00, -3.47) with rampa a caso;
+
+Collision in (-7.17, 0.00, -2.77) with rampa a caso;
+
+Collision in (-7.17, 0.00, -2.77) with rampa a caso;
+
+Collision in (-8.50, 0.35, -3.36) with rampa a caso;
+
+Collision in (-8.50, 0.35, -3.36) with rampa a caso;
+
+Collision in (-10.84, 0.38, -3.55) with rampa a caso;
+
+Collision in (-10.84, 0.38, -3.55) with rampa a caso;
+
+Collision in (-7.16, 0.00, -3.49) with rampa a caso;
+
+Collision in (-7.16, 0.00, -3.49) with rampa a caso;
+
+Collision in (-7.15, -0.01, -2.65) with rampa a caso;
+
+Collision in (-7.15, -0.01, -2.65) with rampa a caso;
+

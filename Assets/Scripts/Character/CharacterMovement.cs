@@ -18,6 +18,7 @@ public class CharacterMovement : MonoBehaviour
     private Vector2 _localMovement;
     
     private bool _reportDone=false;
+    private bool _movingOnY=false;
 
     public GameObject Target;
 
@@ -53,45 +54,49 @@ public class CharacterMovement : MonoBehaviour
             _reportDone=true;
             GameManager.Instance.EndsGame();
         }
-        _rigidbody.angularVelocity = Vector3.zero;
+       //_rigidbody.angularVelocity = Vector3.zero;
 
         
     }
     public void ApplyMovement(Vector2 movement){
         _localMovement=movement;
+        _movingOnY=true;
     }
 
     void FixedUpdate()
     {
-        if (_localMovement.y > 0.5f)
-        {
-            if (_startSpeed <= 0) _startSpeed = 0;
-            if (_startSpeed < WalkSpeed)
+        if (_movingOnY){
+            if (_localMovement.y > 0.5f)
             {
-                //Debug.Log("Sto andando avanti");
-                //transform.Translate(gameObject.transform.forward * _startSpeed * Time.deltaTime);
-                _rigidbody.velocity = -_startSpeed * transform.forward;
-                _startSpeed += _startAccel * Time.deltaTime;
+                if (_startSpeed <= 0) _startSpeed = 0;
+                if (_startSpeed < WalkSpeed)
+                {
+                    //Debug.Log("Sto andando avanti");
+                    //transform.Translate(gameObject.transform.forward * _startSpeed * Time.deltaTime);
+                    _rigidbody.velocity = -_startSpeed * transform.forward; 
+                    _startSpeed += _startAccel * Time.deltaTime;
+                }
+                //else transform.Translate(gameObject.transform.forward * WalkSpeed * Time.deltaTime);
+                else _rigidbody.velocity = -WalkSpeed * transform.forward;
             }
-            //else transform.Translate(gameObject.transform.forward * WalkSpeed * Time.deltaTime);
-            else _rigidbody.velocity = -WalkSpeed * transform.forward;
-        }
-        else if (_localMovement.y < -0.5f)
-        {
-            if (_startSpeed >= 0) _startSpeed = 0;
-            if (_startSpeed > -WalkSpeed)
+            else if (_localMovement.y < -0.5f)
             {
-                //transform.Translate(gameObject.transform.forward * _startSpeed * Time.deltaTime);
-                _rigidbody.velocity = -_startSpeed * transform.forward;
-                _startSpeed -= _startAccel * Time.deltaTime;
+                if (_startSpeed >= 0) _startSpeed = 0;
+                if (_startSpeed > -WalkSpeed)
+                {
+                    //transform.Translate(gameObject.transform.forward * _startSpeed * Time.deltaTime);
+                    _rigidbody.velocity = -_startSpeed * transform.forward;
+                    _startSpeed -= _startAccel * Time.deltaTime;
+                }
+                //else transform.Translate(-gameObject.transform.forward * WalkSpeed * Time.deltaTime);
+                else _rigidbody.velocity = WalkSpeed * transform.forward;
             }
-            //else transform.Translate(-gameObject.transform.forward * WalkSpeed * Time.deltaTime);
-            else _rigidbody.velocity = WalkSpeed * transform.forward;
-        }
-        else
-        {
-            //_startSpeed = 0f;
-            _rigidbody.velocity = Vector3.zero;
+            else
+            {
+                //_startSpeed = 0f;
+                _rigidbody.velocity = Vector3.zero;
+                _movingOnY=false;
+            }
         }
 
         if (_localMovement.x > 0.5)
@@ -106,9 +111,9 @@ public class CharacterMovement : MonoBehaviour
         }
         else
         {
-            _rigidbody.angularVelocity = Vector3.zero;
+            //_rigidbody.angularVelocity = Vector3.zero;
         }
-        if(_localMovement.magnitude > 0f)
+        if(Mathf.Abs(_localMovement.y) > 0f)
         {
             OnMovement?.Invoke((_rigidbody.velocity * Time.deltaTime).magnitude);
         }

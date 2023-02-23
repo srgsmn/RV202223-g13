@@ -526,14 +526,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.219439, y: -0, z: -0, w: 0.9756263}
+  m_LocalPosition: {x: 12.86, y: 12.07, z: -21.82}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 25.352, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -578,15 +578,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dcc3d4a94aff1f14f8dfdc9b224dd6d5, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.6000001
+      value: 1.6
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dcc3d4a94aff1f14f8dfdc9b224dd6d5, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.6000001
+      value: 1.6
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dcc3d4a94aff1f14f8dfdc9b224dd6d5, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.6000001
+      value: 1.6
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dcc3d4a94aff1f14f8dfdc9b224dd6d5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -644,6 +644,14 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 2804ba60dc8d1124794796e6e3c8d73a, type: 2}
+    - target: {fileID: -2820345228588365705, guid: dcc3d4a94aff1f14f8dfdc9b224dd6d5, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.07625
+      objectReference: {fileID: 0}
+    - target: {fileID: -2820345228588365705, guid: dcc3d4a94aff1f14f8dfdc9b224dd6d5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.723
+      objectReference: {fileID: 0}
     - target: {fileID: -2249432455303957796, guid: dcc3d4a94aff1f14f8dfdc9b224dd6d5, type: 3}
       propertyPath: m_Name
       value: fixed_giardino_floor
@@ -705,6 +713,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AllRecords: []
   TotalDistance: 0
+  AllRemoved: []
 --- !u!4 &1407154646
 Transform:
   m_ObjectHideFlags: 0
