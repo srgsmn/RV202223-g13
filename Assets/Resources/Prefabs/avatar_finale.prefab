@@ -2311,7 +2311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerCamera: {fileID: 234486168566736135}
-  SelectedMaterial: {fileID: 2100000, guid: d4412a0a5b0638f439546bf394420dfd, type: 2}
+  SelectedMaterial: {fileID: 2100000, guid: 681bf135e3b22134ba2a0d6d0ca7a83a, type: 2}
   SelectedColor: {r: 1, g: 0.9371726, b: 0, a: 0}
   Range: 100
   MoveSpeed: 0.5
