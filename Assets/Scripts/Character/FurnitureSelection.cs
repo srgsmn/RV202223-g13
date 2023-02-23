@@ -8,8 +8,6 @@ public class FurnitureSelection : MonoBehaviour
 {
     enum  e_mode { mode_navigation, mode_selection, mode_move };
     private string[] _structElements={"wall","floor", "ceiling","lavandino","roof","stair","scale"};
-
-    //private static Color my_transparency = new Color(0, 0, 0, 0);
     
     public Camera PlayerCamera;
     public Material SelectedMaterial;
@@ -36,12 +34,19 @@ public class FurnitureSelection : MonoBehaviour
 
     public delegate void TranslateFurniture(string pickedFurniture, Vector3 translation, float rotation);
     public static event TranslateFurniture OnFurnitureTranslation;
+    public delegate void RemoveFurniture(string pickedFurniture, Vector3 translation);
+    public static event RemoveFurniture OnFurnitureRemoval;
 
 
     // da inserire quando posi l'oggetto
     void LeaveFurniture()
     {
         OnFurnitureTranslation?.Invoke(_selected.name, _selected.transform.position - _originalPosition, _originalRotation);
+    }
+
+    void TakeFurniture()
+    {
+        OnFurnitureRemoval?.Invoke(_selected.name, _selected.transform.position);
     }
     #endregion
 
@@ -91,7 +96,7 @@ public class FurnitureSelection : MonoBehaviour
                         //_active_rb.isKinematic=false;
                         //if (!IsStructural(_selected.name.ToLower()) && !IsFixed(_selected.name.ToLower())){
                         if (!CheckFixed(_selected)){
-                        _originalPosition = _selected.transform.position;
+                            _originalPosition = _selected.transform.position;
                             _originalRotation = _selected.transform.rotation.y;
                             _currentMode = e_mode.mode_move;
                         }
@@ -257,6 +262,7 @@ public class FurnitureSelection : MonoBehaviour
     private bool CheckFixed(GameObject go){
         return (IsFixed(go.name.ToLower()) || IsStructural(go.name.ToLower()));
     }
+
     private bool IsStructural(string name){
         foreach (string x in _structElements){
             if (name.IndexOf(x)!=-1){

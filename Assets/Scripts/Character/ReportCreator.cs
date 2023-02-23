@@ -22,6 +22,7 @@ public class ReportCreator : MonoBehaviour
     public float TotalDistance;
     public List<Collision> AllCollisions;
     public List<AccDevicePlacement> AllAccDevices;
+    public List<string> AllRemoved;
     public Dictionary<string, RotoTranslation> AllTranslations;
     
     // Start is called before the first frame update
@@ -32,6 +33,7 @@ public class ReportCreator : MonoBehaviour
         TotalDistance = 0f;
         AllCollisions = new List<Collision>();
         AllAccDevices = new List<AccDevicePlacement>();
+        AllRemoved = new List<string>();
         AllTranslations = new Dictionary<string, RotoTranslation>();
     }
 
@@ -84,7 +86,14 @@ public class ReportCreator : MonoBehaviour
         adp.position = new Vector3(pos.x, pos.y, pos.z);
         AllAccDevices.Add(adp);
         Debug.Log("Posizionato il dispositivo " + accDevice + " in " + pos.ToString());
-        AllRecords.Add(new string("Placed device '" + accDevice + "' in " + pos.ToString()));
+        AllRecords.Add(new string("Placed device: '" + accDevice + "', in " + pos.ToString()));
+    }
+
+    void RemoveFurniture(string furni, Vector3 pos)
+    {
+        AllRemoved.Add(furni);
+        Debug.Log("Rimosso l'oggetto '" + furni + "', dalla posizione " + pos);
+        AllRecords.Add(new string("Removed piece of furniture: '" + furni + "', from position " + pos));
     }
 
     void WriteReport()
@@ -92,6 +101,12 @@ public class ReportCreator : MonoBehaviour
         string path = Application.dataPath + "/report.txt";
         //Write some text to the test.txt file
         StreamWriter writer = new StreamWriter(path, true);
+
+        writer.WriteLine("Total Distance: " + TotalDistance + ";");
+        writer.WriteLine("Number of collisions: " + AllCollisions.Count + ";");
+        writer.WriteLine("Number of moved pieces of furniture: " + AllTranslations.Count + ";");
+        writer.WriteLine("Number of removed pieces of furniture: " + AllRemoved.Count + ";");
+        writer.WriteLine("Number of devices: " + AllAccDevices.Count + ";");
         foreach(string a in AllRecords)
         {
             writer.WriteLine(a + ";\n");
@@ -102,10 +117,12 @@ public class ReportCreator : MonoBehaviour
             writer.WriteLine(record);
             AllRecords.Add(record);
         }
-        writer.WriteLine("Total Distance: " + TotalDistance + ";");
-        writer.WriteLine("Number of collisions: " + AllCollisions.Count + ";");
-        writer.WriteLine("Number of moved pieces of furniture: " + AllTranslations.Count + ";");
-        writer.WriteLine("Number of devices: " + AllAccDevices.Count + ";");
+        foreach (string a in AllRemoved)
+        {
+            string record = "Furniture: '" + a + "', removed;";
+            writer.WriteLine(record);
+            AllRecords.Add(record);
+        }
         writer.Close();
     }
 
@@ -115,6 +132,7 @@ public class ReportCreator : MonoBehaviour
         CharacterMovement.OnTargetReached += WriteReport;
         CharacterMovement.OnPlayerCollision += PlayerCollision;
         FurnitureSelection.OnFurnitureTranslation += AddTranslation;
+        FurnitureSelection.OnFurnitureRemoval += RemoveFurniture;
         AccDeviceCreator.OnDeviceCreation += AddAccDevice;
     }
 
@@ -124,6 +142,7 @@ public class ReportCreator : MonoBehaviour
         CharacterMovement.OnTargetReached -= WriteReport;
         CharacterMovement.OnPlayerCollision -= PlayerCollision;
         FurnitureSelection.OnFurnitureTranslation -= AddTranslation;
+        FurnitureSelection.OnFurnitureRemoval -= RemoveFurniture;
         AccDeviceCreator.OnDeviceCreation -= AddAccDevice;
     }
 }
