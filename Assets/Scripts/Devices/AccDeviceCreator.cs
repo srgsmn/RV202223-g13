@@ -26,6 +26,7 @@ public class AccDeviceCreator : MonoBehaviour
     // Button variables
     public List<GameObject> Doors;
     private GameObject _button_pf;
+    private GameObject _button;
 
     // Ramp variables
     private GameObject Ramp = null;
@@ -130,13 +131,15 @@ public class AccDeviceCreator : MonoBehaviour
                                         x.material.SetColor("_Color", Color.green);
                                         x.material.SetColor("_EmissionColor", Color.green);
                                     }
-                                    if (Input.GetKeyDown(KeyCode.T))
+                                    if (_spacePressed)
                                     {
-                                        Instantiate(_button_pf, _raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
+                                        _spacePressed=false;
+                                        _button=Instantiate(_button_pf, _raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
+                                        _button.GetComponent<ButtonController>().ConnectedDoor=Doors[_doorClosest];
                                         //Destroy(_waypoint);
                                         //Doors.Clear();
                                         //FindDoors(Level);
-                                        Doors.RemoveAt(_doorClosest);
+                                        //Doors.RemoveAt(_doorClosest);
                                         _waypoint.SetActive(false);
 
                                         AccDevicePlaced();
@@ -188,8 +191,9 @@ public class AccDeviceCreator : MonoBehaviour
                                         x.material.SetColor("_Color", Color.green);
                                         x.material.SetColor("_EmissionColor", Color.green);
                                     }
-                                    if (Input.GetKeyDown(KeyCode.T))
+                                    if (_spacePressed)
                                     {
+                                        _spacePressed=false;
                                         if (!_linkStartSet)
                                         {
                                             // set start position
@@ -485,6 +489,14 @@ public class AccDeviceCreator : MonoBehaviour
     {
         _localRotation = delta;
     }
+    
+    private void PressSpace()
+    {
+        if (_startInsert){
+            _spacePressed = true;
+        }
+    }    
+    
 
     private void OnEnable(){
         InventoryBtn.OnItemSelect+=Inserisci;
