@@ -420,6 +420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55ef66f7e23254aeb88f37e08603f6dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reportArea: {fileID: 5578442678800523857}
   sessionID: 
   path: 
   fileNameBase: WayFinder_Report_
@@ -435,6 +436,8 @@ MonoBehaviour:
     collisionsList: []
     accDevicesTotal: 0
     accDevicesList: []
+    removedTotal: 0
+    removedList: []
     translationsTotal: 0
     translationsList: []
 --- !u!1 &1340545315743929042
@@ -2767,7 +2770,6 @@ MonoBehaviour:
   FinaleBtnContainer: {fileID: 5578442678527070478}
   SaveAsPanel: {fileID: 7201619485628033258}
   reportArea: {fileID: 5578442678800523857}
-  fm: {fileID: 8699446732772152172}
 --- !u!1 &5578442677382361128
 GameObject:
   m_ObjectHideFlags: 0

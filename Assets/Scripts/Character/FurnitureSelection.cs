@@ -68,7 +68,7 @@ public class FurnitureSelection : MonoBehaviour
 
     #region GESTIONE_REPORT
     // posizione in cui trovi l'oggetto da spostare:
-public delegate void TranslateFurniture(string pickedFurniture, Vector3 translation, float rotation);
+    public delegate void TranslateFurniture(string pickedFurniture, Vector3 translation, float rotation);
     public static event TranslateFurniture OnFurnitureTranslation;
     public delegate void RemoveFurniture(string pickedFurniture, Vector3 translation);
     public static event RemoveFurniture OnFurnitureRemoval;
@@ -170,7 +170,8 @@ public delegate void TranslateFurniture(string pickedFurniture, Vector3 translat
                         OnFurnitureRemoval?.Invoke(_selected.name, _selected.transform.position);
 
                         Destroy(_selected);
-                        
+
+
                         _moveToNav=true;
                     }
                 }

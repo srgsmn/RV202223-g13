@@ -35,6 +35,13 @@ public class ReportCreator : MonoBehaviour
         AllAccDevices = new List<AccDevicePlacement>();
         AllRemoved = new List<string>();
         AllTranslations = new Dictionary<string, RotoTranslation>();
+
+        FurnitureSelection.OnFurnitureRemoval += RemoveFurniture;
+    }
+
+    private void OnDestroy()
+    {
+        FurnitureSelection.OnFurnitureRemoval -= RemoveFurniture;
     }
 
     void AddDistance(float distance)
@@ -96,6 +103,7 @@ public class ReportCreator : MonoBehaviour
         AllRecords.Add(new string("Removed piece of furniture: '" + furni + "', from position " + pos));
     }
 
+    /*
     void WriteReport()
     {
         string path = Application.dataPath + "/report.txt";
@@ -125,11 +133,12 @@ public class ReportCreator : MonoBehaviour
         }
         writer.Close();
     }
+    */
 
     private void OnEnable()
     {
         CharacterMovement.OnMovement += AddDistance;
-        CharacterMovement.OnTargetReached += WriteReport;
+        //CharacterMovement.OnTargetReached += WriteReport;
         CharacterMovement.OnPlayerCollision += PlayerCollision;
         FurnitureSelection.OnFurnitureTranslation += AddTranslation;
         FurnitureSelection.OnFurnitureRemoval += RemoveFurniture;
@@ -139,7 +148,7 @@ public class ReportCreator : MonoBehaviour
     private void OnDisable()
     {
         CharacterMovement.OnMovement -= AddDistance;
-        CharacterMovement.OnTargetReached -= WriteReport;
+        //CharacterMovement.OnTargetReached -= WriteReport;
         CharacterMovement.OnPlayerCollision -= PlayerCollision;
         FurnitureSelection.OnFurnitureTranslation -= AddTranslation;
         FurnitureSelection.OnFurnitureRemoval -= RemoveFurniture;
