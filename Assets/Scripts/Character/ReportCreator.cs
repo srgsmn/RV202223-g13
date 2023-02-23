@@ -131,6 +131,7 @@ public class ReportCreator : MonoBehaviour
             writer.WriteLine(record);
             AllRecords.Add(record);
         }
+
         writer.Close();
     }
     */

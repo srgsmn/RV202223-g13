@@ -7,42 +7,37 @@ public class StairliftController : MonoBehaviour
     public GameObject Player = null;
     public GameObject LeftArm;
     public GameObject RightArm;
-    private float _armsRot = 0f;
-
+    public float ArmsRotation = 0f;
+    public bool isPlayerInside = false;
+   
     private enum stairlift_state { open_start, closing_arms, moving_forward, opening_arms, moving_backward, open_end};
     private stairlift_state state = stairlift_state.open_start;
     private Vector3 _startPosition = Vector3.zero;
     private Vector3 _endPosition = Vector3.zero;
     private bool forward = true;
-
-    private bool _playerInside = false;
-    private Collider _collider;
-    private Collider _playerCollider;
-    private bool _isMoving;
-    private float _movement = 0f;
-
-    private bool _spacePressed;
+    private bool _playerAssigned = false;
+    private bool _spacePressed = false;
 
     
     // Start is called before the first frame update
     void Start()
     {
-        _collider = GetComponent<Collider>();
+        
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void Update()
     {
-        if (Player == null)
+        if (_playerAssigned)
         {
-            Player = collision.collider.gameObject;
-            _playerCollider = Player.GetComponent<Collider>();
+            if (!isPlayerInside && asVector2(Player.transform.position - gameObject.transform.position).magnitude <= 0.5)
+            {
+                isPlayerInside = true;
+            }
+            else if (asVector2(Player.transform.position - gameObject.transform.position).magnitude > 0.5)
+            {
+                isPlayerInside = false;
+            }
         }
-        _playerInside = true;
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        _playerInside = false;
     }
 
     private void FixedUpdate()
@@ -50,50 +45,55 @@ public class StairliftController : MonoBehaviour
         switch (state)
         {
             case stairlift_state.open_start:
-                if (_playerInside && _spacePressed)
+                //if (isPlayerInside && _spacePressed)
+                if (isPlayerInside && Input.GetKeyDown(KeyCode.Space))
                 {
-                    _spacePressed = false;
-                    _movement = 0f;
-                    _armsRot = 0f;
+                    Debug.Log("Space pressed: closing arms");
+                    //_spacePressed = false;
+                    ArmsRotation = 0f;
                     state = stairlift_state.closing_arms;
                     forward = true;
                 }
                 break;
 
             case stairlift_state.open_end:
-                if (_playerInside && _spacePressed)
+                if (isPlayerInside && _spacePressed)
                 {
+                    Debug.Log("Space pressed: closing arms");
                     _spacePressed = false;
-                    _movement = 0f;
-                    _armsRot = 0f;
+                    ArmsRotation = 0f;
                     state = stairlift_state.closing_arms;
                     forward = false;
                 }
                 break;
 
             case stairlift_state.closing_arms:
-                if (_armsRot <= 90f)
+                if (ArmsRotation <= 90f)
                 {
                     float delta = 30f * Time.deltaTime;
-                    _armsRot += delta;
-                    LeftArm.transform.Rotate(delta, 0, 0);
-                    RightArm.transform.Rotate(delta, 0, 0);
+                    ArmsRotation += delta;
+                    LeftArm.transform.Rotate(delta, 0, 0, Space.Self);
+                    RightArm.transform.Rotate(delta, 0, 0, Space.Self);
                 }
                 else
                 {
+                    Player.transform.SetParent(gameObject.transform, true);
+                    Player.GetComponent<Rigidbody>().isKinematic = true;
                     state = (forward) ? stairlift_state.moving_forward : stairlift_state.moving_backward;
                 }
                 break;
 
             case stairlift_state.opening_arms:
-                if(_armsRot >= 0f)
+                if(ArmsRotation >= 0f)
                 {
                     float delta = 30f * Time.deltaTime;
-                    _armsRot -= delta;
-                    LeftArm.transform.Rotate(-delta, 0, 0);
-                    RightArm.transform.Rotate(-delta, 0, 0);
+                    ArmsRotation -= delta;
+                    LeftArm.transform.Rotate(-delta, 0, 0, Space.Self);
+                    RightArm.transform.Rotate(-delta, 0, 0, Space.Self);
                 } else
                 {
+                    Player.transform.SetParent(null);
+                    Player.GetComponent<Rigidbody>().isKinematic = false;
                     state = (forward) ? stairlift_state.open_end : stairlift_state.open_start;
                 }
                 break;
@@ -102,8 +102,7 @@ public class StairliftController : MonoBehaviour
             case stairlift_state.moving_forward:
                 if (gameObject.transform.position != _endPosition)
                 {
-                    gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, _endPosition, 5 * Time.deltaTime);
-                    Player.transform.position.Set(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z + Player.transform.position.z);
+                    gameObject.transform.position = Vector3.MoveTowards( gameObject.transform.position, _endPosition, 2f * Time.deltaTime);
                 } else
                 {
                     state = stairlift_state.opening_arms;
@@ -113,7 +112,7 @@ public class StairliftController : MonoBehaviour
             case stairlift_state.moving_backward:
                 if (gameObject.transform.position != _startPosition)
                 {
-                    gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, _startPosition, 30 * Time.deltaTime);
+                    gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, _startPosition, 2f * Time.deltaTime);
                 }
                 else
                 {
@@ -125,9 +124,14 @@ public class StairliftController : MonoBehaviour
         }
     }
 
+    Vector2 asVector2(Vector3 v)
+    {
+        return new Vector2(v.x, v.z);
+    }
+
     void PressSpace()
     {
-        if(state == stairlift_state.open_start || state == stairlift_state.open_end) _spacePressed = true;
+        _spacePressed = true;
     }
 
     public void SetStart(Vector3 position)
@@ -139,15 +143,19 @@ public class StairliftController : MonoBehaviour
         _endPosition = position;
     }
 
+    public void SetPlayer(GameObject player)
+    {
+        Player = player;
+        _playerAssigned = true;
+    }
+
     private void OnEnable()
     {
-
         InputManager.OnSelection += PressSpace;
     }
 
     private void OnDisable()
     {
-
         InputManager.OnSelection -= PressSpace;
     }
 

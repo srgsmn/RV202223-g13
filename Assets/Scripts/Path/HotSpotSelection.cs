@@ -136,10 +136,12 @@ public class HotSpotSelection : MonoBehaviour
 
     private void SwitchCamera(){
         Camera FirstPerson=_avatar.transform.Find("Camera").gameObject.GetComponent<Camera>();
+        AudioListener al = PlayerCamera.GetComponent<AudioListener>();
         _avatar.GetComponent<CharacterMovement>().enabled=true;
         _avatar.GetComponent<FurnitureSelection>().enabled=true;
         _avatar.GetComponent<AccDeviceCreator>().enabled=true;
         _avatar.GetComponent<CharacterMovement>().Target=_waypointList[_waypointList.Count-1];
+        al.enabled = false;
         PlayerCamera.enabled=false;
         FirstPerson.enabled=true;
     }

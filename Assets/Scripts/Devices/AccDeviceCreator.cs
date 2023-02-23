@@ -15,6 +15,7 @@ public class AccDeviceCreator : MonoBehaviour
     private RaycastHit _raycastHit;
     private GameObject _waypoint_pf;
     private GameObject _waypoint;
+    private bool _destroy_wp = false;
     private Renderer[] _wpRND;
     private float _range = 1000f;
     private bool _raysStarted=false;
@@ -31,7 +32,6 @@ public class AccDeviceCreator : MonoBehaviour
 
     // Stairlift variables     
     public List<GameObject> Stairs;
-    private GameObject Stair;
     private GameObject _stairlift_pf;
     private GameObject _stairlift;
     private Vector3 _linkStartPosition;
@@ -74,6 +74,8 @@ public class AccDeviceCreator : MonoBehaviour
     void Update()
     {
         int _doorClosest = -1;
+        int _stairClosest = -1;
+
         if (_startInsert){
             if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward, out _raycastHit, _range))
             {
@@ -97,7 +99,7 @@ public class AccDeviceCreator : MonoBehaviour
                                 //_waypoint.transform.position=_raycastHit.point;
                                 //_waypoint.transform.rotation=Quaternion.FromToRotation(Vector3.up, _raycastHit.normal);
                                 _waypoint.transform.SetPositionAndRotation(_raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
-                                _doorClosest = _findClosest(Doors, _waypoint.transform.position);
+                                _doorClosest = _findClosest(Doors, _raycastHit.point);
                                 Debug.Log(Doors[_doorClosest].name);
                                 if ((Doors[_doorClosest].transform.position - _raycastHit.point).magnitude <= 2.5f)
                                 {
@@ -156,8 +158,8 @@ public class AccDeviceCreator : MonoBehaviour
                                 //_waypoint.transform.position = _raycastHit.point;
                                 //_waypoint.transform.rotation = Quaternion.FromToRotation(Vector3.up, _raycastHit.normal);
                                 _waypoint.transform.SetPositionAndRotation(_raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
-                                Stair = Stairs[_findClosest(Stairs, _raycastHit.point)];
-                                if ((Stair.transform.position - _raycastHit.point).magnitude <= 5f)
+                                _stairClosest = _findClosest(Stairs, _raycastHit.point);
+                                if ((Stairs[_stairClosest].transform.position - _raycastHit.point).magnitude <= 5f)
                                 {
                                     _wpRND = _waypoint.GetComponentsInChildren<Renderer>();
                                     foreach (Renderer x in _wpRND)
@@ -167,22 +169,40 @@ public class AccDeviceCreator : MonoBehaviour
                                     }
                                     if (Input.GetKeyDown(KeyCode.T))
                                     {
-                                        Stair.SetActive(false);
-                                        Stairs.Remove(Stair);
                                         if (!_linkStartSet)
                                         {
+                                            // set start position
                                             _linkStartPosition = _raycastHit.point;
-                                            _stairlift = Instantiate(_stairlift_pf, _raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
-                                            _stairlift.GetComponent<StairliftController>().SetStart(_linkStartPosition);
                                             _linkStartSet = true;
+                                            _stairlift = Instantiate(_stairlift_pf, _raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
+
+                                            // switch camera
+                                            //Camera.main.transform.SetPositionAndRotation(PlayerCamera.transform.position, 
+                                                //Quaternion.FromToRotation(Camera.main.transform.forward, PlayerCamera.transform.forward));
+                                            //PlayerCamera.enabled = false;
+                                            //Camera.main.enabled = true;
+
+                                            // trigger event
+                                            AccDevicePlaced();
                                         }
                                         else
                                         {
+                                            // set end position
                                             _linkEndPosition = _raycastHit.point;
-                                            _stairlift.GetComponent<StairliftController>().SetEnd(_linkEndPosition);
-                                            CreateNavMeshLink();
                                             _linkStartSet = false;
-                                            _waypoint.SetActive(false);
+
+                                            // set stairlift variables
+                                            _stairlift.GetComponent<StairliftController>().SetStart(_linkStartPosition);
+                                            _stairlift.GetComponent<StairliftController>().SetEnd(_linkEndPosition);
+                                            _stairlift.GetComponent<StairliftController>().SetPlayer(this.gameObject);
+
+                                            // switch camera
+                                            //Camera.main.enabled = false;
+                                            //PlayerCamera.enabled = true;
+
+                                            // resolve selected stair
+                                            CreateNavMeshLink(Stairs[_stairClosest]);
+                                            Stairs.RemoveAt(_stairClosest);
                                             //Destroy(_waypoint);
                                         }
                                     }
@@ -248,11 +268,10 @@ public class AccDeviceCreator : MonoBehaviour
                                         {
                                             rb.isKinematic = true;
                                         }
-                                        Ramp = null;
                                         _spacePressed = false;
                                         //Destroy(_waypoint);
                                         _waypoint.SetActive(false);
-                                        AccDevicePlaced(); // !!!
+                                        AccDevicePlaced();
                                     }
                                 }
                                 else
@@ -279,6 +298,12 @@ public class AccDeviceCreator : MonoBehaviour
                     default: break;
                 }
             }
+        }
+
+        if(_destroy_wp && _waypoint.activeInHierarchy)
+        {
+            _waypoint.SetActive(false);
+            _destroy_wp = false;
         }
     }
 
@@ -329,7 +354,7 @@ public class AccDeviceCreator : MonoBehaviour
         }
     }
 
-    private void CreateNavMeshLink()
+    private void CreateNavMeshLink(GameObject Stair)
     {
         GameObject _linkGo = new GameObject(Stair.name + "_link");
         _linkGo.transform.parent = Stair.transform;
@@ -359,19 +384,6 @@ public class AccDeviceCreator : MonoBehaviour
         NavMeshBuildSettings settings = NavMesh.GetSettingsByID(agentTypeID);
         return settings.agentRadius;
     }
-
-    /*
-    private void FindDoors(GameObject go){
-        if (go.name.ToLower().IndexOf("door")!=-1){
-            Doors.Add(go);
-        }
-        if (go.transform.childCount>0){
-            foreach (Transform child in go.transform){
-                FindDoors(child.gameObject);
-            }
-        }
-    }
-    */
 
     private bool isOfType(GameObject go, string type)
     {
@@ -422,21 +434,6 @@ public class AccDeviceCreator : MonoBehaviour
         return closest;
     }
 
-    /*
-    private GameObject FindClosestDoor(Transform wp){
-        float max=10000.0f;
-        GameObject closest=new GameObject();//
-        foreach(GameObject x in Doors){
-            float dist=(wp.position-x.transform.position).magnitude;
-            if (dist<max){
-                closest=x;
-                max=dist;
-            }
-        }
-        return closest;
-    }
-    */
-
     private void Inserisci(AccItemType type){
         switch(type){
             case AccItemType.Ramp:
@@ -465,6 +462,7 @@ public class AccDeviceCreator : MonoBehaviour
                 break;
             case Mode.Plan: //aggiungi device
                 _startInsert=true;
+                _destroy_wp=true;
                 break;
         }
     }
@@ -477,7 +475,6 @@ public class AccDeviceCreator : MonoBehaviour
     {
         _localRotation = delta;
     }
-
     private void PressSpace()
     {
         _spacePressed = true;
