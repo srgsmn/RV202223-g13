@@ -112,22 +112,6 @@ public class InputManager : MonoBehaviour
         EventSubscriber(false);
     }
 
-    private void Update(){
-        if (isPlaying){
-            if (Cursor.visible){
-                Cursor.visible=false;
-            }
-        }
-        if (isTutorial){
-            Cursor.visible=false;
-        }
-        else{
-            if (!Cursor.visible){
-                Cursor.visible=true;
-            }
-        }
-    }
-
     public delegate void PauseEv();
     public static event PauseEv OnPause;
     public delegate void ResumeEv();
@@ -290,7 +274,7 @@ public class InputManager : MonoBehaviour
                     isTutorial = true;
                     isPlaying = false;
                     isPaused = false;
-                    Cursor.visible=true;
+
                     break;
 
                 case SceneState.Playing:
@@ -298,7 +282,7 @@ public class InputManager : MonoBehaviour
                     isTutorial = false;
                     isPlaying = true;
                     isPaused = false;
-                    Cursor.visible=false;
+                    
                     break;
 
                 case SceneState.Paused:
@@ -306,7 +290,7 @@ public class InputManager : MonoBehaviour
                     isTutorial = false;
                     isPlaying = false;
                     isPaused = true;
-                    Cursor.visible=true;
+                    
                     break;
 
                 case SceneState.Endgame:
@@ -314,7 +298,7 @@ public class InputManager : MonoBehaviour
                     isTutorial = false;
                     isPlaying = false;
                     isPaused = false;
-                    Cursor.visible=true;
+                    
                     break;
             }
     }
