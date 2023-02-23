@@ -1,5 +1,0 @@
-Total Distance: 2.459999;
-Number of collisions: 1;
-Number of moved pieces of furniture: 0;
-Number of removed pieces of furniture: 0;
-Number of devices: 0;

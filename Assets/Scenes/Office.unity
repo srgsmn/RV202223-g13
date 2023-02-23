@@ -1938,7 +1938,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   source: {fileID: 336155645}
-  clip: {fileID: 0}
+  clip: {fileID: 8300000, guid: 5a7f345e09ced488baf779b25fe15708, type: 3}
   musicOn: 0
 --- !u!82 &336155645
 AudioSource:
@@ -4851,6 +4851,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AllRecords: []
   TotalDistance: 0
+  AllRemoved: []
 --- !u!4 &907937038
 Transform:
   m_ObjectHideFlags: 0
