@@ -64,6 +64,8 @@ MonoBehaviour:
   Player: {fileID: 0}
   LeftArm: {fileID: 4720482023916712989}
   RightArm: {fileID: 6264614227793347083}
+  ArmsRotation: 0
+  isPlayerInside: 0
 --- !u!1 &3374189365998478746
 GameObject:
   m_ObjectHideFlags: 0

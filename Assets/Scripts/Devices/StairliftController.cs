@@ -45,7 +45,6 @@ public class StairliftController : MonoBehaviour
         switch (state)
         {
             case stairlift_state.open_start:
-                //if (isPlayerInside && _spacePressed)
                 if (isPlayerInside && Input.GetKeyDown(KeyCode.Space))
                 {
                     Debug.Log("Space pressed: closing arms");
@@ -57,7 +56,7 @@ public class StairliftController : MonoBehaviour
                 break;
 
             case stairlift_state.open_end:
-                if (isPlayerInside && _spacePressed)
+                if (isPlayerInside && Input.GetKeyDown(KeyCode.Space))
                 {
                     Debug.Log("Space pressed: closing arms");
                     _spacePressed = false;
@@ -68,12 +67,12 @@ public class StairliftController : MonoBehaviour
                 break;
 
             case stairlift_state.closing_arms:
-                if (ArmsRotation <= 90f)
+                if (ArmsRotation >= -90f)
                 {
                     float delta = 30f * Time.deltaTime;
-                    ArmsRotation += delta;
-                    LeftArm.transform.Rotate(delta, 0, 0, Space.Self);
-                    RightArm.transform.Rotate(delta, 0, 0, Space.Self);
+                    ArmsRotation -= delta;
+                    LeftArm.transform.Rotate(0, -delta, 0, Space.Self);
+                    RightArm.transform.Rotate(0, -delta, 0, Space.Self);
                 }
                 else
                 {
@@ -84,12 +83,12 @@ public class StairliftController : MonoBehaviour
                 break;
 
             case stairlift_state.opening_arms:
-                if(ArmsRotation >= 0f)
+                if (ArmsRotation <= 0f)
                 {
                     float delta = 30f * Time.deltaTime;
-                    ArmsRotation -= delta;
-                    LeftArm.transform.Rotate(-delta, 0, 0, Space.Self);
-                    RightArm.transform.Rotate(-delta, 0, 0, Space.Self);
+                    ArmsRotation += delta;
+                    LeftArm.transform.Rotate(0, delta, 0, Space.Self);
+                    RightArm.transform.Rotate(0, delta, 0, Space.Self);
                 } else
                 {
                     Player.transform.SetParent(null);

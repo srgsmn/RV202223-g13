@@ -16,6 +16,7 @@ public class AccDeviceCreator : MonoBehaviour
     private GameObject _waypoint_pf;
     private GameObject _waypoint;
     private bool _destroy_wp = false;
+    private bool _destroy_ramp = false;
     private Renderer[] _wpRND;
     private float _range = 1000f;
     private bool _raysStarted=false;
@@ -29,6 +30,7 @@ public class AccDeviceCreator : MonoBehaviour
     // Ramp variables
     private GameObject Ramp = null;
     private GameObject _ramp_pf;
+    private bool _placed_ramp = false;
 
     // Stairlift variables     
     public List<GameObject> Stairs;
@@ -38,6 +40,7 @@ public class AccDeviceCreator : MonoBehaviour
     private Vector3 _linkEndPosition;
     private bool _linkStartSet;
     private NavMeshLink _nvl;
+    private Vector3 _cameraOffset;
 
     private Vector2 _localTranslation; // accessibility device
     private float _localRotation; // accessibility device
@@ -68,6 +71,24 @@ public class AccDeviceCreator : MonoBehaviour
         _stairlift_pf = (GameObject) Resources.Load("Prefabs/Stairlift_raw", typeof(GameObject));
         _waypoint = Instantiate(_waypoint_pf);
         _waypoint.SetActive(false);
+    }
+
+    void ActivateFLCam(bool f)
+    {
+        Camera mainCam = Camera.main;
+        Camera playerCam = PlayerCamera.GetComponent<Camera>();
+        if (f) {
+            _cameraOffset = PlayerCamera.transform.localPosition;
+            gameObject.GetComponent<CharacterMovement>().enabled = false;
+            PlayerCamera.GetComponent<FollowPlayer>().enabled = false;
+            PlayerCamera.GetComponent<FreeLookCamera>().enabled = true;
+        } else
+        {
+            PlayerCamera.transform.SetLocalPositionAndRotation(_cameraOffset, Quaternion.FromToRotation(PlayerCamera.transform.forward, gameObject.transform.forward));
+            gameObject.GetComponent<CharacterMovement>().enabled = true;
+            PlayerCamera.GetComponent<FollowPlayer>().enabled = true;
+            PlayerCamera.GetComponent<FreeLookCamera>().enabled = false;
+        }
     }
 
     // Update is called once per frame
@@ -109,7 +130,7 @@ public class AccDeviceCreator : MonoBehaviour
                                         x.material.SetColor("_Color", Color.green);
                                         x.material.SetColor("_EmissionColor", Color.green);
                                     }
-                                    if (Input.GetKeyDown(KeyCode.Space))
+                                    if (Input.GetKeyDown(KeyCode.T))
                                     {
                                         Instantiate(_button_pf, _raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
                                         //Destroy(_waypoint);
@@ -177,10 +198,7 @@ public class AccDeviceCreator : MonoBehaviour
                                             _stairlift = Instantiate(_stairlift_pf, _raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
 
                                             // switch camera
-                                            //Camera.main.transform.SetPositionAndRotation(PlayerCamera.transform.position, 
-                                                //Quaternion.FromToRotation(Camera.main.transform.forward, PlayerCamera.transform.forward));
-                                            //PlayerCamera.enabled = false;
-                                            //Camera.main.enabled = true;
+                                            ActivateFLCam(true);
 
                                             // trigger event
                                             AccDevicePlaced();
@@ -194,11 +212,10 @@ public class AccDeviceCreator : MonoBehaviour
                                             // set stairlift variables
                                             _stairlift.GetComponent<StairliftController>().SetStart(_linkStartPosition);
                                             _stairlift.GetComponent<StairliftController>().SetEnd(_linkEndPosition);
-                                            _stairlift.GetComponent<StairliftController>().SetPlayer(this.gameObject);
+                                            _stairlift.GetComponent<StairliftController>().SetPlayer(gameObject);
 
                                             // switch camera
-                                            //Camera.main.enabled = false;
-                                            //PlayerCamera.enabled = true;
+                                            ActivateFLCam(false);
 
                                             // resolve selected stair
                                             CreateNavMeshLink(Stairs[_stairClosest]);
@@ -232,11 +249,22 @@ public class AccDeviceCreator : MonoBehaviour
                         // RAMP MODE
                         if (isOfType(_raycastHit.transform.gameObject, "floor"))
                         {
-                            if (!_raysStarted)
+                            if (!_waypoint.activeInHierarchy && !_raysStarted)
                             {
                                 //_waypoint = Instantiate(_waypoint_pf, _raycastHit.point, Quaternion.identity);
+                                Debug.Log("Creo Rampa in " + _raycastHit.point);
                                 _waypoint.SetActive(true);
                                 _waypoint.transform.SetPositionAndRotation(_raycastHit.point, Quaternion.identity);
+                                if (!_placed_ramp)
+                                {
+                                    Ramp = Instantiate(_ramp_pf, _raycastHit.point + _raycastHit.normal * 0.5f, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
+                                    _placed_ramp = true;
+                                }
+                                Ramp.GetComponent<Rigidbody>().isKinematic = true;
+                                foreach (Rigidbody rb in Ramp.GetComponentsInChildren<Rigidbody>())
+                                {
+                                    rb.isKinematic = true;
+                                }
                                 _raysStarted = true;
                             }
                             Debug.DrawRay(PlayerCamera.transform.position, _raycastHit.point - PlayerCamera.transform.position, Color.red, 0.0f, true);
@@ -247,12 +275,27 @@ public class AccDeviceCreator : MonoBehaviour
                                 Vector3 pos1, pos2;
                                 RaycastHit hit1, hit2;
 
+                                Debug.Log("Sposto rampa in " + _raycastHit.point);
                                 _waypoint.transform.SetPositionAndRotation(_raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
-                                pos1 = _raycastHit.point + Vector3.up * 0.5f + PlayerCamera.transform.forward * 3.1404f; // posizione rampa_salita
-                                pos2 = _raycastHit.point + Vector3.up * 0.5f - PlayerCamera.transform.forward * 3.1404f; // posizione rampa_discesa
-                                Physics.Raycast(pos1, Vector3.down, out hit1, 10f);
-                                Physics.Raycast(pos2, Vector3.down, out hit2, 10f);
-                                if (Mathf.Abs(hit1.point.z - hit2.point.z) / 6.2808f <= 0.10f) // calcolo della pendenza
+                                Ramp.transform.position = _raycastHit.point + _raycastHit.normal * 0.5f;
+
+                                if(Input.GetKey(KeyCode.U))
+                                {
+                                    Ramp.transform.Rotate(0, 1, 0);
+                                } else if (Input.GetKey(KeyCode.O))
+                                {
+                                    Ramp.transform.Rotate(0, -1, 0);
+                                }
+                                //Ramp.transform.SetPositionAndRotation(_raycastHit.point + _raycastHit.normal * 0.5f, Quaternion.FromToRotation(Ramp.transform.forward, PlayerCamera.transform.forward));
+                                //pos1 = Ramp.transform.Find("Rampa_salita").position; // posizione rampa_salita
+                                //pos2 = Ramp.transform.Find("Rampa_discesa").position; // posizione rampa_discesa
+                                pos1 = Ramp.GetComponent<RampController>().RampGetOn.transform.position; // posizione rampa_salita
+                                pos2 = Ramp.GetComponent<RampController>().RampGetOff.transform.position; // posizione rampa_discesa
+                                Physics.Raycast(pos1, Vector3.down, out hit1, 1f);
+                                Physics.Raycast(pos2, Vector3.down, out hit2, 1f);
+                                float f = Mathf.Abs((hit1.point.y - hit2.point.y) / asVector2(pos1 - pos2).magnitude);
+                                Debug.Log("Pendenza: " + f);
+                                if (f <= 0.10f) // calcolo della pendenza
                                 {
                                     _wpRND = _waypoint.GetComponentsInChildren<Renderer>();
                                     foreach (Renderer x in _wpRND)
@@ -260,18 +303,17 @@ public class AccDeviceCreator : MonoBehaviour
                                         x.material.SetColor("_Color", Color.green);
                                         x.material.SetColor("_EmissionColor", Color.green);
                                     }
-                                    if (Input.GetKeyDown(KeyCode.Space))
+                                    if (Input.GetKeyDown(KeyCode.T))
                                     {
-                                        Ramp = Instantiate(_ramp_pf, _raycastHit.point + Vector3.up * 0.5f, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
-                                        Ramp.GetComponent<Rigidbody>().isKinematic = true;
+                                        Ramp.GetComponent<Rigidbody>().isKinematic = false;
                                         foreach (Rigidbody rb in Ramp.GetComponentsInChildren<Rigidbody>())
                                         {
-                                            rb.isKinematic = true;
+                                            rb.isKinematic = false;
                                         }
-                                        _spacePressed = false;
                                         //Destroy(_waypoint);
                                         _waypoint.SetActive(false);
                                         AccDevicePlaced();
+                                        _placed_ramp = false;
                                     }
                                 }
                                 else
@@ -305,53 +347,17 @@ public class AccDeviceCreator : MonoBehaviour
             _waypoint.SetActive(false);
             _destroy_wp = false;
         }
-    }
 
-    private void FixedUpdate()
-    {
-        switch (mode)
+        if (_destroy_ramp)
         {
-            case acc_device.Ramp:
-                if(Ramp != null)
-                {
-                    if(_localTranslation.y > 0.5)
-                    {
-                        Ramp.transform.Translate(0f, 0f, 0.1f);
-                    }
-                    if (_localTranslation.y < 0.5)
-                    {
-                        Ramp.transform.Translate(0f, 0f, -0.1f);
-                    }
-                    if (_localTranslation.x > 0.5)
-                    {
-                        Ramp.transform.Translate(0.1f, 0f, 0f);
-                    }
-                    if (_localTranslation.x < 0.5)
-                    {
-                        Ramp.transform.Translate(-0.1f, 0f, 0f);
-                    }
-                    if(_localRotation > 0.5)
-                    {
-                        Ramp.transform.Rotate(0f, 1f, 0f);
-                    }
-                    if (_localRotation < 0.5)
-                    {
-                        Ramp.transform.Rotate(0f, -1f, 0f);
-                    }
-                    if (_spacePressed)
-                    {
-                        Ramp.GetComponent<Rigidbody>().isKinematic = false;
-                        foreach(Rigidbody rb in Ramp.GetComponentsInChildren<Rigidbody>())
-                        {
-                            rb.isKinematic = false;
-                        }
-                        Ramp = null;
-                        _spacePressed = false;
-                    }
-                }
-                break;
-            case acc_device.Button: case acc_device.Stairlift: default: break;
+            Destroy(Ramp);
+            _destroy_ramp = false;
+            _placed_ramp = false;
         }
+    }
+    Vector2 asVector2(Vector3 v)
+    {
+        return new Vector2(v.x, v.z);
     }
 
     private void CreateNavMeshLink(GameObject Stair)
@@ -453,16 +459,20 @@ public class AccDeviceCreator : MonoBehaviour
         switch(mode_input){
             case Mode.EPSelector:
                 _startInsert=false;
+                _destroy_wp = true;
                 break;
             case Mode.Nav:
+                _destroy_ramp = true;
                 _startInsert=false;
+                _destroy_wp = true;
                 break;
             case Mode.Edit:
+                _destroy_ramp = true;
                 _startInsert=false;
+                _destroy_wp=true;
                 break;
             case Mode.Plan: //aggiungi device
                 _startInsert=true;
-                _destroy_wp=true;
                 break;
         }
     }
@@ -475,17 +485,12 @@ public class AccDeviceCreator : MonoBehaviour
     {
         _localRotation = delta;
     }
-    private void PressSpace()
-    {
-        _spacePressed = true;
-    }
 
     private void OnEnable(){
         InventoryBtn.OnItemSelect+=Inserisci;
         InputManager.OnChangeMode+=InsertMode;
         InputManager.OnFurnitureTranslation += ApplyFurniTransl;
         InputManager.OnFurnitureRotation += ApplyFurniRot;
-        InputManager.OnSelection += PressSpace;
     }
 
     private void OnDisable(){
@@ -493,6 +498,5 @@ public class AccDeviceCreator : MonoBehaviour
         InputManager.OnChangeMode-=InsertMode;
         InputManager.OnFurnitureTranslation -= ApplyFurniTransl;
         InputManager.OnFurnitureRotation -= ApplyFurniRot;
-        InputManager.OnSelection -= PressSpace;
     }
 }

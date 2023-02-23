@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 1221298536496443042}
   - component: {fileID: 2281189263649640204}
   - component: {fileID: 6847835301745374945}
-  - component: {fileID: 6609723677499026775}
-  m_Layer: 0
+  - component: {fileID: 3169737967573888073}
+  m_Layer: 2
   m_Name: Rampa
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,14 +27,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 55286895345465928}
-  m_LocalRotation: {x: -0.00000013767877, y: 0.7071068, z: 0.70710677, w: 0.00000013767878}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5877233390747665269}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &1221298536496443042
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -97,7 +97,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 55286895345465928}
   serializedVersion: 2
-  m_Mass: 10
+  m_Mass: 1000
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -105,8 +105,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!64 &6609723677499026775
-MeshCollider:
+--- !u!65 &3169737967573888073
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -115,10 +115,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -6586172060114443403, guid: 37dbc0643d76d404581a87eef63912c5, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.024999997, y: 0.062, z: 0.0004}
+  m_Center: {x: 0, y: 0, z: 0.0002}
 --- !u!1 &2049552479012567411
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,8 +131,8 @@ GameObject:
   - component: {fileID: 6061247052467897244}
   - component: {fileID: 6061247052467897234}
   - component: {fileID: 6061247052467897232}
-  - component: {fileID: 1243601911939639386}
-  m_Layer: 0
+  - component: {fileID: 8673261157919421774}
+  m_Layer: 2
   m_Name: Rampa_salita
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,14 +146,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049552479012567411}
-  m_LocalRotation: {x: -0.00000016015522, y: 0.7071068, z: 0.70710677, w: 0.00000016015522}
-  m_LocalPosition: {x: -0, y: 0, z: 3.1404}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: -3.1404}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5877233390747665269}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &324649559714646645
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -216,7 +215,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049552479012567411}
   serializedVersion: 2
-  m_Mass: 10
+  m_Mass: 200
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -260,8 +259,8 @@ HingeJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
---- !u!64 &1243601911939639386
-MeshCollider:
+--- !u!65 &8673261157919421774
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -270,10 +269,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 1339724149581681975, guid: 37dbc0643d76d404581a87eef63912c5, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.025, y: 0.008, z: 0.0004}
+  m_Center: {x: 0, y: 0.004, z: 0.0002}
 --- !u!1 &6547090425682074063
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,7 +282,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5877233390747665269}
   - component: {fileID: 5877233390747665226}
-  m_Layer: 0
+  - component: {fileID: 6157866877286440605}
+  m_Layer: 2
   m_Name: Adaptable_Ramp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -317,7 +316,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6547090425682074063}
   serializedVersion: 2
-  m_Mass: 50
+  m_Mass: 5000
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -325,6 +324,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6157866877286440605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6547090425682074063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07650640c58b0be47b2f42e678360af5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RampGetOn: {fileID: 2049552479012567411}
+  RampGetOff: {fileID: 8229427589294906414}
 --- !u!1 &8229427589294906414
 GameObject:
   m_ObjectHideFlags: 0
@@ -338,8 +351,8 @@ GameObject:
   - component: {fileID: 2771463095121299702}
   - component: {fileID: 8606420115711378825}
   - component: {fileID: 8606420115711378831}
-  - component: {fileID: 8747287110864642386}
-  m_Layer: 0
+  - component: {fileID: 2721482328090498868}
+  m_Layer: 2
   m_Name: Rampa_discesa
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -353,14 +366,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8229427589294906414}
-  m_LocalRotation: {x: -0.00000016015522, y: 0.7071068, z: 0.70710677, w: 0.00000016015522}
-  m_LocalPosition: {x: 0, y: -0, z: -3.1404}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0, z: 3.1404}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5877233390747665269}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &8606420115711378827
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -422,7 +435,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8229427589294906414}
   serializedVersion: 2
-  m_Mass: 30
+  m_Mass: 200
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -466,8 +479,8 @@ HingeJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
---- !u!64 &8747287110864642386
-MeshCollider:
+--- !u!65 &2721482328090498868
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -476,7 +489,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4414340980574409783, guid: 37dbc0643d76d404581a87eef63912c5, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.024999997, y: 0.009, z: 0.0004}
+  m_Center: {x: 0, y: -0.004510933, z: 0.0002}
