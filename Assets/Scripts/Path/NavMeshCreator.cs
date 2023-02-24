@@ -307,7 +307,7 @@ public class NavMeshCreator : MonoBehaviour
     }
 
     private void AddedDevice(string x,Vector3 k){
-                _needToUpdateNavMesh=true;
+        _needToUpdateNavMesh=true;
     }
 
     private void OnEnable(){
