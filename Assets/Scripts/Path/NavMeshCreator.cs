@@ -310,10 +310,6 @@ public class NavMeshCreator : MonoBehaviour
         _needToUpdateNavMesh=true;
     }
 
-    private void DoorOpener(){
-        _needToUpdateNavMesh=true;
-    }
-
     private void OnEnable(){
         HotSpotSelection.OnEndPointSet+=StartGuy;
         FurnitureSelection.OnFurnitureTranslation+=ToUpdateNavMesh;

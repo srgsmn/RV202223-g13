@@ -166,8 +166,7 @@ public class FurnitureSelection : MonoBehaviour
                     _eliminatePressed=false;
                     if (_selected!=null){
 
-                        OnFurnitureRemoval?.Invoke(_selected.name, _selected.transform.position);
-
+                        TakeFurniture();
                         Destroy(_selected);
 
 
