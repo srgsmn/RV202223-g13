@@ -61,6 +61,13 @@ public class ColliderAllocator : MonoBehaviour
             if (mesh_ex){
                 //Debug.Log("Adding colliders to " + x.name);
                 AddColliders(x.gameObject, colliderType);
+                if (!CheckFixed(x.gameObject)){
+                    Outline outline;
+                    outline=x.gameObject.AddComponent<Outline>();
+                    outline.enabled=false;
+                    outline.OutlineColor=Color.yellow;
+                    outline.OutlineWidth=8f;
+                }         
             }
             if (!container && mesh_ex && !staticParent){
                 x.gameObject.AddComponent<FixedJoint>().connectedBody=prn.gameObject.GetComponent<Rigidbody>();
@@ -221,6 +228,9 @@ public class ColliderAllocator : MonoBehaviour
                 return true;
             }
         return false;
+    }
+    private bool CheckFixed(GameObject go){
+        return (IsFixed(go.name.ToLower()) || IsStructural(go.name.ToLower()));
     }
 
 

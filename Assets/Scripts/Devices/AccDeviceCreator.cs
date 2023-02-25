@@ -140,7 +140,6 @@ public class AccDeviceCreator : MonoBehaviour
                                         //FindDoors(Level);
                                         //Doors.RemoveAt(_doorClosest);
                                         _waypoint.SetActive(false);
-
                                         AccDevicePlaced();
                                     }
                                 }
