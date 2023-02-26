@@ -63,6 +63,19 @@ public class CharacterMovement : MonoBehaviour
         _movingOnY=true;
     }
 
+    void OnCollisionEnter(Collision collision){
+        OnPlayerCollision?.Invoke(collision);
+        GameObject go;
+        Rigidbody[] rs;
+        if (collision.gameObject.name.ToLower().IndexOf("ramp")!=-1){
+            go=collision.gameObject.transform.parent.gameObject;
+            rs=go.GetComponentsInChildren<Rigidbody>();
+            foreach(Rigidbody r in rs){
+                r.isKinematic=true;
+            }
+        }
+    }
+
     void FixedUpdate()
     {
         if (_movingOnY){
@@ -119,10 +132,7 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        OnPlayerCollision?.Invoke(collision);
-    }
+    
 
 
     private void OnEnable()

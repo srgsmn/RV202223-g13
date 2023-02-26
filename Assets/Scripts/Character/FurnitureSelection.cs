@@ -166,8 +166,7 @@ public class FurnitureSelection : MonoBehaviour
                     _eliminatePressed=false;
                     if (_selected!=null){
 
-                        OnFurnitureRemoval?.Invoke(_selected.name, _selected.transform.position);
-
+                        TakeFurniture();
                         Destroy(_selected);
 
 
@@ -324,6 +323,7 @@ public class FurnitureSelection : MonoBehaviour
         bool mesh_ex;
         mesh_ex=gobj.TryGetComponent(typeof(Renderer),out Component mf);
         if (mesh_ex){
+            /*
             r = (Renderer) mf;
             Material[] mat_set=r.materials;
             foreach (Material m in mat_set){
@@ -331,7 +331,8 @@ public class FurnitureSelection : MonoBehaviour
                 //Mat_emission em = new Mat_emission(m.IsKeywordEnabled("_EMISSION"),m.GetColor("_EmissionColor"));
                 _inactive_materials.Add(k,m.GetColor("_Color"));
                 m.SetColor("_Color",SelectedColor);
-            }
+            }*/
+            gobj.GetComponent<Outline>().enabled=true;
         }
         else if (first){
             SelectMaterial_r(gobj.transform.parent.gameObject,false);
@@ -364,13 +365,15 @@ public class FurnitureSelection : MonoBehaviour
         bool mesh_ex;
         mesh_ex=gobj.TryGetComponent(typeof(Renderer),out Component mf);
          if (mesh_ex){
+            /*
             r = (Renderer) mf;
             Material[] mat_set=r.materials;
             foreach (Material m in mat_set){
                 //Mat_emission old_col = _inactive_materials.GetValueOrDefault(new Mat_key(gobj.name,m.name));
                 Color old_col = _inactive_materials.GetValueOrDefault(new Mat_key(gobj.name,m.name));
                 m.SetColor("_Color",old_col);
-            }
+            }*/
+            gobj.GetComponent<Outline>().enabled=false;;
         }
         else if (first){
             ResetMaterial_r(gobj.transform.parent.gameObject,false);

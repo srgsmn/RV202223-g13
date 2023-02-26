@@ -213,7 +213,7 @@ public class HotSpotSelection : MonoBehaviour
         _toConfirmWaypoints=true;
     }
 
-    private void Awake(){
+    private void OnEnable(){
         InputManager.OnSelection+=PlaceWaypoint;
         InputManager.OnConfirm+=ConfirmWaypoints;
     }
