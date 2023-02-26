@@ -27,7 +27,7 @@ using static UnityEngine.CullingGroup;
 ///
 /// [3] Plan mode                   -> OnChangeMode(Utilities.Mode.Plan)
 ///     [arrows] Moving inside the inventory
-///     [SPACE] Devide Selection
+///     [SPACE] Device Selection
 ///
 /// NOTA:   Input manager tiene traccia attraverso dei flag di alcune variabili di stato
 ///         affinché filtri gli input. Ad esempio, il tasto E non avvia l'evento eliminazione
