@@ -282,6 +282,7 @@ public class GameManager : MonoBehaviour
     public void ShowMainMenu()
     {
         state = SceneState.None;
+        isFinale = false;
 
         DisplayScene(SceneType.MainMenu);
 

@@ -465,7 +465,7 @@ public class InputManager : MonoBehaviour
 
         if (context.ReadValueAsButton())
         {
-            if (isPlaying)
+            if (isPlaying && mode!=Mode.EPSelector)
             {
                 Debug.Log($"{GetType().Name}.cs > State is PLAYING, entering navigation mode");
 
@@ -482,7 +482,7 @@ public class InputManager : MonoBehaviour
 
         if (context.ReadValueAsButton())
         {
-            if (isPlaying)
+            if (isPlaying && mode != Mode.EPSelector)
             {
                 Debug.Log($"{GetType().Name}.cs > State is PLAYING, entering edit mode");
 
@@ -499,7 +499,7 @@ public class InputManager : MonoBehaviour
 
         if (context.ReadValueAsButton())
         {
-            if (isPlaying)
+            if (isPlaying && mode != Mode.EPSelector)
             {
                 Debug.Log($"{GetType().Name}.cs > State is PLAYING, entering plan mode");
 
