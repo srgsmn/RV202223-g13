@@ -27,7 +27,7 @@ using static UnityEngine.CullingGroup;
 ///
 /// [3] Plan mode                   -> OnChangeMode(Utilities.Mode.Plan)
 ///     [arrows] Moving inside the inventory
-///     [SPACE] Devide Selection
+///     [SPACE] Device Selection
 ///
 /// NOTA:   Input manager tiene traccia attraverso dei flag di alcune variabili di stato
 ///         affinché filtri gli input. Ad esempio, il tasto E non avvia l'evento eliminazione
@@ -465,7 +465,7 @@ public class InputManager : MonoBehaviour
 
         if (context.ReadValueAsButton())
         {
-            if (isPlaying)
+            if (isPlaying && mode!=Mode.EPSelector)
             {
                 Debug.Log($"{GetType().Name}.cs > State is PLAYING, entering navigation mode");
 
@@ -482,7 +482,7 @@ public class InputManager : MonoBehaviour
 
         if (context.ReadValueAsButton())
         {
-            if (isPlaying)
+            if (isPlaying && mode != Mode.EPSelector)
             {
                 Debug.Log($"{GetType().Name}.cs > State is PLAYING, entering edit mode");
 
@@ -499,7 +499,7 @@ public class InputManager : MonoBehaviour
 
         if (context.ReadValueAsButton())
         {
-            if (isPlaying)
+            if (isPlaying && mode != Mode.EPSelector)
             {
                 Debug.Log($"{GetType().Name}.cs > State is PLAYING, entering plan mode");
 
