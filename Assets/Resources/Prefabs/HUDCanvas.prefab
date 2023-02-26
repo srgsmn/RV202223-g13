@@ -2760,7 +2760,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Move among the options with arrows, press ENTER to select
+  m_text: 'Move among the options with arrows, press ENTER to select.
+
+    (Press
+    [U] and [O] to rotate)'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 382c025c9e85d46bea0b3a10950e9f4b, type: 2}
   m_sharedMaterial: {fileID: -4418227437429727050, guid: 382c025c9e85d46bea0b3a10950e9f4b, type: 2}
@@ -2906,7 +2909,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: -0.000061035156}
-  m_SizeDelta: {x: 960, y: 180}
+  m_SizeDelta: {x: 960, y: 225}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &8470026260569616254
 CanvasRenderer:
