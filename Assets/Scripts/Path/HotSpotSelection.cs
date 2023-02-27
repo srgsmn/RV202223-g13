@@ -135,7 +135,7 @@ public class HotSpotSelection : MonoBehaviour
     }
 
     private void SwitchCamera(){
-        Camera FirstPerson=_avatar.transform.Find("Camera").gameObject.GetComponent<Camera>();
+        Camera FirstPerson=_avatar.GetComponentInChildren<Camera>();
         _avatar.GetComponent<CharacterMovement>().enabled=true;
         _avatar.GetComponent<FurnitureSelection>().enabled=true;
         _avatar.GetComponent<AccDeviceCreator>().enabled=true;

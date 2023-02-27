@@ -61,7 +61,7 @@ public class ReportCreator : MonoBehaviour
             }
         }
         else{
-            if (collision.collider.gameObject.transform.parent.name.ToLower().IndexOf("floor")==-1){
+            if (collision.collider.gameObject.transform.parent != null && collision.collider.gameObject.transform.parent.name.ToLower().IndexOf("floor")==-1){
                 AllRecords.Add(new string("Collision in " + collision.GetContact(0).point + " with '" + collision.collider.gameObject.transform.parent.name + "';"));
             }
         }

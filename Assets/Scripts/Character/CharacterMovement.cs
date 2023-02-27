@@ -13,8 +13,8 @@ public class CharacterMovement : MonoBehaviour
     public Transform MassCenter;
     private float _startSpeed;
     private float _startAccel;
+    private float _steepDist = 0.0001f;
     private Rigidbody _rigidbody;
-    //private Vector2 camera_rot = new Vector2();
     private Vector2 _localMovement;
     
     private bool _reportDone=false;
@@ -65,12 +65,9 @@ public class CharacterMovement : MonoBehaviour
 
     void OnCollisionEnter(Collision collision){
         OnPlayerCollision?.Invoke(collision);
-        GameObject go;
-        Rigidbody[] rs;
-        if (collision.gameObject.name.ToLower().IndexOf("ramp")!=-1){
-            go=collision.gameObject.transform.parent.gameObject;
-            rs=go.GetComponentsInChildren<Rigidbody>();
-            foreach(Rigidbody r in rs){
+        if (collision.gameObject.name.ToLower().IndexOf("ramp")!=-1 && collision.gameObject.transform.parent != null)
+        {
+            foreach(Rigidbody r in collision.gameObject.transform.parent.gameObject.GetComponentsInChildren<Rigidbody>()){
                 r.isKinematic=true;
             }
         }
@@ -91,6 +88,15 @@ public class CharacterMovement : MonoBehaviour
                 }
                 //else transform.Translate(gameObject.transform.forward * WalkSpeed * Time.deltaTime);
                 else _rigidbody.velocity = -WalkSpeed * transform.forward;
+                RaycastHit raycastHit;
+                if(Physics.Raycast(gameObject.transform.position, gameObject.transform.forward - Vector3.down, out raycastHit, 2f))
+                {
+                    float f = raycastHit.point.y - (gameObject.transform.position.y - GetComponent<BoxCollider>().bounds.size.y * 0.5f);
+                    if (raycastHit.collider.gameObject.name.ToLower().IndexOf("ramp") != -1 && f > 0 && f <= _steepDist)
+                    {
+                        _rigidbody.velocity += Vector3.up * f;
+                    }
+                }
             }
             else if (_localMovement.y < -0.5f)
             {
@@ -103,6 +109,15 @@ public class CharacterMovement : MonoBehaviour
                 }
                 //else transform.Translate(-gameObject.transform.forward * WalkSpeed * Time.deltaTime);
                 else _rigidbody.velocity = WalkSpeed * transform.forward;
+                RaycastHit raycastHit;
+                if (Physics.Raycast(gameObject.transform.position, -gameObject.transform.forward - Vector3.down, out raycastHit, 2f))
+                {
+                    float f = raycastHit.point.y - (gameObject.transform.position.y - GetComponent<BoxCollider>().bounds.size.y * 0.5f);
+                    if (raycastHit.collider.gameObject.name.ToLower().IndexOf("ramp") != -1 && f > 0 && f <= _steepDist)
+                    {
+                        _rigidbody.velocity += Vector3.up * f;
+                    }
+                }
             }
             else
             {
