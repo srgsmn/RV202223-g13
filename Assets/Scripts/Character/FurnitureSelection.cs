@@ -24,7 +24,7 @@ public class FurnitureSelection : MonoBehaviour
         public bool isEmitting;
         public Color emissionColor;
     }
-    private string[] _structElements={"wall","floor", "ceiling","lavandino","roof","stair","scale"};
+    private string[] _structElements={"wall","floor", "ceiling","lavandino","roof","stair","scale","door","porta"};
     
     public Camera PlayerCamera;
     public Material SelectedMaterial;
@@ -39,8 +39,10 @@ public class FurnitureSelection : MonoBehaviour
     private RaycastHit _raycastHit;
     private e_mode _currentMode;
     private bool _selectionToNav=false;
+    private bool _selectionToPlan=false;
     private bool _moveToNav=false;
     private bool _moveToSel=false;
+    private bool _moveToPlan=false;
     private Vector2 _localTranslation; // furniture
     private float _localRotation; // furniture
 
@@ -125,20 +127,23 @@ public class FurnitureSelection : MonoBehaviour
                         }
                     }
                 }
-                if (_selectionToNav)
+                if (_selectionToNav || _selectionToPlan)
                 {
                     if(_selected != null)
                     {
+
                         //Per qualche motivo non toglie il materiale
                         DeHighlight(_selected);
                         _selected = null;
                     }
                     _selectionToNav=false;
+                    _selectionToPlan=false;
                     _currentMode = e_mode.mode_navigation;
                 }
                 if (_spacePressed)
                 {
                     _spacePressed=false;
+                    
                     if (_selected != null)
                     {
                         /*
@@ -168,9 +173,7 @@ public class FurnitureSelection : MonoBehaviour
 
                         TakeFurniture();
                         Destroy(_selected);
-
-
-                        _moveToNav=true;
+                        _moveToSel=true;
                     }
                 }
                 if (_applyChange)
@@ -186,9 +189,27 @@ public class FurnitureSelection : MonoBehaviour
                     }
                     _currentMode = e_mode.mode_selection;
                 }
-                if (_moveToNav)
+                if (_moveToNav || _moveToSel || _moveToPlan){
+                    if (_selected != null)
+                    {
+                        DeHighlight(_selected);
+                        _selected.transform.position=_originalPosition;
+                        _selected.transform.Rotate(0.0f,_originalRotation-_selected.transform.rotation.y,0.0f,Space.Self);
+                        //_active_rb.isKinematic=true;
+                        _selected = null;
+                    }
+                    if (_moveToNav || _moveToPlan){
+                        _moveToNav=false;
+                        _moveToPlan=false;
+                        _currentMode = e_mode.mode_navigation;
+                    }
+                    else if (_moveToSel){
+                        _moveToSel=false;
+                        _currentMode=e_mode.mode_selection;
+                    }  
+                }
+                /*if (_moveToNav)
                 {
-                    Debug.Log("Entro in movetonav");
                     if (_selected != null)
                     {
                         DeHighlight(_selected);
@@ -202,7 +223,6 @@ public class FurnitureSelection : MonoBehaviour
                 }
                 if (_moveToSel)
                 {
-                    Debug.Log("Entro in movetosel");
                     if (_selected != null)
                     {
                         DeHighlight(_selected);
@@ -213,7 +233,7 @@ public class FurnitureSelection : MonoBehaviour
                     }
                     _moveToSel=false;
                     _currentMode = e_mode.mode_selection;
-                }
+                }*/
                 if (_localTranslation.y > 0.5)
                 {
                     _selected.transform.Translate(0.1f,0,0,PlayerCamera.transform);
@@ -427,8 +447,14 @@ public class FurnitureSelection : MonoBehaviour
                 }
                 break;
             case Mode.Plan: //aggiungi device
-                _currentMode=e_mode.mode_navigation;
+                if (_currentMode==e_mode.mode_move){
+                    _moveToPlan=true;
+                }
+                else if (_currentMode==e_mode.mode_selection){
+                    _selectionToPlan=true;
+                }
                 break;
+            default:break;
         }
     }
 
@@ -467,13 +493,17 @@ public class FurnitureSelection : MonoBehaviour
     }
 
     private void SelectObject(){
-        _spacePressed=true;
+        if (_currentMode==e_mode.mode_selection){
+            _spacePressed=true;
+        }    
     }
     private void EliminateObject(){
         _eliminatePressed=true;
     }
     private void ConfirmEdit(){
-        _applyChange=true;
+        if (_currentMode==e_mode.mode_move){
+            _applyChange=true;
+        }
     }
 
     private void Awake(){

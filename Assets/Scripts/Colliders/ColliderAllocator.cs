@@ -10,7 +10,7 @@ public class ColliderAllocator : MonoBehaviour
     public PhysicMaterial psmt;
 
     private NavMeshCreator nc;
-    private string[] _structElements={"wall","floor", "ceiling","lavandino","roof","stair","scale"};
+    private string[] _structElements={"wall","floor", "ceiling","lavandino","roof","stair","scale","door","porta"};
     void Start()
     {
         _gt = gameObject.transform;
