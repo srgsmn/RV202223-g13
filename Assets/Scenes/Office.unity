@@ -6764,7 +6764,7 @@ GameObject:
   - component: {fileID: 1273867527}
   - component: {fileID: 1273867526}
   m_Layer: 0
-  m_Name: wall_29972
+  m_Name: floor_rialzato
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13831,7 +13831,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5674338002077184243, guid: 0d8dc27e9e734ef4e883e81ba5f74b74, type: 3}
       propertyPath: m_Name
-      value: Light
+      value: Light_fixed
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d8dc27e9e734ef4e883e81ba5f74b74, type: 3}

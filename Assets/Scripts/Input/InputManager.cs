@@ -371,12 +371,15 @@ public class InputManager : MonoBehaviour
             else if (isPlaying)
             {
                 if (mode == Mode.EPSelector) {
+                    Debug.Log("Space pressed in EPmode");
                     OnSelection?.Invoke();
                 }
                 else if(mode == Mode.Edit && hoverObject)
                 {
+                    Debug.Log("Space pressed in Edit mode");
                     if (!objectSelected)
                     {
+                        Debug.Log("Space pressed in edit mode with no object selected");
                         OnSelection?.Invoke();
                     }
                     else
@@ -686,7 +689,7 @@ public class InputManager : MonoBehaviour
         if (isPlaying)
         {
             movementInput = context.ReadValue<Vector2>();
-
+            Debug.Log("Ruota flcamera (InputManager)");
             OnFLCamRotInput?.Invoke(movementInput);
         }
     }
@@ -724,7 +727,7 @@ public class InputManager : MonoBehaviour
     }
 
     private void SetObjectSelected(bool sel){
-        Debug.Log("Ci entro?" + sel);
+        Debug.Log("Entro in Set Object selected con?" + sel);
         objectSelected=sel;
         Debug.Log("ObjectSelected: "+ objectSelected);  
     }
