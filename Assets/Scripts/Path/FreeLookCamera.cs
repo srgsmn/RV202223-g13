@@ -61,6 +61,7 @@ public class FreeLookCamera : MonoBehaviour
     void ApplyRotation(Vector2 delta)
     {
         _localRotate = delta;
+        Debug.Log("Ruota flcamera (FreeLookCamera)");
     }
     void ApplyLifting(float delta)
     {

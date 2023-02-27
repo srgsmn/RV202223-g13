@@ -689,7 +689,7 @@ public class InputManager : MonoBehaviour
         if (isPlaying)
         {
             movementInput = context.ReadValue<Vector2>();
-
+            Debug.Log("Ruota flcamera (InputManager)");
             OnFLCamRotInput?.Invoke(movementInput);
         }
     }

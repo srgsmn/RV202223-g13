@@ -6,8 +6,8 @@ using Utilities;
 
 public class AccDeviceCreator : MonoBehaviour
 {   
-    public enum acc_device {Button, Ramp, Stairlift};
-    public acc_device mode = acc_device.Button;
+    public enum acc_device {None, Button, Ramp, Stairlift};
+    public acc_device mode = acc_device.None;
     public Camera PlayerCamera;
     public GameObject Level;
     public enum furniture_type { Generic, Door, Stair }
@@ -29,7 +29,7 @@ public class AccDeviceCreator : MonoBehaviour
     private GameObject _button;
 
     // Ramp variables
-    private GameObject Ramp = null;
+    private GameObject _ramp = null;
     private GameObject _ramp_pf;
     private bool _placed_ramp = false;
 
@@ -42,9 +42,6 @@ public class AccDeviceCreator : MonoBehaviour
     private bool _linkStartSet;
     private NavMeshLink _nvl;
     private Vector3 _cameraOffset;
-
-    private Vector2 _localTranslation; // accessibility device
-    private float _localRotation; // accessibility device
 
     #region GESTIONE_REPORT
 
@@ -74,22 +71,54 @@ public class AccDeviceCreator : MonoBehaviour
         _waypoint.SetActive(false);
     }
 
-    void ActivateFLCam(bool f)
+    
+    /*void ActivateFLCam(bool f)
     {
-        Camera mainCam = Camera.main;
-        Camera playerCam = PlayerCamera.GetComponent<Camera>();
         if (f) {
             _cameraOffset = PlayerCamera.transform.localPosition;
             gameObject.GetComponent<CharacterMovement>().enabled = false;
             PlayerCamera.GetComponent<FollowPlayer>().enabled = false;
             PlayerCamera.GetComponent<FreeLookCamera>().enabled = true;
+            
         } else
         {
             PlayerCamera.transform.SetLocalPositionAndRotation(_cameraOffset, Quaternion.FromToRotation(PlayerCamera.transform.forward, gameObject.transform.forward));
             gameObject.GetComponent<CharacterMovement>().enabled = true;
             PlayerCamera.GetComponent<FollowPlayer>().enabled = true;
             PlayerCamera.GetComponent<FreeLookCamera>().enabled = false;
+            
         }
+    }*/
+
+    private void ActivateFLCam(bool f)
+    {
+        Camera FreeLook = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
+        Camera FirstPerson = gameObject.GetComponentInChildren<Camera>();
+
+        if (f)
+        {
+            gameObject.GetComponent<CharacterMovement>().enabled = false;
+            FirstPerson.GetComponent<FollowPlayer>().enabled = false;
+            FreeLook.GetComponent<FreeLookCamera>().enabled = true;
+            FreeLook.transform.SetPositionAndRotation(FirstPerson.transform.position, FirstPerson.transform.rotation);
+            FirstPerson.gameObject.GetComponent<AudioListener>().enabled = false;
+            FreeLook.gameObject.GetComponent<AudioListener>().enabled = true;
+            FirstPerson.enabled = false;
+            FreeLook.enabled = true;
+            PlayerCamera = FreeLook;
+        }
+        else
+        {
+            gameObject.GetComponent<CharacterMovement>().enabled = true;
+            FirstPerson.GetComponent<FollowPlayer>().enabled = true;
+            FreeLook.GetComponent<FreeLookCamera>().enabled = false;
+            FirstPerson.gameObject.GetComponent<AudioListener>().enabled = true;
+            FreeLook.gameObject.GetComponent<AudioListener>().enabled = false;
+            FreeLook.enabled = false;
+            FirstPerson.enabled = true;
+            PlayerCamera = FirstPerson;
+        }
+
     }
 
     // Update is called once per frame
@@ -103,23 +132,20 @@ public class AccDeviceCreator : MonoBehaviour
             {
                 switch (mode)
                 {
+                    case acc_device.None: break;
                     case acc_device.Button:
                         //BUTTON MODE
                         if (isOfType(_raycastHit.transform.gameObject, "wall"))
                         {
                             if (!_raysStarted)
                             {
-                                //_waypoint=Instantiate(_waypoint_pf, _raycastHit.point, Quaternion.identity);
                                 _waypoint.SetActive(true);
                                 _waypoint.transform.SetPositionAndRotation(_raycastHit.point, Quaternion.identity);
                                 _raysStarted = true;
                             }
                             Debug.DrawRay(PlayerCamera.transform.position, _raycastHit.point - PlayerCamera.transform.position, Color.red, 0.0f, true);
-                            //if (_waypoint!=null){
                             if (_waypoint.activeInHierarchy)
                             {
-                                //_waypoint.transform.position=_raycastHit.point;
-                                //_waypoint.transform.rotation=Quaternion.FromToRotation(Vector3.up, _raycastHit.normal);
                                 _waypoint.transform.SetPositionAndRotation(_raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
                                 _doorClosest = _findClosest(Doors, _raycastHit.point);
                                 if ((Doors[_doorClosest].transform.position - _raycastHit.point).magnitude <= 2.5f)
@@ -132,18 +158,12 @@ public class AccDeviceCreator : MonoBehaviour
                                     }
                                     if (Input.GetKeyDown(KeyCode.Space))
                                     {
-                                        _button=Instantiate(_button_pf, _raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal),Level.transform);
+                                        _button=Instantiate(_button_pf, _raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal), Level.transform);
                                         _button.GetComponent<ButtonController>().ConnectedDoor=Doors[_doorClosest];
-
                                         NavMeshModifier nvm;
                                         nvm=Doors[_doorClosest].GetComponent<NavMeshModifier>();
                                         nvm.ignoreFromBuild=true; 
                                         nvm.SetAffectedAgentType(-1);
-
-                                        //Destroy(_waypoint);
-                                        //Doors.Clear();
-                                        //FindDoors(Level);
-                                        //Doors.RemoveAt(_doorClosest);
                                         _waypoint.SetActive(false);
                                         AccDevicePlaced();
                                     }
@@ -159,14 +179,11 @@ public class AccDeviceCreator : MonoBehaviour
                                 }
                             }
                         }
-                        else
+                        else if (_raysStarted)
                         {
-                            if (_raysStarted)
-                            {
-                                //Destroy(_waypoint);
-                                _waypoint.SetActive(false);
-                                _raysStarted = false;
-                            }
+                            //Destroy(_waypoint);
+                            _waypoint.SetActive(false);
+                            _raysStarted = false;
                         }
                         break;
                     case acc_device.Stairlift://STAIRLIFT MODE
@@ -174,7 +191,6 @@ public class AccDeviceCreator : MonoBehaviour
                         {
                             if (!_raysStarted)
                             {
-                                //_waypoint=Instantiate(_waypoint_pf, _raycastHit.point, Quaternion.identity);
                                 _waypoint.SetActive(true);
                                 _waypoint.transform.SetPositionAndRotation(_raycastHit.point, Quaternion.identity);
                                 _raysStarted = true;
@@ -182,11 +198,9 @@ public class AccDeviceCreator : MonoBehaviour
                             Debug.DrawRay(PlayerCamera.transform.position, _raycastHit.point - PlayerCamera.transform.position, Color.red, 0.0f, true);
                             if (_waypoint.activeInHierarchy)
                             {
-                                //_waypoint.transform.position = _raycastHit.point;
-                                //_waypoint.transform.rotation = Quaternion.FromToRotation(Vector3.up, _raycastHit.normal);
                                 _waypoint.transform.SetPositionAndRotation(_raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
                                 _stairClosest = _findClosest(Stairs, _raycastHit.point);
-                                if ((Stairs[_stairClosest].transform.position - _raycastHit.point).magnitude <= 10f)
+                                if ((Stairs[_stairClosest].transform.position - _raycastHit.point).magnitude <= 8f)
                                 {
                                     _wpRND = _waypoint.GetComponentsInChildren<Renderer>();
                                     foreach (Renderer x in _wpRND)
@@ -201,7 +215,7 @@ public class AccDeviceCreator : MonoBehaviour
                                             // set start position
                                             _linkStartPosition = _raycastHit.point;
                                             _linkStartSet = true;
-                                            _stairlift = Instantiate(_stairlift_pf, _raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal),Level.transform);
+                                            _stairlift = Instantiate(_stairlift_pf, _raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal), Level.transform);
 
                                             // switch camera
                                             ActivateFLCam(true);
@@ -226,7 +240,6 @@ public class AccDeviceCreator : MonoBehaviour
                                             // resolve selected stair
                                             CreateNavMeshLink(Stairs[_stairClosest]);
                                             Stairs.RemoveAt(_stairClosest);
-                                            //Destroy(_waypoint);
                                         }
                                     }
                                 }
@@ -240,86 +253,74 @@ public class AccDeviceCreator : MonoBehaviour
                                     }
                                 }
                             }
-                            else
-                            {
-                                if (_raysStarted)
-                                {
-                                    //Destroy(_waypoint);
-                                    _waypoint.SetActive(false);
-                                    _raysStarted = false;
-                                }
-                            }
+                            
+                        } else if (_raysStarted)
+                        {
+                            _waypoint.SetActive(false);
+                            _raysStarted = false;
+                        }
+                        if (_linkStartSet)
+                        {
+                            if (Input.GetKey(KeyCode.U))
+                                _stairlift.transform.Rotate(0, 1, 0);
+                            else if (Input.GetKey(KeyCode.O))
+                                _stairlift.transform.Rotate(0, -1, 0);
                         }
                         break;
                     case acc_device.Ramp:
                         // RAMP MODE
+
                         if (isOfType(_raycastHit.transform.gameObject, "floor"))
                         {
                             if (!_waypoint.activeInHierarchy && !_raysStarted)
                             {
-                                //_waypoint = Instantiate(_waypoint_pf, _raycastHit.point, Quaternion.identity);
                                 Debug.Log("Creo Rampa in " + _raycastHit.point);
                                 _waypoint.SetActive(true);
                                 _waypoint.transform.SetPositionAndRotation(_raycastHit.point, Quaternion.identity);
                                 if (!_placed_ramp)
                                 {
-                                    Ramp = Instantiate(_ramp_pf, _raycastHit.point + _raycastHit.normal * 0.5f, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal),Level.transform);
+                                    _ramp = Instantiate(_ramp_pf, _raycastHit.point + _raycastHit.normal * 0.5f, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal), Level.transform);
                                     _placed_ramp = true;
-                                }
-                                Ramp.GetComponent<Rigidbody>().isKinematic = true;
-                                foreach (Rigidbody rb in Ramp.GetComponentsInChildren<Rigidbody>())
-                                {
-                                    rb.isKinematic = true;
                                 }
                                 _raysStarted = true;
                             }
                             Debug.DrawRay(PlayerCamera.transform.position, _raycastHit.point - PlayerCamera.transform.position, Color.red, 0.0f, true);
                             if (_waypoint.activeInHierarchy)
                             {
-                                //_waypoint.transform.position = _raycastHit.point;
-                                //_waypoint.transform.rotation = Quaternion.FromToRotation(Vector3.up, _raycastHit.normal);
                                 Vector3 pos1, pos2;
                                 RaycastHit hit1, hit2;
 
                                 Debug.Log("Sposto rampa in " + _raycastHit.point);
                                 _waypoint.transform.SetPositionAndRotation(_raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
-                                Ramp.transform.position = _raycastHit.point + _raycastHit.normal * 0.5f;
-
+                                _ramp.transform.position = _raycastHit.point + _raycastHit.normal * 0.5f;
                                 if(Input.GetKey(KeyCode.U))
                                 {
-                                    Ramp.transform.Rotate(0, 1, 0);
+                                    _ramp.transform.Rotate(0, 1, 0);
                                 } else if (Input.GetKey(KeyCode.O))
                                 {
-                                    Ramp.transform.Rotate(0, -1, 0);
+                                    _ramp.transform.Rotate(0, -1, 0);
                                 }
-                                //Ramp.transform.SetPositionAndRotation(_raycastHit.point + _raycastHit.normal * 0.5f, Quaternion.FromToRotation(Ramp.transform.forward, PlayerCamera.transform.forward));
-                                //pos1 = Ramp.transform.Find("Rampa_salita").position; // posizione rampa_salita
-                                //pos2 = Ramp.transform.Find("Rampa_discesa").position; // posizione rampa_discesa
-                                pos1 = Ramp.GetComponent<RampController>().RampGetOn.transform.position; // posizione rampa_salita
-                                pos2 = Ramp.GetComponent<RampController>().RampGetOff.transform.position; // posizione rampa_discesa
+                                pos1 = _ramp.GetComponent<RampController>().RampGetOn.transform.position; // posizione rampa_salita
+                                pos2 = _ramp.GetComponent<RampController>().RampGetOff.transform.position; // posizione rampa_discesa
                                 Physics.Raycast(pos1, Vector3.down, out hit1, 1f);
                                 Physics.Raycast(pos2, Vector3.down, out hit2, 1f);
                                 float f = Mathf.Abs((hit1.point.y - hit2.point.y) / asVector2(pos1 - pos2).magnitude);
                                 Debug.Log("Pendenza: " + f);
                                 if (f <= 0.10f) // calcolo della pendenza
                                 {
-                                    _wpRND = _waypoint.GetComponentsInChildren<Renderer>();
-                                    foreach (Renderer x in _wpRND)
+                                    Debug.Log("Piazzata rampa");
+                                    foreach (Renderer x in _waypoint.GetComponentsInChildren<Renderer>())
                                     {
                                         x.material.SetColor("_Color", Color.green);
                                         x.material.SetColor("_EmissionColor", Color.green);
                                     }
                                     if (Input.GetKeyDown(KeyCode.Space))
                                     {
-                                        Ramp.GetComponent<Rigidbody>().isKinematic = false;
-                                        foreach (Rigidbody rb in Ramp.GetComponentsInChildren<Rigidbody>())
-                                        {
-                                            rb.isKinematic = false;
-                                        }
-                                        //Destroy(_waypoint);
+                                        _ramp.GetComponent<RampController>().Place();
                                         _waypoint.SetActive(false);
                                         AccDevicePlaced();
                                         _placed_ramp = false;
+                                        _ramp = null;
                                     }
                                 }
                                 else
@@ -332,15 +333,12 @@ public class AccDeviceCreator : MonoBehaviour
                                     }
                                 }
                             }
-                            else
-                            {
-                                if (_raysStarted)
-                                {
-                                    //Destroy(_waypoint);
-                                    _waypoint.SetActive(false);
-                                    _raysStarted = false;
-                                }
-                            }
+                        }
+                        else if (_raysStarted)
+                        {
+                            //Destroy(_waypoint);
+                            _waypoint.SetActive(false);
+                            _raysStarted = false;
                         }
                         break;
                     default: break;
@@ -356,7 +354,7 @@ public class AccDeviceCreator : MonoBehaviour
 
         if (_destroy_ramp)
         {
-            Destroy(Ramp);
+            Destroy(_ramp);
             _destroy_ramp = false;
             _placed_ramp = false;
         }
@@ -483,17 +481,9 @@ public class AccDeviceCreator : MonoBehaviour
                 break;
             case Mode.Plan: //aggiungi device
                 _startInsert=true;
+                mode = acc_device.None;
                 break;
         }
-    }
-
-    private void ApplyFurniTransl(Vector2 delta)
-    {
-        _localTranslation = delta;
-    }
-    private void ApplyFurniRot(float delta)
-    {
-        _localRotation = delta;
     }
     
     private void PressSpace()
@@ -507,14 +497,10 @@ public class AccDeviceCreator : MonoBehaviour
     private void OnEnable(){
         InventoryBtn.OnItemSelect+=Inserisci;
         InputManager.OnChangeMode+=InsertMode;
-        InputManager.OnFurnitureTranslation += ApplyFurniTransl;
-        InputManager.OnFurnitureRotation += ApplyFurniRot;
     }
 
     private void OnDisable(){
         InventoryBtn.OnItemSelect-=Inserisci;
         InputManager.OnChangeMode-=InsertMode;
-        InputManager.OnFurnitureTranslation -= ApplyFurniTransl;
-        InputManager.OnFurnitureRotation -= ApplyFurniRot;
     }
 }
