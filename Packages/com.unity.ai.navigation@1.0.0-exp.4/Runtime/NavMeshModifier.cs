@@ -72,8 +72,11 @@ namespace Unity.AI.Navigation
         }
 
         public void SetAffectedAgentType(int agentTypeID){
+            m_AffectedAgents.ForEach(x => Debug.Log(x));
+            Debug.Log("setaffected");
             m_AffectedAgents.Clear();
             m_AffectedAgents = new List<int>(new int[] {agentTypeID});
+            m_AffectedAgents.ForEach(x => Debug.Log(x));
         }
 
         public void printAffectedAgents(){
