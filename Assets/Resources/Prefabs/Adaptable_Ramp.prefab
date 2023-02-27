@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2281189263649640204}
   - component: {fileID: 6847835301745374945}
   - component: {fileID: 3169737967573888073}
+  - component: {fileID: 5130762716377346677}
   m_Layer: 2
   m_Name: Rampa
   m_TagString: Untagged
@@ -118,6 +119,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.024999997, y: 0.062, z: 0.00001}
   m_Center: {x: 0, y: 0, z: 0.000005}
+--- !u!114 &5130762716377346677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55286895345465928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_IgnoreFromBuild: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &2049552479012567411
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,6 +149,7 @@ GameObject:
   - component: {fileID: 6061247052467897234}
   - component: {fileID: 6061247052467897232}
   - component: {fileID: 8673261157919421774}
+  - component: {fileID: 2266240071332019689}
   m_Layer: 2
   m_Name: Rampa_salita
   m_TagString: Untagged
@@ -272,6 +290,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.024999997, y: 0.008, z: 0.00001}
   m_Center: {x: 0, y: 0.0040000007, z: 0.000005}
+--- !u!114 &2266240071332019689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2049552479012567411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_IgnoreFromBuild: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &6547090425682074063
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,7 +317,6 @@ GameObject:
   - component: {fileID: 5877233390747665269}
   - component: {fileID: 5877233390747665226}
   - component: {fileID: 6157866877286440605}
-  - component: {fileID: 3730287016488585585}
   - component: {fileID: 7018662994275762283}
   - component: {fileID: 3003392120311090020}
   m_Layer: 2
@@ -341,24 +374,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RampGetOn: {fileID: 2049552479012567411}
   RampGetOff: {fileID: 8229427589294906414}
---- !u!114 &3730287016488585585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6547090425682074063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 0, g: 0.6886792, b: 0.1738518, a: 1}
-  outlineWidth: 6
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!65 &7018662994275762283
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -399,6 +414,7 @@ GameObject:
   - component: {fileID: 8606420115711378825}
   - component: {fileID: 8606420115711378831}
   - component: {fileID: 2721482328090498868}
+  - component: {fileID: 2152196366471468069}
   m_Layer: 2
   m_Name: Rampa_discesa
   m_TagString: Untagged
@@ -539,3 +555,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.024999997, y: 0.009, z: 0.00001}
   m_Center: {x: 0, y: -0.004510933, z: 0.000005}
+--- !u!114 &2152196366471468069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8229427589294906414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_IgnoreFromBuild: 1
+  m_AffectedAgents: ffffffff

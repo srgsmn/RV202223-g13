@@ -220,8 +220,7 @@ public class AccDeviceCreator : MonoBehaviour
                                             // switch camera
                                             ActivateFLCam(true);
 
-                                            // trigger event
-                                            AccDevicePlaced();
+                                            
                                         }
                                         else
                                         {
@@ -240,6 +239,8 @@ public class AccDeviceCreator : MonoBehaviour
                                             // resolve selected stair
                                             CreateNavMeshLink(Stairs[_stairClosest]);
                                             Stairs.RemoveAt(_stairClosest);
+                                            // trigger event
+                                            AccDevicePlaced();
                                         }
                                     }
                                 }
@@ -318,6 +319,9 @@ public class AccDeviceCreator : MonoBehaviour
                                     {
                                         _ramp.GetComponent<RampController>().Place();
                                         _waypoint.SetActive(false);
+                                        _linkStartPosition=hit1.point;
+                                        _linkEndPosition=hit2.point;
+                                        CreateNavMeshLink(_ramp);
                                         AccDevicePlaced();
                                         _placed_ramp = false;
                                         _ramp = null;
@@ -368,7 +372,7 @@ public class AccDeviceCreator : MonoBehaviour
     {
         GameObject _linkGo = new GameObject(Stair.name + "_link");
         _linkGo.transform.parent = Stair.transform;
-        _linkGo.transform.position = Stair.GetComponent<Renderer>().bounds.center;
+        _linkGo.transform.position = Stair.transform.position;
         _nvl = _linkGo.AddComponent(typeof(NavMeshLink)) as NavMeshLink;
         _nvl.agentTypeID = GetNavMeshAgentID("Wheelchair").Value;
         _nvl.autoUpdate = false;

@@ -7,6 +7,7 @@ public class RampController : MonoBehaviour
     public GameObject RampGetOn;
     public GameObject RampGetOff;
 
+
     public void Place()
     {
         GetComponent<Rigidbody>().isKinematic = false;
