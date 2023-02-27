@@ -62,10 +62,16 @@ public class HotSpotSelection : MonoBehaviour
             }
             
             Debug.DrawRay(PlayerCamera.transform.position,_raycastHit.point-PlayerCamera.transform.position,Color.red,0.0f,true);
-            if (_waypoint_cursor!=null && _raycastHit.transform.name.ToLower().IndexOf("floor")!=-1){
-                _waypoint_cursor.transform.position=_raycastHit.point;
+            if (_waypoint_cursor!=null){
+                if (_raycastHit.transform.name.ToLower().IndexOf("floor")!=-1){
+                    _waypoint_cursor.transform.position=_raycastHit.point;
+                }
+                else{
+                    Destroy(_waypoint_cursor);
+                    _raysStarted=false;
+                }
             }
-            if (_toPlaceWaypoint && _waypoint_cursor!=null){
+            if (_toPlaceWaypoint && _waypoint_cursor!=null && _raysStarted){
                 _toPlaceWaypoint=false;
                 _waypointList.Add(Instantiate(_waypoint_pf,_raycastHit.point, Quaternion.identity));
                 if (_numWaypoints==0){
@@ -77,6 +83,7 @@ public class HotSpotSelection : MonoBehaviour
                 }
                 _numWaypoints++;
             }
+
                 
         }
         if (_toConfirmWaypoints){
@@ -128,6 +135,7 @@ public class HotSpotSelection : MonoBehaviour
                 OnEndPointSet?.Invoke();
                 Level.GetComponent<NavMeshCreator>()._waypointList=_waypointList;
                 this.gameObject.GetComponent<FreeLookCamera>().enabled=false;
+                this.gameObject.GetComponent<AudioListener>().enabled=false;
                 this.enabled=false;
             }
         }
@@ -139,6 +147,7 @@ public class HotSpotSelection : MonoBehaviour
         _avatar.GetComponent<CharacterMovement>().enabled=true;
         _avatar.GetComponent<FurnitureSelection>().enabled=true;
         _avatar.GetComponent<AccDeviceCreator>().enabled=true;
+        _avatar.GetComponent<AccDeviceCreator>().Level=Level;
         _avatar.GetComponent<CharacterMovement>().Target=_waypointList[_waypointList.Count-1];
         PlayerCamera.enabled=false;
         FirstPerson.enabled=true;

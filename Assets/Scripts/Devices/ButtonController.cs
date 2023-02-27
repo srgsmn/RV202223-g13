@@ -13,6 +13,7 @@ public class ButtonController : MonoBehaviour
     private bool _internalState=false;
     private NavMeshModifier _nvm;
 
+
     public delegate void ButtonPressed();
     public static event ButtonPressed OnButtonPressed;
     void Start()
@@ -26,16 +27,12 @@ public class ButtonController : MonoBehaviour
         _cam=Camera.main;
         if(_changeState){
             _changeState=false;
-            
             if ((this.gameObject.transform.position - _cam.transform.position).magnitude<=4.0f){
                 if (_internalState){
                     ConnectedDoor.GetComponent<Renderer>().enabled=true;
                     if (ConnectedDoor.TryGetComponent(typeof(Collider),out Component mf)){
                         Collider c=(Collider) mf;
                         c.enabled=true;
-                        _nvm=ConnectedDoor.GetComponent<NavMeshModifier>();
-                        _nvm.ignoreFromBuild=true; 
-                        _nvm.SetAffectedAgentType(GetNavMeshAgentID("Humanoid").Value);
                     }
                     else{
                         Collider[] cols = ConnectedDoor.GetComponentsInChildren<Collider>();
@@ -49,9 +46,6 @@ public class ButtonController : MonoBehaviour
                     if (ConnectedDoor.TryGetComponent(typeof(Collider),out Component mf)){
                         Collider c=(Collider) mf;
                         c.enabled=false;
-                        _nvm=ConnectedDoor.GetComponent<NavMeshModifier>();
-                        _nvm.ignoreFromBuild=true; 
-                        _nvm.SetAffectedAgentType(-1);
                     }
                     else{
                         Collider[] cols = ConnectedDoor.GetComponentsInChildren<Collider>();
@@ -64,6 +58,7 @@ public class ButtonController : MonoBehaviour
             }
         }
     }
+
 
     private int? GetNavMeshAgentID(string name)
     {

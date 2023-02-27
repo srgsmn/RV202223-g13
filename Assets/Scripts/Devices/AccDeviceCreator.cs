@@ -9,7 +9,7 @@ public class AccDeviceCreator : MonoBehaviour
     public enum acc_device {None, Button, Ramp, Stairlift};
     public acc_device mode = acc_device.None;
     public Camera PlayerCamera;
-
+    public GameObject Level;
     public enum furniture_type { Generic, Door, Stair }
 
     private RaycastHit _raycastHit;
@@ -63,7 +63,7 @@ public class AccDeviceCreator : MonoBehaviour
         Doors = _findObjectsOfType("door");
         Stairs = _findObjectsOfType("stair");
         Debug.Log("Ho trovato " + Doors.Count + " porte e " + Stairs.Count + " scale");
-        _button_pf = (GameObject)Resources.Load("Prefabs/Button", typeof(GameObject));
+        _button_pf = (GameObject)Resources.Load("Prefabs/bottone", typeof(GameObject));
         _ramp_pf = (GameObject)Resources.Load("Prefabs/Adaptable_Ramp", typeof(GameObject));
         _waypoint_pf= (GameObject)Resources.Load("Prefabs/waypoint", typeof(GameObject));
         _stairlift_pf = (GameObject) Resources.Load("Prefabs/Stairlift_raw", typeof(GameObject));
@@ -148,7 +148,6 @@ public class AccDeviceCreator : MonoBehaviour
                             {
                                 _waypoint.transform.SetPositionAndRotation(_raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
                                 _doorClosest = _findClosest(Doors, _raycastHit.point);
-                                Debug.Log(Doors[_doorClosest].name);
                                 if ((Doors[_doorClosest].transform.position - _raycastHit.point).magnitude <= 2.5f)
                                 {
                                     _wpRND = _waypoint.GetComponentsInChildren<Renderer>();
@@ -159,8 +158,12 @@ public class AccDeviceCreator : MonoBehaviour
                                     }
                                     if (Input.GetKeyDown(KeyCode.Space))
                                     {
-                                        _button=Instantiate(_button_pf, _raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
+                                        _button=Instantiate(_button_pf, _raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal), Level.transform);
                                         _button.GetComponent<ButtonController>().ConnectedDoor=Doors[_doorClosest];
+                                        NavMeshModifier nvm;
+                                        nvm=Doors[_doorClosest].GetComponent<NavMeshModifier>();
+                                        nvm.ignoreFromBuild=true; 
+                                        nvm.SetAffectedAgentType(-1);
                                         _waypoint.SetActive(false);
                                         AccDevicePlaced();
                                     }
@@ -212,7 +215,7 @@ public class AccDeviceCreator : MonoBehaviour
                                             // set start position
                                             _linkStartPosition = _raycastHit.point;
                                             _linkStartSet = true;
-                                            _stairlift = Instantiate(_stairlift_pf, _raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
+                                            _stairlift = Instantiate(_stairlift_pf, _raycastHit.point, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal), Level.transform);
 
                                             // switch camera
                                             ActivateFLCam(true);
@@ -276,7 +279,7 @@ public class AccDeviceCreator : MonoBehaviour
                                 _waypoint.transform.SetPositionAndRotation(_raycastHit.point, Quaternion.identity);
                                 if (!_placed_ramp)
                                 {
-                                    _ramp = Instantiate(_ramp_pf, _raycastHit.point + _raycastHit.normal * 0.5f, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal));
+                                    _ramp = Instantiate(_ramp_pf, _raycastHit.point + _raycastHit.normal * 0.5f, Quaternion.FromToRotation(Vector3.up, _raycastHit.normal), Level.transform);
                                     _placed_ramp = true;
                                 }
                                 _raysStarted = true;

@@ -37,6 +37,9 @@ public class NavMeshCreator : MonoBehaviour
 
     private bool _needToStartPath=false;
     private bool _needToUpdateNavMesh=false;
+    private bool _needToUpdateNavMeshNoAreas=false;
+    private bool _updated1=false;
+    private bool _updated2=false;
     void Start()
     {
         _humanoidPath = new NavMeshPath();
@@ -82,15 +85,19 @@ public class NavMeshCreator : MonoBehaviour
                 _wheelchairMoving=false;
             }
         }
-        if (Input.GetKeyDown("u")){
+        if (_needToUpdateNavMeshNoAreas){
             if (_HumanoidNavMeshExists){
                 //setAreas(this.transform,GetNavMeshAgentID("Humanoid").Value);
-                _nvsHumanoid.UpdateNavMesh(_nvsHumanoid.navMeshData);
+                AsyncOperation operationHumanoid=_nvsHumanoid.UpdateNavMesh(_nvsHumanoid.navMeshData);
+                operationHumanoid.completed+=HumanoidUpdated;
             }
             if (_WheelchairNavMeshExists){
                 //setAreas(this.transform,GetNavMeshAgentID("Wheelchair").Value);
-                _nvsWheelchair.UpdateNavMesh(_nvsWheelchair.navMeshData);
+                AsyncOperation operationWheelchair=_nvsWheelchair.UpdateNavMesh(_nvsWheelchair.navMeshData);
+                operationWheelchair.completed+=WheelchairUpdated;
             }
+            _needToStartPath=true;
+            _needToUpdateNavMeshNoAreas=false;
         }
         if (_needToUpdateNavMesh){
             if (_HumanoidNavMeshExists){
@@ -101,8 +108,12 @@ public class NavMeshCreator : MonoBehaviour
                 setAreas(this.transform,GetNavMeshAgentID("Wheelchair").Value);
                 _nvsWheelchair.UpdateNavMesh(_nvsWheelchair.navMeshData);
             }
+        }
+        if (_updated1 && _updated2){
             _needToStartPath=true;
             _needToUpdateNavMesh=false;
+            _updated1=false;
+            _updated2=false;
         }
         /*if (Input.GetKeyDown("n")){
             if (_navMeshExists){
@@ -267,6 +278,15 @@ public class NavMeshCreator : MonoBehaviour
         }
     }*/
 
+    private void HumanoidUpdated(AsyncOperation op){
+        Debug.Log("Humanoid has been updated");
+        _updated1=true;
+    }
+    private void WheelchairUpdated(AsyncOperation op){
+        Debug.Log("Wheelchair has been updated");  
+        _updated2=true;
+    }
+
 
     private bool IsWalkable(string name){
         foreach (string x in _walkableElements){
@@ -303,21 +323,27 @@ public class NavMeshCreator : MonoBehaviour
     }
 
     private void ToUpdateNavMesh(string pickedFurniture, Vector3 translation, float rotation){
-        _needToUpdateNavMesh=true;
+        _needToUpdateNavMeshNoAreas=true;
+    }
+    private void ToUpdateNavMeshAfterRemoval(string pickedFurniture, Vector3 position){
+        _needToUpdateNavMeshNoAreas=true;
     }
 
     private void AddedDevice(string x,Vector3 k){
-        _needToUpdateNavMesh=true;
+        _needToUpdateNavMeshNoAreas=true;
+        Debug.Log("Updated");
     }
 
     private void OnEnable(){
         HotSpotSelection.OnEndPointSet+=StartGuy;
         FurnitureSelection.OnFurnitureTranslation+=ToUpdateNavMesh;
+        FurnitureSelection.OnFurnitureRemoval+=ToUpdateNavMeshAfterRemoval;
         AccDeviceCreator.OnDeviceCreation+=AddedDevice;
     }
     private void OnDisable(){
         HotSpotSelection.OnEndPointSet-=StartGuy;
         FurnitureSelection.OnFurnitureTranslation-=ToUpdateNavMesh;
+        FurnitureSelection.OnFurnitureRemoval-=ToUpdateNavMeshAfterRemoval;
         AccDeviceCreator.OnDeviceCreation-=AddedDevice;
     }
 }
